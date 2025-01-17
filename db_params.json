@@ -1,6 +1,6 @@
 {
     "host" : "localhost",
-    "user" : "conflict",
+    "user" : "root",
     "password" : "wowey",
     "database" : "toucan"
 }
