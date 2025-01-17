@@ -1,6 +1,6 @@
 {
     "host" : "localhost",
-    "user" : "racine",
+    "user" : "Bob",
     "password" : "wowey",
     "database" : "toucan"
 }
