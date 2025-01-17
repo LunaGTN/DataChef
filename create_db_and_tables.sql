@@ -1,8 +1,8 @@
-CREATE DATABASE toucan;
+CREATE DATABASE datachef;
 
-USE toucan;
+USE datachef;
 
-CREATE TABLE recipe (
+CREATE TABLE recipe(
 	id INT NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	nb_person INT,
@@ -18,7 +18,7 @@ CREATE TABLE recipe (
 	PRIMARY KEY(id)
 );
 
-CREATE TABLE ingredient (
+CREATE TABLE ingredient(
 	id INT NOT NULL,
 	name VARCHAR(100) NOT NULL,
 	type VARCHAR (50),
