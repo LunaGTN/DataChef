@@ -1,0 +1,4 @@
+streamlit
+streamlit_google_auth
+dotenv
+mage-ai

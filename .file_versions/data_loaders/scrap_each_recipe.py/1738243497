@@ -1,0 +1,46 @@
+import io
+import pandas as pd
+import requests
+from bs4 import BeautifulSoup
+
+if 'data_loader' not in globals():
+    from mage_ai.data_preparation.decorators import data_loader
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+
+
+@data_loader
+def load_data_from_api(liens, *args, **kwargs):
+    """
+    Fonction pour scraper les pages de recettes
+    """
+    recipe_soup_list = []
+    print(len(recipe_soup_list))
+    for url in liens:
+        try:
+            # Ajouter un User-Agent pour éviter d'être bloqué
+            response_recipe = requests.get(url)
+            print("1")
+
+            # Vérifier si la requête a réussi (code 200)
+            if response_recipe.status_code == 200:
+                recipe_soup = BeautifulSoup(response_recipe.content, "html.parser")
+                recipe_soup_list.append(recipe_soup)
+                print("2")
+            else:
+                print(f"Erreur {response_recipe.status_code} sur {url}")
+                print("3")
+
+        except requests.exceptions.RequestException as e:
+            print(f"Erreur lors de la requête pour {url}: {e}")
+            print("4")
+
+    return recipe_soup_list  # Retourne la liste des pages scrapées
+
+@test
+def test_output(output, *args) -> None:
+    """
+    Teste si le scraping a bien renvoyé des résultats.
+    """
+    assert output is not None, 'The output is undefined'
+    assert len(output) > 0, 'La liste est vide'
