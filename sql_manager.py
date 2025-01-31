@@ -1,20 +1,63 @@
-import mysql.connector
+import boto3
+from botocore.exceptions import ClientError
 import json
+import logging
+import psycopg2
 from typing import List
 import re
 
+logging.basicConfig(
+    filename="app.log",
+    level=logging.INFO,
+    encoding="utf-8",    
+    filemode="a",
+    format="{asctime} - {levelname} - {message}",
+    style="{",
+    datefmt="%Y-%m-%d %H:%M"
+)
+
+logging.getLogger("boto3").setLevel(logging.WARNING)
+logging.getLogger("botocore").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+logging.getLogger("s3transfer").setLevel(logging.WARNING)
+
+
+def get_secret():
+
+    secret_name = "rds_datachef"
+    region_name = "eu-west-3"
+
+    # Create a Secrets Manager client
+    session = boto3.session.Session()
+    client = session.client(
+        service_name='secretsmanager',
+        region_name=region_name
+    )
+
+    try:
+        get_secret_value_response = client.get_secret_value(
+            SecretId=secret_name
+        )
+    except ClientError as e:
+        # For a list of exceptions thrown, see
+        # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+        raise e
+
+    secret = get_secret_value_response['SecretString']
+    
+    return json.loads(secret)
+
+
 class DatabaseConnection():
     def __init__(self):
-        file = open("db_params.json", "r")
-        self.connexion_data = json.load(file)
-        file.close()
+        self.connexion_data = get_secret()
 
     def __enter__(self):
-        self.db_connector = mysql.connector.connect(
-            host = self.connexion_data['host'],
-            user = self.connexion_data['user'],
-            password = self.connexion_data['password'],
-            database = self.connexion_data['database']
+        self.db_connector = psycopg2.connect(
+            host=self.connexion_data['host'],
+            database=self.connexion_data['engine'],
+            user=self.connexion_data['username'],
+            password=self.connexion_data['password']
         )
         return self.db_connector
 
@@ -25,6 +68,12 @@ class DatabaseConnection():
 
 class SQL_recipe_manager():
 
+    def __init__(self):
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
+
+     
+ 
     @staticmethod
     def fomat_time(time:str)->int:
         """
@@ -40,12 +89,12 @@ class SQL_recipe_manager():
         else :
             return int(h_m[0])
 
+
     def is_connected(self):
         with DatabaseConnection() as db_connexion:
-            if db_connexion.is_connected():
+            if not db_connexion.closed:
                 self.connexion = db_connexion
-                print("Successfully connected")
-        pass
+                logging.info("Successfully connected")
 
 
     def check_db(self, id:str, table:str)->bool:
@@ -67,16 +116,17 @@ class SQL_recipe_manager():
         with DatabaseConnection() as db_connexion:
             try :
                 c = db_connexion.cursor()
-                request = f"SELECT * FROM {table} WHERE id = {int(id)}"
+                request = f"SELECT * FROM {table} WHERE id = '{int(id)}'"
                 c.execute(request)
                 row_count = len(c.fetchall())
                 return bool(row_count)
             
-            except mysql.connector.Error as err:
-                print(f"Checking Error: {err}")
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Checking Error: {err}")
 
             finally:
-                c.fetchall()
+                if c.description is not None:
+                    c.fetchall()
                 c.close()
 
     
@@ -113,12 +163,12 @@ class SQL_recipe_manager():
             
                 datas = (
                     int(recipe_data['id']),
-                    recipe_data['titre'],
+                    recipe_data['titre'].capitalize(),
                     int(recipe_data['nb_personne']),
-                    SQL_recipe_manager.fomat_time(recipe_data['temps_preparation']),
-                    SQL_recipe_manager.fomat_time(recipe_data['tems_repos']),
-                    SQL_recipe_manager.fomat_time(recipe_data['temps_cuisson']),
-                    SQL_recipe_manager.fomat_time(recipe_data['temps_total']),
+                    self.fomat_time(recipe_data['temps_preparation']),
+                    self.fomat_time(recipe_data['tems_repos']),
+                    self.fomat_time(recipe_data['temps_cuisson']),
+                    self.fomat_time(recipe_data['temps_total']),
                     recipe_data['difficulte'],
                     recipe_data['cout'],
                     recipe_data['image'],
@@ -127,10 +177,10 @@ class SQL_recipe_manager():
                 c.execute(request, datas)
                 db_connexion.commit()
 
-                print(f"{recipe_data['titre']} was successfully add to database\n")
+                self.logger.info(f"{recipe_data['titre']} was successfully add to database\n")
         
-            except mysql.connector.Error as err:
-                print(f"Insert error: {err}")
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Insert error: {err}")
 
             finally:
                 c.close()
@@ -165,13 +215,14 @@ class SQL_recipe_manager():
                 c.executemany(request, datas)
                 db_connexion.commit()
 
-                print(f"Steps were successfully add to database\n")
+                self.logger.info(f"Steps were successfully add to database\n")
 
-            except mysql.connector.Error as err:
-                print(f"Insert error: {err}")
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Insert error: {err}")
 
             finally:
-                c.fetchall()
+                if c.description is not None:
+                    c.fetchall()
                 c.close()
             
 
@@ -203,16 +254,16 @@ class SQL_recipe_manager():
                 
                 datas = [
                         int(ingredient['id']),
-                        ingredient['nom']
+                        ingredient['nom'].capitalize()
                 ]
 
                 c.execute(request, datas)
                 db_connexion.commit()
 
-                print(f"{ingredient['nom']} was successfully add to database")
+                self.logger.info(f"{ingredient['nom'].capitalize()} was successfully add to database")
 
-            except mysql.connector.Error as err:
-                print(f"Insert error: {err}")
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Insert error: {err}")
 
             finally:
                 c.close()
@@ -255,8 +306,8 @@ class SQL_recipe_manager():
                     c.execute(request, row)
                     db_connexion.commit()                
         
-            except mysql.connector.Error as err:
-                print(f"Insert error: {err}")
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Insert error: {err}")
 
             finally:
                 c.close()
@@ -309,9 +360,10 @@ class SQL_recipe_manager():
                 if not self.check_db(id=ingredient['id'], table="ingredient"):
                     self.add_ingredient(ingredient=ingredient)
                 else:
-                    print(f"{ingredient['nom']} is already in database")
+                    self.logger.info(f"{ingredient['nom']} is already in database")
 
             self.add_quantity(ingredients=recipe_data['ingredients'], id_recipe=recipe_data['id'])
                 
         else:
-            print(f"{recipe_data['titre']} is already in database")
+            self.logger.info(f"{recipe_data['titre']} is already in database")
+
