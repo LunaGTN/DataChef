@@ -8,21 +8,21 @@ st.set_page_config(
 )
 
 if "page" not in st.session_state:
-    st.session_state.page = "accueil"
+    st.session_state.page = "home"
 
 def set_page(page_name):
     st.session_state.page = page_name
 
 with st.sidebar:
-    if st.button("Mon Profile"):  # Bouton Accueil, use_container_width=True
-        set_page("my_profile")
     if st.button("Accueil"):
         set_page("home")
+    if st.button("Mon Profile"):  # Bouton Accueil, use_container_width=True
+        set_page("my_profile")
 
-if st.session_state.page == "accueil":
-    st.markdown("<h3 style='color: #DE684D;'>Bienvenue sur Data Chef !</h3>", unsafe_allow_html=True)
+if st.session_state.page == "home":
+    st.markdown("<h2 style='color: #DE684D;'>Bienvenue sur Data Chef !</h3>", unsafe_allow_html=True)
     st.write("")
-    st.markdown("<h2 style='text-align: center; color: black;'>Nos recettes</h2>", unsafe_allow_html=True)
+    st.markdown("<h4 style='text-align: center; color: black;'>Nos recettes</h2>", unsafe_allow_html=True)
     col1, col2, col3, col4 = st.columns(4)
     with col1:
         st.write("Recettes col 1")
@@ -36,6 +36,6 @@ if st.session_state.page == "accueil":
     with col4:
         st.write("Recettes col 4")
 
-elif st.session_state.page == "home":
+elif st.session_state.page == "my_profile":
 # Page de visualisation : Appel de la fonction pour afficher les visualisations
     profile_page()
