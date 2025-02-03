@@ -1,3 +1,4 @@
 .env
 google_credentials.json
 test.ipynb
+__pycache__
