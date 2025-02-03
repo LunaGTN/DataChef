@@ -1,6 +1,6 @@
-def receipe_page():
+import streamlit as st
 
-    import streamlit as st
+def receipe_page():
 
 # Header / Title
     st.markdown("<h2 style='color: #DE684D;'> Recettes </h2>", unsafe_allow_html=True)

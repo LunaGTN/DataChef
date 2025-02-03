@@ -375,3 +375,119 @@ class SQL_recipe_manager():
         else:
             self.logger.info(f"{recipe_data['title']} is already in database")
 
+
+    def get_all_recipes(self):
+        """
+        Return all recipes name from recipe database
+        """
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = 'select id, name, image_link from recipe'
+
+                c.execute(request)
+                return pd.DataFrame(c.fetchall(), columns=['id', 'name', 'image_link'])
+
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+
+            finally:
+                c.close()
+
+        
+    def get_recipe_detail(self, id_recipe:int)->dict:
+        """
+        Return recipe details
+
+        Attributs
+        -------------
+        id_recipe: int
+            The id of the recipe
+
+        Return
+        -------------
+        recipe details: dict
+            - id
+            - title
+            - nb_person
+            - time_preparation
+            - time_rest
+            - time_cooking
+            - time_total
+            - difficulty
+            - cost
+            - image_link
+            - steps: list of str
+            - ingredients: dict of ingredient with
+                - name
+                - quantity
+                - unit
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request_recipe = f"""
+                SELECT 
+                    id,
+                    name,
+                    nb_person,
+                    time_preparation, 
+                    time_rest,
+                    time_cooking,
+                    time_total,
+                    difficulty,
+                    cost,
+                    image_link
+                FROM recipe WHERE id={id_recipe}
+                """
+                c.execute(request_recipe)
+                result = c.fetchone()
+                recipe = pd.DataFrame([result],columns=[
+                    'id',
+                    'name',
+                    'nb_person',
+                    'time_preparation',
+                    'time_rest',
+                    'time_cooking',
+                    'time_total',
+                    'difficulty',
+                    'cost',
+                    'image_link'])
+                recipe = dict(recipe.iloc[0])
+
+                request_quantity=f"""
+                    select 
+                        i.name,
+                        ir.quantity,
+                        ir.unit
+                    from ingredient_recipe ir
+                    join ingredient i on ir.id_ingredient = i.id
+                    where ir.id_recipe = {id_recipe}
+                """
+                c.execute(request_quantity)
+                result = c.fetchall()
+                quantity = pd.DataFrame(result, columns=['name', 'quantity', 'unit'])
+                quantity = [dict(row) for  _, row in quantity.iterrows()]
+
+                request_step = f"""
+                    select step_number, detail
+                    from step
+                    where id_recipe = {id_recipe}
+                    """
+                c.execute(request_step)
+                result =c.fetchall()
+                steps = pd.DataFrame(result, columns=['step_number', 'detail'])
+                steps = list(steps.sort_values('step_number')['detail'])
+
+                result = recipe
+                result['steps'] = steps
+                result['ingredients'] = quantity
+                
+                return result
+
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+
+            finally:
+                c.close()
