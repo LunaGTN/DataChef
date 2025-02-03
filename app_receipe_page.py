@@ -2,8 +2,28 @@ def receipe_page():
 
     import streamlit as st
 
-    # RECETTE TEST / A REMPLACER PAR IMPORT BDD
-    actual_receipe = {'titre': 'Lasagnes à la bolognaise',
+# Header / Title
+    st.markdown("<h2 style='color: #DE684D;'> Recettes </h2>", unsafe_allow_html=True)
+    st.write('---')
+
+
+# Receipe Selection
+    # Receipe list creation for the selectbox
+    receipe_list = ['Lasagnes à la bolognaise','Choucroute']  # 🟥🟥🟥🟥 Need to be update with SQL request 🟥🟥🟥🟥
+
+    # Automatic selection if user already choose a receipe from another page
+    if "current_receipe_name" not in st.session_state or st.session_state.current_receipe_name == None:
+        receipe_index = None
+    else :
+        receipe_index = receipe_list.index(st.session_state.current_receipe_name)
+
+    # Selectbox for receipe choice
+    st.session_state.current_receipe_name = st.selectbox("", receipe_list, index = receipe_index, placeholder= 'Choisir une recette dans la liste')
+    st.write('---')
+
+
+    # 🟥🟥🟥🟥 Need to be update with SQL request 🟥🟥🟥🟥
+    current_receipe = {'titre': 'Lasagnes à la bolognaise',
     'lien': 'https://www.marmiton.org/recettes/recette_lasagnes-a-la-bolognaise_18215.aspx',
     'id': '18215',
     'temps_preparation': '30 min',
@@ -49,40 +69,45 @@ def receipe_page():
     {'nom': 'Parmesan', 'quantite': '125', 'unite': 'g', 'id': '67'},
     {'nom': 'lait', 'quantite': '1', 'unite': 'l', 'id': '64'}]}
 
-    st.markdown('''<style>
-                ul{line-height: 130%; margin-bottom : 0;}
-                .stVerticalBlock { margin : auto;}
-                p{margin :0;}
-                </style>''', unsafe_allow_html=True)
 
+# Display receipe and details 
+    # First line (picture and name)
+    col1, _ , col2 = st.columns([2,0.4,5])
+    with col1:
+        st.image(current_receipe['image'],width=1000)
 
-    st.markdown("<h2 style='color: #DE684D;'> Recette </h4>", unsafe_allow_html=True)
+    with col2:
+        st.markdown(f"<h2 style='text-align: center; color: black;'> {current_receipe['titre']} </h2>", unsafe_allow_html=True)
 
-    receipe_title = actual_receipe['titre']
-    st.markdown(f"<h3 style='text-align: center; color: black;'> {receipe_title} </h3>", unsafe_allow_html=True)
+    st.write(' ')
 
-    receipe_pict = actual_receipe['image']
-    st.image(actual_receipe['image'])
-
-    col1, col2 = st.columns([2,5])
+    # Lists of ingredients and steps
+    col1, _ , col2 = st.columns([2,0.4,5])
 
     with col1 :
         container = st.container(border=True)
-        for ing in actual_receipe['ingredients'] :
+        for ing in current_receipe['ingredients'] :
             if ing['quantite'] == '0' :
-                result = f"{ing['nom']}"
+                result = f"**{ing['nom']}**"
             elif ing['unite'] == '' :
-                result = f"{ing['quantite']} {ing['nom']}"
+                result = f"{ing['quantite']} **{ing['nom']}**"
             else :
-                result = f"{ing['quantite']} {ing['unite']} de {ing['nom']}"
+                result = f"{ing['quantite']} {ing['unite']} de **{ing['nom']}**"
         
             container.markdown(f'- {result}')
+        container.write(' ')
+
 
     with col2 :
-        for ind, step in enumerate(actual_receipe['etapes']) :
-            col_bis1, col_bis2 = st.columns([1,5])
-            with col_bis1 :
-                st.checkbox(f'**Etape : {ind+1}**')
-            with col_bis2 :
-                st.markdown(step)
-                st.write(' ')
+        for ind, step in enumerate(current_receipe['etapes']) :
+                st.checkbox(f'**Etape {ind+1} :** {step}')
+        
+
+
+
+# Style 
+    st.markdown('''<style>
+                ul{line-height: 130%; margin-bottom : 0;}
+                .stMarkdown{margin :auto}
+                </style>''', unsafe_allow_html=True)
+    
