@@ -2,9 +2,12 @@ import boto3
 from botocore.exceptions import ClientError
 import json
 import logging
+import pandas as pd
 import psycopg2
 from typing import List
+from random import randint
 import re
+
 
 logging.basicConfig(
     filename="app.log",
@@ -491,3 +494,57 @@ class SQL_recipe_manager():
 
             finally:
                 c.close()
+
+
+    def get_ids(self, table:str)->list:
+        """
+        Get all ids from a table
+
+        Attributs
+        -------------
+        table: str
+            table from which to take the id
+
+        Return
+        -------------
+        ids: list(int)
+            
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = f"SELECT id FROM {table};"
+                c.execute(request)
+                results = c.fetchall()
+                list_ids = [result[0] for result in results]
+
+                return list_ids
+
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+            
+            finally:
+                c.close()
+
+
+    def generate_id(self, table:str)->int:
+        """
+        Generate a random unique id
+
+        Attributs
+        -------------
+        table: str
+            table in which the id is unique
+
+        Return
+        -------------
+        id: int
+        """
+
+        list_ids = self.get_ids(table)
+        random_id = randint(1, 99999)
+        while random_id in list_ids:
+            random_id = randint(1, 99999)
+        return random_id
+
