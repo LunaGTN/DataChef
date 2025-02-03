@@ -60,12 +60,15 @@ def get_ingredient(_soup):
         quantity = quantity_unit.get("data-ingredientquantity")
         unit = quantity_unit.find("span", {"class":"unit"}).get("data-unitsingular")
         id_ingredient= ids_ingredient[i].find("input").get("id")
-        return {
+        ingredient_recipe.append(
+            {
             "name":name,
             "quantity": quantity,
             "unit": unit,
             "id" : id_ingredient[5:]
-        }
+        })
+    
+    return ingredient_recipe
 
 def reconstitution(info_recettes, time_diff_cost_dict, steps_dict,ingredient_recipe ):
     recipe = info_recettes |time_diff_cost_dict | steps_dict | ingredient_recipe
