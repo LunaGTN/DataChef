@@ -14,13 +14,13 @@ def info_recettes(_soup):
     image_link = _soup.find('img',{"class":"lazyload mrtn-print-only"}).get("data-src")
     nb_person = _soup.find("div",{"class":'mrtn-recette_ingredients-counter'}).get("data-servingsnb")
     return {
-        "title":titre,
+        "titre":titre,
         "id": id,
-        "time_preparation" : time_preparation,
-        "time_repos" : time_rest,
-        "time_cuisson": time_cooking ,
+        "temps_preparation" : time_preparation,
+        "tems_repos" : time_rest,
+        "temps_cuisson": time_cooking ,
         "image" : image_link ,
-        "nb_person": nb_person
+        "nb_personne": nb_person
     }
 
 def get_time_diff_cost(_soup):
@@ -60,15 +60,12 @@ def get_ingredient(_soup):
         quantity = quantity_unit.get("data-ingredientquantity")
         unit = quantity_unit.find("span", {"class":"unit"}).get("data-unitsingular")
         id_ingredient= ids_ingredient[i].find("input").get("id")
-        ingredient_recipe.append(
-            {
+        return {
             "name":name,
             "quantity": quantity,
             "unit": unit,
             "id" : id_ingredient[5:]
-        })
-    
-    return ingredient_recipe
+        }
 
 def reconstitution(info_recettes, time_diff_cost_dict, steps_dict,ingredient_recipe ):
     recipe = info_recettes |time_diff_cost_dict | steps_dict | ingredient_recipe

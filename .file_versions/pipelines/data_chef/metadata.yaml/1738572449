@@ -19,7 +19,7 @@ blocks:
   color: null
   configuration: {}
   downstream_blocks:
-  - intriguing_frog
+  - soup_to_dico
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -34,42 +34,37 @@ blocks:
   uuid: scrap_each_recipe
 - all_upstream_blocks_executed: false
   color: null
-  configuration:
-    file_source:
-      path: transformers/intriguing_frog.py
-  downstream_blocks:
-  - sql_rds_manager
+  configuration: {}
+  downstream_blocks: []
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
-  name: intriguing_frog
+  name: soup_to_dico
   retry_config: null
   status: updated
   timeout: null
   type: transformer
   upstream_blocks:
   - scrap_each_recipe
-  uuid: intriguing_frog
-- all_upstream_blocks_executed: false
+  uuid: soup_to_dico
+- all_upstream_blocks_executed: true
   color: null
   configuration:
-    file_path: data_exporters/sql_rds_manager.py
     file_source:
-      path: data_exporters/sql_rds_manager.py
+      path: transformers/intriguing_frog.py
   downstream_blocks: []
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: python
-  name: sql_rds_manager
+  name: intriguing_frog
   retry_config: null
-  status: failed
+  status: not_executed
   timeout: null
-  type: data_exporter
-  upstream_blocks:
-  - intriguing_frog
-  uuid: sql_rds_manager
+  type: transformer
+  upstream_blocks: []
+  uuid: intriguing_frog
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
