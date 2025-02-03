@@ -14,13 +14,13 @@ def info_recettes(_soup):
     image_link = _soup.find('img',{"class":"lazyload mrtn-print-only"}).get("data-src")
     nb_person = _soup.find("div",{"class":'mrtn-recette_ingredients-counter'}).get("data-servingsnb")
     return {
-        "title":titre,
+        "titre":titre,
         "id": id,
-        "time_preparation" : time_preparation,
-        "time_repos" : time_rest,
-        "time_cuisson": time_cooking ,
+        "temps_preparation" : time_preparation,
+        "tems_repos" : time_rest,
+        "temps_cuisson": time_cooking ,
         "image" : image_link ,
-        "nb_person": nb_person
+        "nb_personne": nb_person
     }
 
 def get_time_diff_cost(_soup):
