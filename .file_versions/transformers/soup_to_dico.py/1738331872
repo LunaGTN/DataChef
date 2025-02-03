@@ -1,0 +1,4 @@
+@data_loader
+def load_data(recipe_text_list):
+    hello()
+    return []
