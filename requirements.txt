@@ -5,6 +5,6 @@ logging
 re
 streamlit
 typing
-dotenv
+python-dotenv
 mage-ai
 streamlit_extras
