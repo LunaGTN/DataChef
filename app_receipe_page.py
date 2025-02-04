@@ -1,6 +1,7 @@
 def receipe_page():
 
     import streamlit as st
+    from streamlit_extras.stylable_container import stylable_container
 
 # Header / Title
     st.markdown("<h2 style='color: #DE684D;'> Recettes </h2>", unsafe_allow_html=True)
@@ -72,42 +73,59 @@ def receipe_page():
 
 # Display receipe and details 
     # First line (picture and name)
-    col1, _ , col2 = st.columns([2,0.4,5])
+    st.markdown(f"<h2 style='text-align: center; color: black;'> {current_receipe['titre']} </h2>", unsafe_allow_html=True)
+    st.write(' ')
+    col1, _ , col2 , _ , col3 = st.columns([10,1,10,1,5])
     with col1:
         st.image(current_receipe['image'],width=1000)
 
     with col2:
-        st.markdown(f"<h2 style='text-align: center; color: black;'> {current_receipe['titre']} </h2>", unsafe_allow_html=True)
+        st.write(' ')
+        st.markdown(f"**Temps de préparation :** {current_receipe['temps_preparation']}", unsafe_allow_html=True)
+        st.markdown(f"**Temps de repos :** {current_receipe['tems_repos']}", unsafe_allow_html=True)
+        st.markdown(f"**Temps de cuisson :** {current_receipe['temps_cuisson']}", unsafe_allow_html=True)
+    
 
+    with col3 :
+        st.write(' ')
+        st.markdown(f"**Coût :** {current_receipe['cout']}")
+        st.markdown(f"**Difficulté :** {current_receipe['difficulte']}")
+        size = st.number_input("**Nombre de part :**", 1, 12,value = int(current_receipe['nb_personne'] ), key='size_selector')
     st.write(' ')
-
+    
     # Lists of ingredients and steps
     col1, _ , col2 = st.columns([2,0.4,5])
 
     with col1 :
-        container = st.container(border=True)
+        container = stylable_container(css_styles= """{
+                                       border-radius: 20px;
+                                       background-color: #f4846a;
+                                       padding: 1em 2em 2em 2em ;}
+                                       """, key='ingredients')
+        container.markdown("<h4 style= color: black;'> Ingrédients :</h4>", unsafe_allow_html=True)
         for ing in current_receipe['ingredients'] :
             if ing['quantite'] == '0' :
                 result = f"**{ing['nom']}**"
             elif ing['unite'] == '' :
-                result = f"{ing['quantite']} **{ing['nom']}**"
+                result = f"{round(int(ing['quantite'])/int(current_receipe['nb_personne'])*size)} **{ing['nom']}**"
             else :
-                result = f"{ing['quantite']} {ing['unite']} de **{ing['nom']}**"
-        
+                result = f"{round(int(ing['quantite'])/int(current_receipe['nb_personne'])*size)} {ing['unite']} de **{ing['nom']}**"
+            
             container.markdown(f'- {result}')
-        container.write(' ')
-
 
     with col2 :
+        st.markdown("<h4 style= color: black;'> Etapes de la recette :</h4>", unsafe_allow_html=True)
         for ind, step in enumerate(current_receipe['etapes']) :
                 st.checkbox(f'**Etape {ind+1} :** {step}')
         
-
-
 
 # Style 
     st.markdown('''<style>
                 ul{line-height: 130%; margin-bottom : 0;}
                 .stMarkdown{margin :auto}
+                .test {background-color: #f4846a;}
+                .st-key-size_selector input {text-align: center}
+                .st-key-size_selector p {font-size: 1rem;}
+                [data-baseweb='input'] {background-color: #f4846a; width:50px;}
                 </style>''', unsafe_allow_html=True)
     

@@ -14,8 +14,7 @@ def profile_page():
 
 #  Choice of default nb of portion
     st.markdown("<h5 '> Nombre de part par défaut </h5>", unsafe_allow_html=True)
-
-    nb_person = st.slider("Sélectionner le nombre de personne par défaut pour le calcul des quantités d'ingrédients", 1, 12,value = nb_person )
+    nb_person = st.number_input("Sélectionner le nombre de personne par défaut pour le calcul des quantités d'ingrédients", 1, 12,value = nb_person )
     if nb_person == 1 :
         st.text(f'Les quantités seront calculées par défaut pour {nb_person} personne')  
     elif nb_person > 1 : 
