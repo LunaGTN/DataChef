@@ -1,7 +1,3 @@
-CREATE DATABASE datachef;
-
-USE datachef;
-
 CREATE TABLE recipe(
 	id INT NOT NULL,
 	name VARCHAR(100) NOT NULL,
@@ -18,8 +14,9 @@ CREATE TABLE recipe(
 	PRIMARY KEY(id)
 );
 
+
 CREATE TABLE ingredient(
-	id INT NOT NULL,
+	id SERIAL,
 	name VARCHAR(100) NOT NULL,
 	type VARCHAR (50),
 	PRIMARY KEY(id)
@@ -38,7 +35,7 @@ CREATE TABLE ingredient_recipe(
 
 
 CREATE TABLE step(
-	id INT AUTO_INCREMENT,
+	id SERIAL,
 	id_recipe INT NOT NULL,
 	step_number INT NOT NULL,
 	detail TEXT,
@@ -47,23 +44,22 @@ CREATE TABLE step(
 );
 
 
-CREATE TABLE user(
-	id VARCHAR(36) DEFAULT (UUID()),
-	pseudo VARCHAR(255) NOT NULL,
+CREATE TABLE users(
+	id VARCHAR(255) not NULL,
+	name VARCHAR(255) NOT NULL,
 	nb_person INT,
 	diet VARCHAR(255) DEFAULT NULL,
 	aversion VARCHAR(255) DEFAULT NULL,
 	intolerance VARCHAR(255),
+	picture varchar(255),
 	PRIMARY KEY(id)
 );
 
 
 CREATE TABLE user_recipe(
-	id_user VARCHAR(36) NOT NULL,
+	id_user VARCHAR(255) NOT NULL,
 	id_recipe INT NOT NULL,
-	FOREIGN KEY(id_user) REFERENCES user(id),
+	FOREIGN KEY(id_user) REFERENCES users(id),
 	FOREIGN KEY(id_recipe) REFERENCES recipe(id),
 	PRIMARY KEY(id_recipe, id_user)
 );
-
-

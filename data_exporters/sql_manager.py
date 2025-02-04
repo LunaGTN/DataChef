@@ -122,7 +122,10 @@ class SQL_recipe_manager():
         with DatabaseConnection() as db_connexion:
             try :
                 c = db_connexion.cursor()
-                request = f"SELECT * FROM {table} WHERE id = '{int(id)}'"
+                if table == 'users':
+                    request = f"SELECT * FROM {table} WHERE id = '{id}'"
+                else:
+                    request = f"SELECT * FROM {table} WHERE id = '{int(id)}'"
                 c.execute(request)
                 row_count = len(c.fetchall())
                 return bool(row_count)
@@ -548,3 +551,36 @@ class SQL_recipe_manager():
             random_id = randint(1, 99999)
         return random_id
 
+
+    def add_user(self, user_info:dict)->None:
+        """
+        Add user to database
+
+        Attributs
+        -------------
+        user_info: dict
+            Info of user with his ID, name, picture link
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = """
+                INSERT INTO users (id, name, picture)
+                VALUES (%s, %s, %s)
+                """
+
+                datas = [
+                        user_info['id'],
+                        user_info['given_name'],
+                        user_info['picture']
+                ]
+
+                c.execute(request, datas)
+                db_connexion.commit()
+
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+
+            finally:
+                c.close()
