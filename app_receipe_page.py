@@ -1,11 +1,9 @@
-import streamlit as st
 
-<<<<<<< HEAD
-    import streamlit as st
-    from streamlit_extras.stylable_container import stylable_container
-=======
+import streamlit as st
+from streamlit_extras.stylable_container import stylable_container
+
 def receipe_page():
->>>>>>> 30766062e0b9dcdb97a8844c786d9b277b9df600
+
 
 # Header / Title
     st.markdown("<h2 style='color: #DE684D;'> Recettes </h2>", unsafe_allow_html=True)
