@@ -1,0 +1,22 @@
+if 'transformer' not in globals():
+    from mage_ai.data_preparation.decorators import transformer
+if 'test' not in globals():
+    from mage_ai.data_preparation.decorators import test
+from Marmiton.transformers.utils import info_recettes, get_time_diff_cost, get_instructions, get_ingredients, reconstitution
+
+@transformer
+def load_data(recipe_soup_list):
+    print(recipe_soup_list)
+    dict_recipes= []
+    for recipe in recipe_soup_list:
+        soup = BeautifulSoup(recipe, "html.parser")
+        recette = info_recettes(soup)
+        time_diff_cost = time_diff_cost(soup)
+        instructions = instructions(soup)
+        ingredient = ingredient(soup)
+        dict_recipes.append(reconstitution(recette, time_diff_cost, instructions, ingredient))
+    return dict_recipes
+    
+
+
+

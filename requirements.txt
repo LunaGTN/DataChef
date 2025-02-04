@@ -1,5 +1,10 @@
+boto3
+botocore.exceptions
+json
+logging
+re
 streamlit
-streamlit_google_auth
+typing
 dotenv
 mage-ai
 streamlit_extras

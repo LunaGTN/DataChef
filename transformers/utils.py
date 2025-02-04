@@ -1,7 +1,4 @@
-import requests
 from bs4 import BeautifulSoup
-import re
-import pandas as pd
 
 
 def info_recettes(_soup):
@@ -68,7 +65,7 @@ def get_ingredient(_soup):
             "id" : id_ingredient[5:]
         })
     
-    return ingredient_recipe
+    return {"ingredients" : ingredient_recipe}
 
 def reconstitution(info_recettes, time_diff_cost_dict, steps_dict,ingredient_recipe ):
     recipe = info_recettes |time_diff_cost_dict | steps_dict | ingredient_recipe
