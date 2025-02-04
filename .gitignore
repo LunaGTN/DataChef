@@ -1,9 +1,6 @@
 .env
 google_credentials.json
-<<<<<<< HEAD
-test.py
+test*
 style.css
-=======
-test.ipynb
 __pycache__
->>>>>>> 30766062e0b9dcdb97a8844c786d9b277b9df600
+
