@@ -34,3 +34,4 @@ if st.session_state['connected']:
     st.write("")
     if st.button('Log out'):
         authenticator.logout()
+    print(user_info)
