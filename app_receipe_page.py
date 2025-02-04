@@ -28,8 +28,6 @@ def receipe_page():
     st.session_state.current_receipe_name = st.selectbox("", receipe_list, index = receipe_index, placeholder= 'Choisir une recette dans la liste')
     st.write('---')
 
-
-    # 🟥🟥🟥🟥 Need to be update with SQL request 🟥🟥🟥🟥
     idx = df[df['name']==st.session_state.current_receipe_name]['id'].values[0]
     current_receipe = sql_manager.get_recipe_detail(idx)
 
