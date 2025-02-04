@@ -8,3 +8,4 @@ typing
 python-dotenv
 mage-ai
 streamlit_extras
+streamlit_google_auth

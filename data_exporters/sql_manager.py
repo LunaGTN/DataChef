@@ -1,13 +1,14 @@
-import boto3
-from botocore.exceptions import ClientError
+from dotenv import load_dotenv
 import json
 import logging
+import os
 import pandas as pd
 import psycopg2
 from typing import List
 from random import randint
 import re
 
+load_dotenv()
 
 logging.basicConfig(
     filename="app.log",
@@ -19,48 +20,21 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M"
 )
 
-logging.getLogger("boto3").setLevel(logging.WARNING)
-logging.getLogger("botocore").setLevel(logging.WARNING)
-logging.getLogger("urllib3").setLevel(logging.WARNING)
-logging.getLogger("s3transfer").setLevel(logging.WARNING)
-
-
-def get_secret():
-
-    secret_name = "rds_datachef"
-    region_name = "eu-west-3"
-
-    # Create a Secrets Manager client
-    session = boto3.session.Session()
-    client = session.client(
-        service_name='secretsmanager',
-        region_name=region_name
-    )
-
-    try:
-        get_secret_value_response = client.get_secret_value(
-            SecretId=secret_name
-        )
-    except ClientError as e:
-        # For a list of exceptions thrown, see
-        # https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-        raise e
-
-    secret = get_secret_value_response['SecretString']
-    
-    return json.loads(secret)
-
 
 class DatabaseConnection():
     def __init__(self):
-        self.connexion_data = get_secret()
+        self.username=os.getenv('USERNAME')
+        self.password=os.getenv('PASSWORD')
+        self.engine=os.getenv('ENGINE')
+        self.host=os.getenv('HOST')
+        self.port=os.getenv('PORT')
 
     def __enter__(self):
         self.db_connector = psycopg2.connect(
-            host=self.connexion_data['host'],
-            database=self.connexion_data['engine'],
-            user=self.connexion_data['username'],
-            password=self.connexion_data['password']
+            host=self.host,
+            database=self.engine,
+            user=self.username,
+            password=self.password
         )
         return self.db_connector
 
@@ -91,6 +65,8 @@ class SQL_recipe_manager():
             return int(h_m[0])*60
         else :
             return int(h_m[0])
+        
+
 
 
     def is_connected(self):
@@ -103,7 +79,7 @@ class SQL_recipe_manager():
                 return False
 
 
-    def check_db(self, id:str, table:str)->bool:
+    def check_db_by_id(self, id:str, table:str)->bool:
         """
             Check if an ingredient already exists in database
 
@@ -365,13 +341,13 @@ class SQL_recipe_manager():
                 list of ingredients with id, name, quantity and unite for each
         """
 
-        if not self.check_db(id=recipe_data['id'], table="recipe"):
+        if not self.check_db_by_id(id=recipe_data['id'], table="recipe"):
             self.add_recipe(recipe_data=recipe_data)
             self.add_steps(id_recipe=recipe_data['id'], steps=recipe_data['steps'])
             
             for ingredient in recipe_data['ingredients']:
 
-                if not self.check_db(id=ingredient['id'], table="ingredient"):
+                if not self.check_db_by_id(id=ingredient['id'], table="ingredient"):
                     self.add_ingredient(ingredient=ingredient)
                 else:
                     self.logger.info(f"{ingredient['name']} is already in database")
