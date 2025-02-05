@@ -4,7 +4,7 @@ import logging
 import os
 import pandas as pd
 import psycopg2
-from typing import List
+from typing import List, Literal
 from random import randint
 import re
 
@@ -50,7 +50,6 @@ class SQL_recipe_manager():
         self.logger.setLevel(logging.INFO)
 
      
- 
     @staticmethod
     def fomat_time(time:str)->int:
         """
@@ -67,8 +66,6 @@ class SQL_recipe_manager():
             return int(h_m[0])
         
 
-
-
     def is_connected(self):
         with DatabaseConnection() as db_connexion:
             if not db_connexion.closed:
@@ -79,16 +76,17 @@ class SQL_recipe_manager():
                 return False
 
 
-    def check_db_by_id(self, id:str, table:str)->bool:
+    def check_db_by_id(self, id:str, table:Literal['ingredient', 'recipe', 'users'])->bool:
         """
-            Check if an ingredient already exists in database
+            Check if an item already exists in database
 
             Attribut
             -----------
-            id: id of the ingredient
+            id: id of the item
             db: database to check 
                 ingredient
                 recipe
+                users
 
             Return
             -----------
@@ -115,6 +113,39 @@ class SQL_recipe_manager():
                 c.close()
 
     
+    def check_db_by_name(self, name:str, table:Literal['ingredient', 'recipe']= 'ingredient')->bool:
+        """
+            Check if an item already exists in database
+
+            Attribut
+            -----------
+            name: name of the item
+            db: database to check 
+                ingredient
+                recipe
+
+            Return
+            -----------
+            id of item
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try :
+                c = db_connexion.cursor()
+                request = f"SELECT * FROM {table} WHERE name = '{name.capitalize()}'"
+                c.execute(request)
+                results = c.fetchall()
+                return bool(results)
+            
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Checking Error: {err}")
+
+            finally:
+                if c.description is not None:
+                    c.fetchall()
+                c.close()
+
+
     def add_recipe(self, recipe_data)->None:
         """
         Add recipe to recipe database 
@@ -171,7 +202,7 @@ class SQL_recipe_manager():
                 c.close()
 
 
-    def add_steps(self, id_recipe:int, steps:List[str])->None:
+    def add_steps(self, steps:List[str], id_recipe:int)->None:
         """
         Add recipe to recipe database 
 
@@ -252,6 +283,44 @@ class SQL_recipe_manager():
                 c.close()
 
 
+    def check_duplicate_ingredient(self, ingredients:List[dict], id_recipe:int)->List[dict]:
+        """
+        Check if an ingredient appears twice or more in ingredients list.
+        If it happens, add quantity in a single row
+
+        Attributs
+        -------------
+        ingredients: list of dict
+            list of ingredients with name, id, quantity and unit
+        id_recipe: int
+            id of the recipe
+
+        Return
+        -------------
+        datas : list of dict
+            clean list of ingredients datas
+        """
+
+        list_id = []
+        datas = []
+        for ingredient in ingredients :
+            if ingredient['id'] not in list_id :
+                list_id.append(ingredient['id'])
+                datas.append(
+                    [int(id_recipe),
+                    int(ingredient['id']),
+                    float(ingredient['quantity']),
+                    ingredient['unit']
+                    ])
+            else:
+                idx = list_id.index(ingredient['id'])
+                datas[idx][2] += float(ingredient['quantity'])
+        
+        self.logger.info(f"Ingredients list of recipe n°{id_recipe} clean")
+
+        return datas
+
+
     def add_quantity(self, ingredients:List[dict], id_recipe:int)->None:
         """
         Add an quantity and unite to recipe_ingredient db
@@ -270,22 +339,10 @@ class SQL_recipe_manager():
             unit: str
                 unity for this quantity
         """
+
+        datas = self.check_duplicate_ingredient(ingredients, id_recipe)
+
         with DatabaseConnection() as db_connexion:
-            
-            list_id = []
-            datas = []
-            for ingredient in ingredients :
-                if ingredient['id'] not in list_id :
-                    list_id.append(ingredient['id'])
-                    datas.append(
-                        [int(id_recipe),
-                        int(ingredient['id']),
-                        float(ingredient['quantity']),
-                        ingredient['unit']
-                        ])
-                else:
-                    idx = list_id.index(ingredient['id'])
-                    datas[idx][2] += float(ingredient['quantity'])
 
             c = db_connexion.cursor()
             request = """INSERT INTO ingredient_recipe (id_recipe, id_ingredient, quantity, unit)
@@ -294,7 +351,9 @@ class SQL_recipe_manager():
             try:
                 for row in datas:
                     c.execute(request, row)
-                    db_connexion.commit()                
+                    db_connexion.commit()  
+
+                self.logger.info(f"Quantities added for recipe n°{id_recipe}")
         
             except psycopg2.OperationalError as err:
                 self.logger.error(f"Insert error: {err}")
@@ -343,7 +402,7 @@ class SQL_recipe_manager():
 
         if not self.check_db_by_id(id=recipe_data['id'], table="recipe"):
             self.add_recipe(recipe_data=recipe_data)
-            self.add_steps(id_recipe=recipe_data['id'], steps=recipe_data['steps'])
+            self.add_steps(steps=recipe_data['steps'], id_recipe=recipe_data['id'])
             
             for ingredient in recipe_data['ingredients']:
 
@@ -376,7 +435,160 @@ class SQL_recipe_manager():
             finally:
                 c.close()
 
-        
+
+    def request_recipe(self, id_recipe:int)->dict:
+        """
+        Request recipe database for recipe datas from recipe id
+
+        Attributs
+        -------------
+        id_recipe: int
+            The id of the recipe
+
+        Return
+        -------------
+        recipe details: dict
+            - id
+            - title
+            - nb_person
+            - time_preparation
+            - time_rest
+            - time_cooking
+            - time_total
+            - difficulty
+            - cost
+            - image_link
+        """
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request_recipe = f"""
+                SELECT 
+                    id,
+                    name,
+                    nb_person,
+                    time_preparation, 
+                    time_rest,
+                    time_cooking,
+                    time_total,
+                    difficulty,
+                    cost,
+                    image_link
+                FROM recipe WHERE id={id_recipe}
+                """
+                c.execute(request_recipe)
+                result = c.fetchone()
+                recipe_data = {
+                    'id': result[0],
+                    'name': result[1],
+                    'nb_person': result[2],
+                    'time_preparation': result[3],
+                    'time_rest': result[4],
+                    'time_cooking': result[5],
+                    'time_total': result[6],
+                    'difficulty': result[7],
+                    'cost': result[8],
+                    'image_link': result[9]
+                }
+
+                return recipe_data
+
+            except psycopg2.OperationalError as err:
+                    self.logger.error(f"Select error: {err}")
+
+            finally:
+                c.close()
+
+
+    def request_ingredient(self, id_recipe:int)->List[dict]:
+        """
+        Request ingredients and ingredients_recipe databases for ingredients datas from recipe id
+
+        Attributs
+        -------------
+        id_recipe: int
+            The id of the recipe
+
+        Return
+        -------------
+        ingredients_data: list of dict with:
+            - name
+            - quantity
+            - unit
+        """
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request_ingredients = f"""
+                    select 
+                        i.name,
+                        ir.quantity,
+                        ir.unit
+                    from ingredient_recipe ir
+                    join ingredient i on ir.id_ingredient = i.id
+                    where ir.id_recipe = {id_recipe}
+                """
+                
+                c.execute(request_ingredients)
+                results = c.fetchall()
+                ingredients_data = [{
+                    'name': result[0],    
+                    'quantity': result[1],
+                    'unit': result[2]
+                } for result in results]
+
+                return ingredients_data
+
+            except psycopg2.OperationalError as err:
+                    self.logger.error(f"Select error: {err}")
+
+            finally:
+                c.close()
+
+
+    def request_steps(self, id_recipe:int)->List[dict]:
+        """
+        Request step database for ingredients datas from recipe id
+
+        Attributs
+        -------------
+        id_recipe: int
+            The id of the recipe
+
+        Return
+        -------------
+        steps_data: list of dict with:
+            - number of the step
+            - details
+        """
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request_step = f"""
+                    select 
+                        step_number,
+                        detail
+                    from step
+                    where id_recipe = {id_recipe}
+                    """
+                
+                c.execute(request_step)
+                results = c.fetchall()
+
+                steps_data = [{
+                    'step_number': result[0],    
+                    'detail': result[1],
+                } for result in results]
+
+                return steps_data
+
+            except psycopg2.OperationalError as err:
+                    self.logger.error(f"Select error: {err}")
+
+            finally:
+                c.close()
+
+
     def get_recipe_detail(self, id_recipe:int)->dict:
         """
         Return recipe details
@@ -406,73 +618,11 @@ class SQL_recipe_manager():
                 - unit
         """
 
-        with DatabaseConnection() as db_connexion:
-            try : 
-                c = db_connexion.cursor()
-                request_recipe = f"""
-                SELECT 
-                    id,
-                    name,
-                    nb_person,
-                    time_preparation, 
-                    time_rest,
-                    time_cooking,
-                    time_total,
-                    difficulty,
-                    cost,
-                    image_link
-                FROM recipe WHERE id={id_recipe}
-                """
-                c.execute(request_recipe)
-                result = c.fetchone()
-                recipe = pd.DataFrame([result],columns=[
-                    'id',
-                    'name',
-                    'nb_person',
-                    'time_preparation',
-                    'time_rest',
-                    'time_cooking',
-                    'time_total',
-                    'difficulty',
-                    'cost',
-                    'image_link'])
-                recipe = dict(recipe.iloc[0])
+        recipe_data = self.request_recipe(id_recipe=id_recipe)
+        recipe_data['ingredients'] = self.request_ingredient(id_recipe=id_recipe)
+        recipe_data['steps'] = self.request_steps(id_recipe=id_recipe)
 
-                request_quantity=f"""
-                    select 
-                        i.name,
-                        ir.quantity,
-                        ir.unit
-                    from ingredient_recipe ir
-                    join ingredient i on ir.id_ingredient = i.id
-                    where ir.id_recipe = {id_recipe}
-                """
-                c.execute(request_quantity)
-                result = c.fetchall()
-                quantity = pd.DataFrame(result, columns=['name', 'quantity', 'unit'])
-                quantity = [dict(row) for  _, row in quantity.iterrows()]
-
-                request_step = f"""
-                    select step_number, detail
-                    from step
-                    where id_recipe = {id_recipe}
-                    """
-                c.execute(request_step)
-                result =c.fetchall()
-                steps = pd.DataFrame(result, columns=['step_number', 'detail'])
-                steps = list(steps.sort_values('step_number')['detail'])
-
-                result = recipe
-                result['steps'] = steps
-                result['ingredients'] = quantity
-                
-                return result
-
-            except psycopg2.OperationalError as err:
-                self.logger.error(f"Select error: {err}")
-
-            finally:
-                c.close()
+        return recipe_data
 
 
     def get_ids(self, table:str)->list:
@@ -560,3 +710,68 @@ class SQL_recipe_manager():
 
             finally:
                 c.close()
+
+
+    
+    def connect_user_recipe(self, id_user:str, id_recipe:int)->None:
+        """
+        Add a row to user_recipe database.
+
+        Attributs
+        -------------
+        id_user: str
+            id of the user
+        id_recipe: int
+            id of the recipe
+        """
+        
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = """
+                INSERT INTO user_recipe (id_recipe, id_user)
+                VALUES (%s, %s, %s)
+                """
+
+                datas = [
+                        id_user,
+                        id_recipe
+                ]
+
+                c.execute(request, datas)
+                db_connexion.commit()
+
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+
+            finally:
+                c.close()
+
+
+    def add_user_recipe(self, recipe_data:dict, user_id:str)->None:
+        """
+        Add user's version of recipe in recipe database.
+        Call other functions to add ingredients and quantities
+        Finally, connect the new recipe and user in recipe_user database
+
+        Attributs
+        -------------
+        recipe_data: dict
+            datas of the recipe
+        user_id: str
+            id of the user
+        """
+
+        recipe_data['id'] = self.generate_id('recipe')
+        self.add_recipe(recipe_data=recipe_data)
+        
+        for ingredient in recipe_data['ingredients']:
+            if not self.check_db_by_name(name=ingredient['name'], ):
+                ingredient['id'] = self.generate_id('ingredient')
+                self.add_ingredient(ingredient=ingredient)
+
+        self.add_quantity(ingredients=recipe_data['ingredients'], id_recipe=recipe_data['id'])
+
+        self.add_steps(steps=recipe_data['steps'], id_recipe=recipe_data['id'])
+
+        self.connect_user_recipe(id_user=user_id, id_recipe=recipe_data['id'])
