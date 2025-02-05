@@ -77,7 +77,7 @@ def receipe_page():
     with col2 :
         st.markdown("<h4 style= color: black;'> Etapes de la recette :</h4>", unsafe_allow_html=True)
         for ind, step in enumerate(current_receipe['steps']) :
-                st.checkbox(f'**Etape {ind+1} :** {step}')
+                st.checkbox(f'**Etape {ind+1} :** {step['detail']}')
         
 
 # Style 
