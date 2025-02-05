@@ -26,7 +26,7 @@ authenticator.login()
 st.write("")
 st.write("Connectez vous avec votre compte Google ⬆️")
 
-
+st.write(st.session_state['connected'])
 # Affichage basé sur l'état d'authentification
 if st.session_state['connected']:
     user_info = st.session_state['user_info']

@@ -1,2 +1,9 @@
 2025-01-31 15:30 - INFO - Successfully connected
 2025-01-31 15:30 - INFO - Blanquette de veau : recette traditionnelle is already in database
+2025-02-05 14:58 - ERROR - Select error: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+

@@ -3,4 +3,6 @@ google_credentials.json
 test*
 style.css
 __pycache__
-
+previous_app_home_page.py
+fake_recipe.py
+*.pyc
