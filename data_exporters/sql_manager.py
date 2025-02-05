@@ -23,7 +23,7 @@ logging.basicConfig(
 
 class DatabaseConnection():
     def __init__(self):
-        self.username=os.getenv('USERNAME')
+        self.username=os.getenv('UTILISATEUR')
         self.password=os.getenv('PASSWORD')
         self.engine=os.getenv('ENGINE')
         self.host=os.getenv('HOST')
