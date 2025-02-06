@@ -1,17 +1,12 @@
 import streamlit as st
-from app_profile_page import profile_page  
-from app_receipe_page import receipe_page
 
-st.set_page_config(
-    page_title="Data Chef",  
-    page_icon="👨🏾‍🍳",               
-    layout="wide",       
-)
+# Header / Title
+st.markdown("<h2 style='color: #DE684D;'>Bienvenue sur Data Chef !</h2>", unsafe_allow_html=True)
+st.write("---")
 
-st.markdown('''<style>
-            .ef3psqc19 {width: 100%;}
-            </style>''', unsafe_allow_html=True)
-
+# Recipe suggestion
+st.markdown("<h4 style='text-align: center; color: black;'>Nos idées recettes</h4>", unsafe_allow_html=True)
+st.write(" ")
 if "page" not in st.session_state:
     st.session_state.page = "home"
 
@@ -58,3 +53,4 @@ with mid :
 
     elif st.session_state.page == "receipe":
         receipe_page()
+

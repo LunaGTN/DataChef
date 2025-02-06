@@ -1,5 +1,6 @@
 2025-01-31 15:30 - INFO - Successfully connected
 2025-01-31 15:30 - INFO - Blanquette de veau : recette traditionnelle is already in database
+<<<<<<< HEAD
 2025-02-04 11:43 - WARNING - Refreshing temporary credentials failed during mandatory refresh period.
 Traceback (most recent call last):
   File "/home/luna/.local/lib/python3.12/site-packages/botocore/credentials.py", line 538, in _protected_refresh
@@ -40,3 +41,12 @@ Traceback (most recent call last):
   File "/home/luna/.local/lib/python3.12/site-packages/botocore/client.py", line 1023, in _make_api_call
     raise error_class(parsed_response, operation_name)
 botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling the AssumeRole operation: User: arn:aws:iam::060795936451:user/luna_gtn31 is not authorized to perform: sts:AssumeRole on resource: arn:aws:iam::412381753436:role/defaultrole
+=======
+2025-02-05 14:58 - ERROR - Select error: server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+server closed the connection unexpectedly
+	This probably means the server terminated abnormally
+	before or while processing the request.
+
+>>>>>>> 9722c05fe7f75bda732945a8c3f6652c24699d3b
