@@ -3,4 +3,4 @@ google_credentials.json
 test*
 style.css
 __pycache__
-
+*.csv
