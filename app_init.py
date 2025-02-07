@@ -48,7 +48,6 @@ with st.sidebar:
             authenticator.logout()
     else:
         authenticator.login()
-    st.write(st.session_state['connected'])
 
 _, mid, _ = st.columns([1,15,1])
 with mid :
