@@ -10,9 +10,10 @@ def pop_up_start():
     msg = st.toast('Préparation des ingrédients', icon='🔪')
     sleep(2)
     msg.toast('Cuisson', icon='🍳')
+    return msg
 
-def pop_up_end():
-    st.toast('Recette ajoutée à votre livre !', icon = "📕")
+def pop_up_end(msg):
+    msg.toast('Recette ajoutée à votre livre !', icon = "📕")
 
 
 # Header / Title
@@ -110,12 +111,12 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
             st.text_area(label = '',value = '' ,key = 'step_add')
 
     if st.button('Sauvegarder'):
-        pop_up_start()
+        msg = pop_up_start()
         sql_manager.add_user_recipe(
             recipe_data=st.session_state['current_receipe'],
             user_id=st.session_state.user_info['id']
         )
-        pop_up_end()
+        pop_up_end(msg)
 
 
 
