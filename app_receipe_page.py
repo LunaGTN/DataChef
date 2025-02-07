@@ -1,5 +1,4 @@
 from data_exporters.sql_manager import SQL_recipe_manager
-from random import choice
 import streamlit as st
 from streamlit_extras.stylable_container import stylable_container
 
@@ -16,43 +15,39 @@ st.write('---')
 df = sql_manager.get_all_recipes()
 receipe_list = list(df['name'].values)
 
-    # Automatic selection if user already choose a receipe from another page
-if 'current_receipe_name' not in st.session_state:
-    st.session_state.receipe_index = None
-
     # Selectbox for receipe choice
-def change_index() :
+def load_recipe() :
     if 'selectbox' in st.session_state :
-        st.session_state.current_receipe_name = st.session_state["selectbox"]
-st.selectbox("", receipe_list,index=None,key="selectbox", placeholder= 'Choisir une recette dans la liste', on_change= change_index())
+        idx = df[df['name']==st.session_state["selectbox"]]['id'].values[0]
+        st.session_state.current_receipe = sql_manager.get_recipe_detail(idx)
+st.selectbox("", receipe_list,index=None,key="selectbox", placeholder= 'Choisir une recette dans la liste', on_change= load_recipe)
 st.write('---')
 
-
 # Display receipe and details 
-if 'current_receipe_name' in st.session_state and st.session_state.current_receipe_name is not None:
+if 'current_receipe' in st.session_state and st.session_state.current_receipe is not None:
 
-    idx = df[df['name']==st.session_state.current_receipe_name]['id'].values[0]
+    idx = df[df['name']==st.session_state.current_receipe['name']]['id'].values[0]
     current_receipe = sql_manager.get_recipe_detail(idx)
 
     # First line (picture and name)
-    st.markdown(f"<h2 style='text-align: center; color: black;'> {current_receipe['name']} </h2>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='text-align: center; color: black;'> {st.session_state.current_receipe['name']} </h2>", unsafe_allow_html=True)
     st.write(' ')
     col1, _ , col2 , _ , col3 = st.columns([5,1.5,5,1.5,5])
     with col1:
-        st.image(current_receipe['image_link'],width=1000)
+        st.image(st.session_state.current_receipe['image_link'],width=1000)
 
     with col2:
         st.write(' ')
-        st.markdown(f"**Temps de préparation :** {current_receipe['time_preparation']}", unsafe_allow_html=True)
-        st.markdown(f"**Temps de repos :** {current_receipe['time_rest']}", unsafe_allow_html=True)
-        st.markdown(f"**Temps de cuisson :** {current_receipe['time_cooking']}", unsafe_allow_html=True)
+        st.markdown(f"**Temps de préparation :** {st.session_state.current_receipe['time_preparation']}", unsafe_allow_html=True)
+        st.markdown(f"**Temps de repos :** {st.session_state.current_receipe['time_rest']}", unsafe_allow_html=True)
+        st.markdown(f"**Temps de cuisson :** {st.session_state.current_receipe['time_cooking']}", unsafe_allow_html=True)
 
 
     with col3 :
         st.write(' ')
-        st.markdown(f"**Coût :** {current_receipe['cost']}")
-        st.markdown(f"**Difficulté :** {current_receipe['difficulty']}")
-        size = st.number_input("**Nombre de part :**", 1, 20,value = int(current_receipe['nb_person'] ), key='size_selector')
+        st.markdown(f"**Coût :** {st.session_state.current_receipe['cost']}")
+        st.markdown(f"**Difficulté :** {st.session_state.current_receipe['difficulty']}")
+        size = st.number_input("**Nombre de part :**", 1, 20,value = int(st.session_state.current_receipe['nb_person'] ), key='size_selector')
     st.write(' ')
 
     # Lists of ingredients and steps
@@ -69,7 +64,7 @@ if 'current_receipe_name' in st.session_state and st.session_state.current_recei
             container=st.container()
 
             container.markdown("<h4 style= color: black;'> Ingrédients :</h4>", unsafe_allow_html=True)
-            for ing in current_receipe['ingredients'] :
+            for ing in st.session_state.current_receipe['ingredients'] :
                 if ing['quantity'] == '0' :
                     result = f"**{ing['name']}**"
                 elif ing['unit'] == '' :
@@ -81,7 +76,7 @@ if 'current_receipe_name' in st.session_state and st.session_state.current_recei
 
     with col2 :
         st.markdown("<h4 style= color: black;'> Etapes de la recette :</h4>", unsafe_allow_html=True)
-        for ind, step in enumerate(current_receipe['steps']) :
+        for ind, step in enumerate(st.session_state.current_receipe['steps']) :
                 st.checkbox(f'**Etape {ind+1} :** {step['detail']}')
         
 

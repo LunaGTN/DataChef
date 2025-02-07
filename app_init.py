@@ -22,9 +22,3 @@ _, mid, _ = st.columns([1,10,1])
 with mid :
     pg = st.navigation(pages)
     pg.run()
-
-# st.markdown('''<style>
-#             [data-baseweb='input'] {width:50px; text-align: center}
-#             [data-baseweb='select'] {width:300px;}
-#             input {text-align: center}
-#             </style>''', unsafe_allow_html=True)
