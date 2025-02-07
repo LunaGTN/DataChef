@@ -9,3 +9,4 @@ python-dotenv
 mage-ai
 streamlit_extras
 streamlit_google_auth
+google-generativeai==0.8.4

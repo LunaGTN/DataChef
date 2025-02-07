@@ -3,6 +3,10 @@ google_credentials.json
 test*
 style.css
 __pycache__
+<<<<<<< HEAD
+*.csv
+=======
 previous_app_home_page.py
 fake_recipe.py
 *.pyc
+>>>>>>> 9722c05fe7f75bda732945a8c3f6652c24699d3b
