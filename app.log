@@ -114,3 +114,10 @@ server closed the connection unexpectedly
 2025-02-07 12:37 - INFO - Ingredients list of recipe n°45519 clean
 2025-02-07 12:37 - INFO - Quantities added for recipe n°45519
 2025-02-07 12:37 - INFO - Steps were successfully add to database
+2025-02-07 14:07 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-07 14:07 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-07 14:09 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-07 14:09 - INFO - Croque monsieur à la tomate was successfully add to database
+2025-02-07 14:09 - INFO - Ingredients list of recipe n°45691 clean
+2025-02-07 14:09 - INFO - Quantities added for recipe n°45691
+2025-02-07 14:09 - INFO - Steps were successfully add to database

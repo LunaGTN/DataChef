@@ -37,19 +37,18 @@ authenticator = Authenticate(
 
 authenticator.check_authentification()
 
-if not st.session_state['connected']:
-    st.title('Data chef')
-    authenticator.login()
 
-else :
-    user_info = st.session_state['user_info']
-    if not sql_manager.check_db_by_id(id=user_info['id'], table='users'):
-        sql_manager.add_user(user_info=user_info)
 
-    with st.sidebar:
-        if st.session_state['connected']:
-            if st.button('Se déconnecter'): 
-                authenticator.logout()
+with st.sidebar:
+    if st.session_state['connected']:
+        user_info = st.session_state['user_info']
+        if not sql_manager.check_db_by_id(id=user_info['id'], table='users'):
+            sql_manager.add_user(user_info=user_info)
+        if st.button('Se déconnecter'): 
+            authenticator.logout()
+    else:
+        authenticator.login()
+    st.write(st.session_state['connected'])
 
 _, mid, _ = st.columns([1,15,1])
 with mid :
