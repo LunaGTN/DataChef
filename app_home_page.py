@@ -4,40 +4,47 @@ from random import choices
 
 sql_manager = SQL_recipe_manager()
 
-df = sql_manager.get_all_recipes()
-receipe_list = list(zip(df['name'].values,df['image_link'].values))
+df_user = sql_manager.get_user_recipes(user_id=st.session_state.user_info['id'])
+df_user.reset_index(drop=True, inplace=True)
+
 
 # Header / Title
 st.markdown("<h2 style='color: #DE684D;'>Bienvenue sur Data Chef !</h2>", unsafe_allow_html=True)
 st.write("---")
 
-# Recipe suggestion
+# User Recipe
     # Title
-st.markdown("<h4 style='text-align: center; color: black;'>Nos idées recettes</h4>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align: center; color: black;'>Mes recettes</h4>", unsafe_allow_html=True)
 st.write(" ")
+  
 
-def create_short_list():
-    st.session_state.short_list = choices(receipe_list, k=12)
-     
-if 'short_list' not in st.session_state :
-    create_short_list()
-
-if st.button("Changer les propositions",key='suggestion_button') :
-    create_short_list()
-st.write(' ')
-     
     # Containers
-for raw in range(3) :
-    col_list = st.columns(4)
-    for n_col,col in enumerate(col_list) :
-        ind = raw*4 + n_col
-        with col :
-                st.image(st.session_state.short_list[ind][1])
-                if st.button(label=st.session_state.short_list[ind][0], key=f'but_{ind}',use_container_width =True) :
-                    idx = df[df['name']==st.session_state.short_list[ind][0]]['id'].values[0]
-                    st.session_state.current_receipe = sql_manager.get_recipe_detail(idx)
-                    st.switch_page("app_receipe_page.py")
 
+n_cols = 3
+n_rows = len(df_user) // n_cols
+remains = len(df_user) % n_cols
+
+for row in range(n_rows) :
+    col_list = st.columns(n_cols)
+    for idx, col in enumerate(col_list) :
+        index = row * n_cols + idx
+        with col :  
+            st.image(df_user.iloc[index]['image_link'], width=1000)
+            if st.button(label=df_user.iloc[index]['name'], key=f'but_{index}',use_container_width =True) :
+                idx = df_user.iloc[index]['id']
+                st.session_state.current_receipe = sql_manager.get_recipe_detail(idx)
+                st.switch_page("app_receipe_page.py")
+
+if remains != 0:
+    col_list = st.columns(n_cols)
+    df_temp = df_user.tail(remains).reset_index(drop=True)
+    for idx, col in enumerate(col_list[0:remains]):
+        with col:
+            st.image(df_temp.iloc[idx]['image_link'], width=1000)
+            if st.button(label=df_temp.iloc[idx]['name'], key=f'but_{n_rows*4+idx}', use_container_width=True):
+                idx = df_temp.iloc[idx]['id']
+                st.session_state.current_recipe = sql_manager.get_recipe_detail(id_recipe=idx)
+                st.switch_page("app_receipe_page.py")
 
 
 # Style 

@@ -783,3 +783,43 @@ class SQL_recipe_manager():
         self.add_steps(steps=recipe_data['steps'], id_recipe=recipe_data['id'])
 
         self.connect_user_recipe(id_user=str(user_id), id_recipe=recipe_data['id'])
+
+
+    def get_user_recipes(self, user_id:str)->pd.DataFrame:
+        """
+        Return all recipes name of user from recipe database
+
+        Attributs
+        -------------
+        user_id: str
+            Id of the user
+
+        Return
+        -------------
+        DataFrame of recipes with
+            - id
+            - name
+            - picture
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = f"""
+                select 
+                    r.id,
+                    r.name,
+                    r.image_link 
+                from recipe r
+                join user_recipe ur on ur.id_recipe = r.id
+                where ur.id_user = '{user_id}'
+                """
+
+                c.execute(request)
+                return pd.DataFrame(c.fetchall(), columns=['id', 'name', 'image_link'])
+
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+
+            finally:
+                c.close()
