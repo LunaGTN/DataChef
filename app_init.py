@@ -18,7 +18,7 @@ with st.sidebar:
     st.button('Se déconnecter')
         # authenticator.logout()
 
-_, mid, _ = st.columns([1,10,1])
+_, mid, _ = st.columns([1,15,1])
 with mid :
-    pg = st.navigation(pages)
-    pg.run()
+    st.session_state.pg = st.navigation(pages)
+    st.session_state.pg.run()
