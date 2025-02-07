@@ -1,4 +1,11 @@
 import streamlit as st
+from streamlit_google_auth import Authenticate
+import os
+from dotenv import load_dotenv
+import requests
+from data_exporters.sql_manager import SQL_recipe_manager
+
+sql_manager = SQL_recipe_manager()
 
 st.set_page_config(layout="wide")
 
@@ -13,10 +20,36 @@ pages = {
     ],
 }
 
-with st.sidebar:
-    # if
-    st.button('Se déconnecter')
-        # authenticator.logout()
+
+# Charger les variables depuis .env
+load_dotenv()
+
+# Récupérer les valeurs des variables
+cookie_key = os.getenv("COOKIE_KEY")
+cookie_name = os.getenv("COOKIE_NAME")
+
+authenticator = Authenticate(
+    secret_credentials_path='google_credentials.json',
+    cookie_name=cookie_name,
+    cookie_key= cookie_key,
+    redirect_uri='http://localhost:8501'
+)
+
+authenticator.check_authentification()
+
+if not st.session_state['connected']:
+    st.title('Data chef')
+    authenticator.login()
+
+else :
+    user_info = st.session_state['user_info']
+    if not sql_manager.check_db_by_id(id=user_info['id'], table='users'):
+        sql_manager.add_user(user_info=user_info)
+
+    with st.sidebar:
+        if st.session_state['connected']:
+            if st.button('Se déconnecter'): 
+                authenticator.logout()
 
 _, mid, _ = st.columns([1,15,1])
 with mid :

@@ -1,7 +1,18 @@
-import streamlit as st
 from data_exporters.sql_manager import SQL_recipe_manager
+import streamlit as st
+from time import sleep
+
 
 sql_manager = SQL_recipe_manager()
+
+# Pop up recette enregistrée
+def pop_up_start():
+    msg = st.toast('Préparation des ingrédients', icon='🔪')
+    sleep(2)
+    msg.toast('Cuisson', icon='🍳')
+
+def pop_up_end():
+    st.toast('Recette ajoutée à votre livre !', icon = "📕")
 
 
 # Header / Title
@@ -49,7 +60,7 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
     st.write(' ')
 
     container = st.container(key='ing_container')
-
+    
     with container :
         for ind,ing in enumerate(st.session_state.current_receipe['ingredients']):
             col0 ,col1, _ , col2, _ , col3 , _ = st.columns([1,2,0.5,2,0.5,5,1])
@@ -65,7 +76,7 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
                 st.text_input(label = '',value = ing['name'],key = f'name_{ind}')
         with col0 :
                 if st.button('➕',key = f'ing_b_{ind+1}') :
-                    st.session_state.current_receipe['ingredients'].append({'name':st.session_state.name_add,'unit':st.session_state.unit_add, 'quantity':st.session_state.qty_add})
+                    st.session_state.current_receipe['ingredients'].append({'name':st.session_state.name_add,'unit':st.session_state.unit_add, 'quantity':st.session_state.qty_add, 'id': 0})
                     st.session_state.name_add = st.session_state.unit_add = st.session_state.qty_add = ''
                     st.rerun()
         with col1 :
@@ -74,7 +85,6 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
             st.text_input(label = '',value = '',key = 'unit_add')
         with col3 :
             st.text_input(label = '',value = '',key = 'name_add')
-    
     st.write('---')
 
     # Modification steps
@@ -98,6 +108,15 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
                 st.rerun()
         with col2 :
             st.text_area(label = '',value = '' ,key = 'step_add')
+
+    if st.button('Sauvegarder'):
+        pop_up_start()
+        sql_manager.add_user_recipe(
+            recipe_data=st.session_state['current_receipe'],
+            user_id=st.session_state.user_info['id']
+        )
+        pop_up_end()
+
 
 
 

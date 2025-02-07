@@ -55,15 +55,18 @@ class SQL_recipe_manager():
         """
         Format string time to number of minutes int
         """
-        h_m = re.findall(r"\d+", time)
-        if not bool(h_m) :
-            return 0
-        if "h" in time and len(h_m) == 2 :
-            return int(h_m[0])*60 + int(h_m[1])
-        elif "h" in time and len(h_m) == 1 :
-            return int(h_m[0])*60
-        else :
-            return int(h_m[0])
+        if type(time) == int:
+            return time
+        else:
+            h_m = re.findall(r"\d+", time)
+            if not bool(h_m) :
+                return 0
+            if "h" in time and len(h_m) == 2 :
+                return int(h_m[0])*60 + int(h_m[1])
+            elif "h" in time and len(h_m) == 1 :
+                return int(h_m[0])*60
+            else :
+                return int(h_m[0])
         
 
     def is_connected(self):
@@ -153,7 +156,7 @@ class SQL_recipe_manager():
         Attributs
         -------------
         recipe_data: json
-            title: str
+            name: str
             link: str
             id: str
             time_preparation: str
@@ -179,21 +182,21 @@ class SQL_recipe_manager():
             
                 datas = (
                     int(recipe_data['id']),
-                    recipe_data['title'].capitalize(),
+                    recipe_data['name'].capitalize(),
                     int(recipe_data['nb_person']),
                     self.fomat_time(recipe_data['time_preparation']),
-                    self.fomat_time(recipe_data['time_repos']),
-                    self.fomat_time(recipe_data['time_cuisson']),
+                    self.fomat_time(recipe_data['time_rest']),
+                    self.fomat_time(recipe_data['time_cooking']),
                     self.fomat_time(recipe_data['time_total']),
                     recipe_data['difficulty'],
                     recipe_data['cost'],
-                    recipe_data['image'],
+                    recipe_data['image_link'],
                 )
 
                 c.execute(request, datas)
                 db_connexion.commit()
 
-                self.logger.info(f"{recipe_data['title']} was successfully add to database")
+                self.logger.info(f"{recipe_data['name']} was successfully add to database")
         
             except psycopg2.OperationalError as err:
                 self.logger.error(f"Insert error: {err}")
@@ -213,6 +216,9 @@ class SQL_recipe_manager():
         steps: list of str
             list of steps
         """
+
+        if type(steps[0])==dict:
+            steps = [step['detail'] for step in steps]
         
         with DatabaseConnection() as db_connexion:
             c = db_connexion.cursor()
@@ -523,7 +529,8 @@ class SQL_recipe_manager():
                     select 
                         i.name,
                         ir.quantity,
-                        ir.unit
+                        ir.unit,
+                        i.id
                     from ingredient_recipe ir
                     join ingredient i on ir.id_ingredient = i.id
                     where ir.id_recipe = {id_recipe}
@@ -534,7 +541,8 @@ class SQL_recipe_manager():
                 ingredients_data = [{
                     'name': result[0],    
                     'quantity': result[1],
-                    'unit': result[2]
+                    'unit': result[2],
+                    'id': result[3]
                 } for result in results]
 
                 return ingredients_data
@@ -729,8 +737,8 @@ class SQL_recipe_manager():
             try : 
                 c = db_connexion.cursor()
                 request = """
-                INSERT INTO user_recipe (id_recipe, id_user)
-                VALUES (%s, %s, %s)
+                INSERT INTO user_recipe (id_user, id_recipe)
+                VALUES (%s, %s)
                 """
 
                 datas = [
@@ -761,12 +769,12 @@ class SQL_recipe_manager():
         user_id: str
             id of the user
         """
-
+        print(recipe_data['id'])
         recipe_data['id'] = self.generate_id('recipe')
         self.add_recipe(recipe_data=recipe_data)
-        
+        print(recipe_data['id'])
         for ingredient in recipe_data['ingredients']:
-            if not self.check_db_by_name(name=ingredient['name'], ):
+            if not self.check_db_by_name(name=ingredient['name'], table='ingredient'):
                 ingredient['id'] = self.generate_id('ingredient')
                 self.add_ingredient(ingredient=ingredient)
 
@@ -774,4 +782,4 @@ class SQL_recipe_manager():
 
         self.add_steps(steps=recipe_data['steps'], id_recipe=recipe_data['id'])
 
-        self.connect_user_recipe(id_user=user_id, id_recipe=recipe_data['id'])
+        self.connect_user_recipe(id_user=str(user_id), id_recipe=recipe_data['id'])

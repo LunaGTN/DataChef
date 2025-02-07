@@ -15,7 +15,8 @@ authenticator = Authenticate(
     secret_credentials_path='google_credentials.json',
     cookie_name=cookie_name,
     cookie_key= cookie_key,
-    redirect_uri='http://localhost:8501',)
+    redirect_uri='http://localhost:8501'
+)
 
 st.title("DataChef !")
 st.subheader("Votre carnet de recette en ligne ")
@@ -30,6 +31,7 @@ st.write(st.session_state['connected'])
 # Affichage basé sur l'état d'authentification
 if st.session_state['connected']:
     user_info = st.session_state['user_info']
+    st.image(user_info['picture'])
     st.write(f"Bonjour, {user_info.get('name')}! ")
     st.write("")
     if st.button('Log out'):
