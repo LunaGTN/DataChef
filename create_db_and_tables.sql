@@ -11,7 +11,8 @@ CREATE TABLE recipe(
 	cost VARCHAR(20) DEFAULT NULL,
 	image_link TEXT DEFAULT NULL,
 	catalog BOOLEAN,
-	PRIMARY KEY(id)
+	PRIMARY KEY(id),
+	country VARCHAR(255)
 );
 
 
@@ -19,7 +20,9 @@ CREATE TABLE ingredient(
 	id SERIAL,
 	name VARCHAR(100) NOT NULL,
 	type VARCHAR (50),
-	PRIMARY KEY(id)
+	PRIMARY KEY(id),
+	category VARCHAR(50),
+	weigh INT
 );
 
 

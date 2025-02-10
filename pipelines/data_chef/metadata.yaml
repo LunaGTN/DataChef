@@ -43,11 +43,7 @@ blocks:
   executor_type: local_python
   has_callback: false
   language: python
-<<<<<<< Updated upstream
-  name: intriguing_frog
-=======
   name: intriguing frog
->>>>>>> Stashed changes
   retry_config: null
   status: executed
   timeout: null
@@ -55,8 +51,7 @@ blocks:
   upstream_blocks:
   - scrap_each_recipe
   uuid: intriguing_frog
-<<<<<<< Updated upstream
-- all_upstream_blocks_executed: false
+- all_upstream_blocks_executed: true
   color: null
   configuration:
     file_path: data_exporters/sql_rds_manager.py
@@ -75,8 +70,6 @@ blocks:
   upstream_blocks:
   - intriguing_frog
   uuid: sql_rds_manager
-=======
->>>>>>> Stashed changes
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
@@ -99,5 +92,5 @@ spark_config: {}
 tags: []
 type: python
 uuid: data_chef
-variables_dir: /Users/romai/.mage_data/DataChef
+variables_dir: /Users/romai/.mage_data/Marmiton
 widgets: []

@@ -1,4 +1,4 @@
-from data_exporters.sql_manager import SQL_recipe_manager
+from fonctions.sql_manager import SQL_recipe_manager
 import streamlit as st
 from random import choices
 
@@ -20,7 +20,7 @@ st.write(" ")
 
     # Containers
 
-n_cols = 3
+n_cols = 4
 n_rows = len(df_user) // n_cols
 remains = len(df_user) % n_cols
 

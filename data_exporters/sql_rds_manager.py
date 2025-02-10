@@ -1,4 +1,4 @@
-from data_exporters.sql_manager import SQL_recipe_manager
+from fonctions.sql_manager import SQL_recipe_manager
 from typing import Dict
 
 if 'data_exporter' not in globals():

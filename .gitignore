@@ -6,3 +6,4 @@ __pycache__
 previous_app_home_page.py
 fake_recipe.py
 *.pyc
+*.log
