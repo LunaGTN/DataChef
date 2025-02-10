@@ -64,7 +64,7 @@ else :
 st.write(f'##### Il reste <span style="color: #DE684D">**{dinner_count_size} parts**</span> à prévoir pour les repas du soir', unsafe_allow_html=True)
 
 st.markdown('''<style>
-            [data-baseweb='input'] {width:50px; text-align: center}
+            [data-baseweb='input'] {width:30px; text-align: center}
             [data-baseweb='select'] {width:300px;}
             input {text-align: center}
             .stNumberInput label {display: none;}
