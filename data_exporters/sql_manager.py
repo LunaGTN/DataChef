@@ -135,7 +135,7 @@ class SQL_recipe_manager():
         with DatabaseConnection() as db_connexion:
             try :
                 c = db_connexion.cursor()
-                request = f"SELECT * FROM {table} WHERE name = '{name.capitalize()}'"
+                request = f"SELECT * FROM {table} WHERE name = '{name.capitalize().replace("'", "\'\'")}'"
                 c.execute(request)
                 results = c.fetchall()
                 return bool(results)
@@ -182,7 +182,7 @@ class SQL_recipe_manager():
             
                 datas = (
                     int(recipe_data['id']),
-                    recipe_data['name'].capitalize(),
+                    recipe_data['name'].capitalize().replace("'", "\'\'"),
                     int(recipe_data['nb_person']),
                     self.fomat_time(recipe_data['time_preparation']),
                     self.fomat_time(recipe_data['time_rest']),
@@ -274,7 +274,7 @@ class SQL_recipe_manager():
                 
                 datas = [
                         int(ingredient['id']),
-                        ingredient['name'].capitalize()
+                        ingredient['name'].capitalize().replace("'", "\'\'")
                 ]
 
                 c.execute(request, datas)
@@ -720,7 +720,6 @@ class SQL_recipe_manager():
                 c.close()
 
 
-    
     def connect_user_recipe(self, id_user:str, id_recipe:int)->None:
         """
         Add a row to user_recipe database.
@@ -776,6 +775,7 @@ class SQL_recipe_manager():
         for ingredient in recipe_data['ingredients']:
             if not self.check_db_by_name(name=ingredient['name'], table='ingredient'):
                 ingredient['id'] = self.generate_id('ingredient')
+                # Catégorise l'ingrédient
                 self.add_ingredient(ingredient=ingredient)
 
         self.add_quantity(ingredients=recipe_data['ingredients'], id_recipe=recipe_data['id'])
