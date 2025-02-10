@@ -1,3 +1,3 @@
 ## Projet Data Chef
-Descriotion du projet:
+Description du projet:
 Participants: 
