@@ -19,6 +19,9 @@ pages = {
         st.Page("app_modif_recipe_page.py", title="Modifier une recette"),
         st.Page("app_suggestions_page.py", title="Suggestions")
     ],
+    "Ma semaine" :[
+        st.Page("app_week_page.py", title="Planning Semaine")
+    ]
 }
 
 
