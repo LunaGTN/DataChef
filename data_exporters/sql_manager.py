@@ -8,6 +8,7 @@ from typing import List, Literal
 from random import randint
 import re
 
+
 load_dotenv()
 
 logging.basicConfig(

@@ -122,3 +122,7 @@ server closed the connection unexpectedly
 2025-02-07 14:09 - INFO - Quantities added for recipe n°45691
 2025-02-07 14:09 - INFO - Steps were successfully add to database
 2025-02-07 16:56 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-10 11:35 - INFO - Osso bucco milanaise was successfully add to database
+2025-02-10 11:35 - INFO - Ingredients list of recipe n°84335 clean
+2025-02-10 11:35 - INFO - Quantities added for recipe n°84335
+2025-02-10 11:35 - INFO - Steps were successfully add to database

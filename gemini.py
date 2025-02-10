@@ -12,7 +12,7 @@ model = genai.GenerativeModel('gemini-1.5-flash')
 
 """Fonctions qui concernent les noms d'ingrédients"""
 
-# A quel catégorie l'ingrédient appartient-il?
+# A quel catégorie l'ingrédient appartient-il ?
 def categorize(name)-> str:
     prompt = name
     context = "Catégorise l'ingrédient en fonction des catégories suivantes: viande, fruits&légumes, produits laitiers, poisson&fruits de mer, céréales ou autre si l'ingrédient ne correspond à aucune catégorie. Si c'est une herbe aromatique, classe-là dans Autre. Répond uniquement avec le nom de la catégorie."
@@ -29,7 +29,7 @@ def weight_per_unit(name):
     return reponse.strip()
 
 """Fonctions qui concernent les titres des recettes"""
-#De quel pays du monde provient la recette?
+#De quel pays du monde provient la recette ?
 def map_recipe(titre):
     prompt = titre
     context = "Attribu à chaque recette son pays de provenance, pas sa région (Italienne, Vietnamienne, française... pas Alsacienne ou Vosgienne). Ne répond qu'avec le nom de l'origine et rien d'autre."

@@ -43,11 +43,7 @@ blocks:
   executor_type: local_python
   has_callback: false
   language: python
-<<<<<<< Updated upstream
-  name: intriguing_frog
-=======
   name: intriguing frog
->>>>>>> Stashed changes
   retry_config: null
   status: executed
   timeout: null
@@ -55,7 +51,6 @@ blocks:
   upstream_blocks:
   - scrap_each_recipe
   uuid: intriguing_frog
-<<<<<<< Updated upstream
 - all_upstream_blocks_executed: false
   color: null
   configuration:
@@ -75,8 +70,6 @@ blocks:
   upstream_blocks:
   - intriguing_frog
   uuid: sql_rds_manager
-=======
->>>>>>> Stashed changes
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
