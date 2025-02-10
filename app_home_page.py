@@ -1,4 +1,4 @@
-from data_exporters.sql_manager import SQL_recipe_manager
+from fonctions.sql_manager import SQL_recipe_manager
 import streamlit as st
 from random import choices
 

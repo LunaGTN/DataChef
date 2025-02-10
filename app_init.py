@@ -3,7 +3,7 @@ from streamlit_google_auth import Authenticate
 import os
 from dotenv import load_dotenv
 import requests
-from data_exporters.sql_manager import SQL_recipe_manager
+from fonctions.sql_manager import SQL_recipe_manager
 
 sql_manager = SQL_recipe_manager()
 

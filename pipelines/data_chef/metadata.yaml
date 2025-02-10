@@ -51,7 +51,7 @@ blocks:
   upstream_blocks:
   - scrap_each_recipe
   uuid: intriguing_frog
-- all_upstream_blocks_executed: false
+- all_upstream_blocks_executed: true
   color: null
   configuration:
     file_path: data_exporters/sql_rds_manager.py
@@ -92,5 +92,5 @@ spark_config: {}
 tags: []
 type: python
 uuid: data_chef
-variables_dir: /Users/romai/.mage_data/DataChef
+variables_dir: /Users/romai/.mage_data/Marmiton
 widgets: []
