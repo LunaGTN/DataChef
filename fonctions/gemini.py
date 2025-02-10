@@ -13,7 +13,7 @@ model = genai.GenerativeModel('gemini-1.5-flash')
 """Fonctions qui concernent les noms d'ingrédients"""
 
 # A quel catégorie l'ingrédient appartient-il ?
-def categorize(name)-> str:
+def categorize_ingredient(name)-> str:
     prompt = name
     context = "Catégorise l'ingrédient en fonction des catégories suivantes: viande, fruits&légumes, produits laitiers, poisson&fruits de mer, céréales ou autre si l'ingrédient ne correspond à aucune catégorie. Si c'est une herbe aromatique, classe-là dans Autre. Répond uniquement avec le nom de la catégorie."
     question = f"Contexte : {context} Question : {prompt}"
