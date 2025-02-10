@@ -121,3 +121,28 @@ server closed the connection unexpectedly
 2025-02-07 14:09 - INFO - Ingredients list of recipe n°45691 clean
 2025-02-07 14:09 - INFO - Quantities added for recipe n°45691
 2025-02-07 14:09 - INFO - Steps were successfully add to database
+2025-02-07 16:52 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-07 16:54 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-07 16:55 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-07 16:56 - INFO - Pancakes : la vraie recette was successfully add to database
+2025-02-07 16:56 - INFO - Ingredients list of recipe n°20008 clean
+2025-02-07 16:56 - INFO - Quantities added for recipe n°20008
+2025-02-07 16:56 - INFO - Steps were successfully add to database
+2025-02-07 16:57 - INFO - Gratin dauphinois was successfully add to database
+2025-02-07 16:57 - INFO - Ingredients list of recipe n°34913 clean
+2025-02-07 16:57 - INFO - Quantities added for recipe n°34913
+2025-02-07 16:57 - INFO - Steps were successfully add to database
+2025-02-07 16:59 - INFO - Cookies faciles was successfully add to database
+2025-02-07 16:59 - INFO - Ingredients list of recipe n°69178 clean
+2025-02-07 16:59 - INFO - Quantities added for recipe n°69178
+2025-02-07 16:59 - INFO - Steps were successfully add to database
+2025-02-10 11:11 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-10 11:12 - INFO - Gigot de 7 heures : la recette incontournable was successfully add to database
+2025-02-10 11:14 - INFO - Rôti de porc : recette savoureuse was successfully add to database
+2025-02-10 11:14 - INFO - Ingredients list of recipe n°99381 clean
+2025-02-10 11:14 - INFO - Quantities added for recipe n°99381
+2025-02-10 11:14 - INFO - Steps were successfully add to database
+2025-02-10 12:18 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-10 12:23 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-10 12:30 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-10 14:16 - INFO - file_cache is only supported with oauth2client<4.0.0

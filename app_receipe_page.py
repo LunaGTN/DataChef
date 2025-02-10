@@ -17,7 +17,7 @@ receipe_list = list(df['name'].values)
 
     # Selectbox for receipe choice
 def load_recipe() :
-    if 'selectbox' in st.session_state :
+    if 'selectbox' in st.session_state and st.session_state.selectbox in receipe_list :
         idx = df[df['name']==st.session_state["selectbox"]]['id'].values[0]
         st.session_state.current_receipe = sql_manager.get_recipe_detail(idx)
 st.selectbox("", receipe_list,index=None,key="selectbox", placeholder= 'Choisir une recette dans la liste', on_change= load_recipe)
@@ -65,10 +65,12 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
 
             container.markdown("<h4 style= color: black;'> Ingrédients :</h4>", unsafe_allow_html=True)
             for ing in st.session_state.current_receipe['ingredients'] :
-                if ing['quantity'] == '0' :
+                if ing['quantity'] == 0 or str(ing['quantity']) == '' :
                     result = f"**{ing['name']}**"
                 elif ing['unit'] == '' :
                     result = f"{round(int(ing['quantity'])/int(current_receipe['nb_person'])*size)} **{ing['name']}**"
+                elif ing['name'][0].lower() in ['a','e','i','o','u','h'] or  ing['name'][:5].lower()in ['huile','huitr','huîtr','herbe'] : 
+                    result = f"{round(int(ing['quantity'])/int(current_receipe['nb_person'])*size)} {ing['unit']} d'**{ing['name']}**"
                 else :
                     result = f"{round(int(ing['quantity'])/int(current_receipe['nb_person'])*size)} {ing['unit']} de **{ing['name']}**"
                 
@@ -78,6 +80,12 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
         st.markdown("<h4 style= color: black;'> Etapes de la recette :</h4>", unsafe_allow_html=True)
         for ind, step in enumerate(st.session_state.current_receipe['steps']) :
                 st.checkbox(f'**Etape {ind+1} :** {step['detail']}')
+
+
+    st.write(' ')
+    st.write('---')
+    if st.button("Ajouter la recette à mon livre de recette",key='button-add') :
+        st.switch_page("app_modif_recipe_page.py")
         
 
 # Style 
@@ -87,6 +95,9 @@ st.markdown('''<style>
             .test {background-color: #f4846a;}
             .st-key-size_selector input {text-align: center}
             .st-key-size_selector p {font-size: 1rem;}
+            .st-key-button-add {text-align: center}
+            .st-key-button-add button {background : #f4846a}
             [data-baseweb='input'] {background-color: #f4846a; width:50px;}
             </style>''', unsafe_allow_html=True)
+
 
