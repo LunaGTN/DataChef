@@ -1,15 +1,23 @@
 import streamlit as st
 from fonctions.sql_manager import SQL_recipe_manager
 
-st.write(st.session_state)
+sql_manager = SQL_recipe_manager()
+
+data = sql_manager.get_profile_info(st.session_state.user_info['id'])
+if 'profil_parameters' not in st.session_state :
+    st.session_state['profil_parameters'] = {'size' : data[1] if data[1] != None else 4 ,
+                                            'diet' : data[2] if data[2] != None else None,
+                                            'lunch' : data[3] if data[3] != None else True,
+                                            'weekend' : data[4] if data[4] != None else False}
+
 user_param = {
     "default_size": st.session_state.profil_parameters['size'],
     "default_lunch": st.session_state.profil_parameters['lunch'],
     "default_weekend": st.session_state.profil_parameters['weekend']
 }
+
 # Request recipes planned
 user_id = st.session_state.user_info['id']
-sql_manager = SQL_recipe_manager()
 planned_recipes = sql_manager.request_planner(user_id=user_id)
 planned_recipes.reset_index(drop=True, inplace=True)
 
