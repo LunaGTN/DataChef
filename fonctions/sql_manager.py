@@ -896,3 +896,57 @@ class SQL_recipe_manager():
 
             finally:
                 c.close()
+    
+
+
+    def get_profile_info (self, user_id:str) -> dict :
+
+        with DatabaseConnection() as db_connexion :
+            try : 
+                c = db_connexion.cursor()
+                request = f"""
+                select name, nb_person, diet, week_lunch, week_we
+                from users
+                where id  = '{user_id}'
+                """
+                c.execute(request)
+                result = list(c.fetchall()[0])
+                result[2] = result[2].split(',') if result[2] != None else result[2]
+                return result
+
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+
+            finally:
+                c.close()
+
+    def add_user_info(self,user_info, profil_parameters:dict)->None:
+        """
+        Add user profile info into database
+
+        Attributs
+        -------------
+        user_info: dict
+            Info of user with his ID, name, picture link
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = f"""
+                UPDATE users
+                SET nb_person = {profil_parameters['size']},
+                    week_lunch = {profil_parameters['lunch']} ,
+                    week_we = {profil_parameters['weekend']}
+                WHERE id = '{user_info['id']}'
+                """
+
+                c.execute(request)
+                db_connexion.commit()
+
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+
+            finally:
+                c.close()
+

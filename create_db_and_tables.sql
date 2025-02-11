@@ -51,6 +51,8 @@ CREATE TABLE users(
 	id VARCHAR(255) not NULL,
 	name VARCHAR(255) NOT NULL,
 	nb_person INT,
+	week_lunch BOOLEAN,
+	week_we BOOLEAN,
 	diet VARCHAR(255) DEFAULT NULL,
 	aversion VARCHAR(255) DEFAULT NULL,
 	intolerance VARCHAR(255),
