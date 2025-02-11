@@ -112,8 +112,6 @@ for idx, recipe in planned_recipes.iterrows():
 
 st.write('---')
 
-print(f"{lunch_count_size = }")
-print(f"{lunch_user_count = }")
 # Display meals to plan
 lunch_count_size -= lunch_user_count
 dinner_count_size -= dinner_user_count
