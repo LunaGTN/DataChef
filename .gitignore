@@ -5,9 +5,5 @@ style.css
 __pycache__
 previous_app_home_page.py
 fake_recipe.py
-<<<<<<< HEAD
-*.pyc
-=======
 *.pyc
 *.log
->>>>>>> f605fd40c31bb6fc5f33ae78243ed05f1fc6889d
