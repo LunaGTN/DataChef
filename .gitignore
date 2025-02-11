@@ -7,3 +7,4 @@ previous_app_home_page.py
 fake_recipe.py
 *.pyc
 *.log
+*.ipynb

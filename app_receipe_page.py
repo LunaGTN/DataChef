@@ -84,9 +84,13 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
 
     st.write(' ')
     st.write('---')
-    if st.button("Ajouter la recette à mon livre de recette",key='button-add') :
-        st.switch_page("app_modif_recipe_page.py")
-        
+    cols = st.columns (2)
+    with cols[0] :
+        if st.button("📘 **Ajouter la recette à mon livre de recette**",key='button-add') :
+            st.switch_page("app_modif_recipe_page.py")
+    with cols[1] :
+        if st.button('📆 **Ajouter à mon menu de la semaine**',key='button_add_week') :
+            st.write("app_modif_recipe_page.py")
 
 # Style 
 st.markdown('''<style>
@@ -96,7 +100,11 @@ st.markdown('''<style>
             .st-key-size_selector input {text-align: center}
             .st-key-size_selector p {font-size: 1rem;}
             .st-key-button-add {text-align: center}
-            .st-key-button-add button {background : #f4846a}
+            .st-key-button-add button {background : #f4846a;color: white}
+            .st-key-button-add :hover  {color : #383838}
+            .st-key-button_add_week {text-align: center}
+            .st-key-button_add_week button {background : #f4846a;color: white}
+            .st-key-button_add_week :hover  {color : #383838}
             [data-baseweb='input'] {background-color: #f4846a; width:50px;}
             </style>''', unsafe_allow_html=True)
 

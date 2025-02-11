@@ -1,9 +1,25 @@
 import streamlit as st
 from fonctions.sql_manager import SQL_recipe_manager
 
+sql_manager = SQL_recipe_manager()
+
+# 🟥🟥🟥🟥 Il faut régler le pb des paramètres qui reviennent par défaut quand on change de page 🟥🟥🟥🟥
+
+data = sql_manager.get_profile_info(st.session_state.user_info['id'])
+if 'profil_parameters' not in st.session_state :
+    st.session_state['profil_parameters'] = {'size' : data[1] if data[1] != None else 4 ,
+                                            'diet' : data[2] if data[2] != None else None,
+                                            'lunch' : data[3] if data[3] != None else True,
+                                            'weekend' : data[4] if data[4] != None else False}
+
+user_param = {
+    "default_size": st.session_state.profil_parameters['size'],
+    "default_lunch": st.session_state.profil_parameters['lunch'],
+    "default_weekend": st.session_state.profil_parameters['weekend']
+}
+
 # Request recipes planned
 user_id = st.session_state.user_info['id']
-sql_manager = SQL_recipe_manager()
 planned_recipes = sql_manager.request_planner(user_id=user_id)
 planned_recipes.reset_index(drop=True, inplace=True)
 
@@ -21,11 +37,12 @@ _, col = st.columns([1,10])
 disa_we = True
 disa_lunch = False
 with col :
-    if st.checkbox('Prévoir les repas de midi en semaine', key='lunch_selector') == False :
-        disa_lunch = True
-        testvalue = 0
-    if st.checkbox('Prévoir les repas du week-end',value=False) :
-        disa_we = False
+    if st.checkbox('Prévoir les repas de midi en semaine', value=user_param['default_lunch'] ,key='lunch_selector') != user_param['default_lunch'] :
+        user_param['default_lunch'] = st.session_state['lunch_selector']
+
+
+    if st.checkbox('Prévoir les repas du week-end',value=user_param['default_weekend'], key='weekend_selector') != user_param['default_weekend']:
+        user_param['default_weekend'] = st.session_state['weekend_selector']
 st.write('')
 st.write('')
 
@@ -44,10 +61,10 @@ with cols[0]:
     st.markdown(f'<span style="color: #DE684D">**Midi**</span>', unsafe_allow_html=True)
 for ind,col in enumerate(cols[1:]) :
     with col :
-        if ind < 5 :
-            lunch_count_size+= st.number_input("", 0, 20,value = 0 ,key=f'lunch{days[ind]}',disabled=disa_lunch)
-        else :
-            lunch_count_size+= st.number_input("", 0, 20,value = 0 ,key=f'lunch{days[ind]}',disabled=disa_we)
+        if ind < 5 : # Week day 
+            lunch_count_size+= st.number_input("", 0, 20, value = user_param['default_size'] * user_param['default_lunch'], key=f'lunch{days[ind]}', disabled= not user_param['default_lunch'])
+        else : # Week end
+            lunch_count_size+= st.number_input("", 0, 20, value = user_param['default_size'] * user_param['default_weekend'], key=f'lunch{days[ind]}', disabled= not user_param['default_weekend'])
 st.write('')
 
 
@@ -59,43 +76,47 @@ with cols[0]:
 for ind,col in enumerate(cols[1:]) :
     with col :
         if ind < 5 :
-            dinner_count_size+= st.number_input("", 0, 20,value = 0 ,key=f'dinner{days[ind]}')
+            dinner_count_size+= st.number_input("", 0, 20, value = user_param['default_size'], key=f'dinner{days[ind]}')
         else :
-            dinner_count_size+= st.number_input("", 0, 20,value = 0 ,key=f'dinner{days[ind]}',disabled=disa_we)
+            dinner_count_size+= st.number_input("", 0, 20, value = user_param['default_size'] * user_param['default_weekend'], key=f'dinner{days[ind]}',disabled= not user_param['default_weekend'])
 st.write('')
 st.write('---')
 
 # Add Recipes
+
+lunch_user_count = 0
+dinner_user_count = 0
+
 st.markdown("<h5 '> Choisir des recettes pour la semaine </h5>", unsafe_allow_html=True)
 st.write(" ")
 
-n_cols = 4
-n_rows = len(planned_recipes) // n_cols
-remains = len(planned_recipes) % n_cols
-
-for row in range(n_rows) :
-    col_list = st.columns(n_cols)
-    for idx, col in enumerate(col_list) :
-        index = row * n_cols + idx
-        with col :  
-            st.image(planned_recipes.iloc[index]['image_link'], width=1000)
-            if st.button(label=planned_recipes.iloc[index]['name'], key=f'but_{index}',use_container_width =True) :
-                idx = planned_recipes.iloc[index]['id']
-
-
-if remains != 0:
-    col_list = st.columns(n_cols)
-    df_temp = planned_recipes.tail(remains).reset_index(drop=True)
-    for idx, col in enumerate(col_list[0:remains]):
-        with col:
-            st.image(df_temp.iloc[idx]['image_link'], width=1000)
-            if st.button(label=df_temp.iloc[idx]['name'], key=f'but_{n_rows*4+idx}', use_container_width=True):
-                idx = df_temp.iloc[idx]['id']
-
+for idx, recipe in planned_recipes.iterrows():
+    col_1, col_2, col_3 = st.columns([0.4, 0.01, 0.5])
+    with col_1:
+        st.image(recipe['image_link'])
+        st.write('')
+    with col_3:
+        st.markdown(f"**{recipe['name']}**")
+        col_a, col_b = st.columns([0.1, 0.8], vertical_alignment='center')
+        with col_a:
+            st.write("Midi")
+        with col_b:
+            lunch_user_count += st.number_input(label="Midi", min_value=0, max_value=20, value=0, key=f"recipe_{idx}_lunch_size")
+            st.write('')
+        col_a, col_b = st.columns([0.1, 0.8])
+        with col_a:
+            st.write("Soir")
+        with col_b:
+            dinner_user_count += st.number_input(label="Soir", min_value=0, max_value=20, value=0, key=f"recipe_{idx}_dinner_size")
+        
+        st.write('')
+        st.write('')
 
 st.write('---')
 
 # Display meals to plan
+lunch_count_size -= lunch_user_count
+dinner_count_size -= dinner_user_count
 if lunch_count_size == 0 :
     st.markdown(f'##### ✅ Tous vos repas de midi sont prévus', unsafe_allow_html=True)
 elif lunch_count_size < 0 :
@@ -110,6 +131,11 @@ else :
     st.write(f'##### Il reste <span style="color: #DE684D">**{dinner_count_size} parts**</span> à prévoir pour les repas du soir', unsafe_allow_html=True)
 
 
+
+st.write(planned_recipes)
+
+
+
 # Style
 st.markdown('''<style>
             [data-baseweb='input'] {width:40px; text-align: center}
@@ -117,6 +143,7 @@ st.markdown('''<style>
             [data-testid='stNumberInputContainer'] {justify-content: center;}
             input {text-align: center}
             .stNumberInput label {display: none;}
-            .stNumberInput > div {margin : auto}
-            p {text-align: center;margin: auto auto}
             </style>''', unsafe_allow_html=True)
+
+#p {text-align: center;margin: auto auto}
+#.stNumberInput > div {margin : auto}
