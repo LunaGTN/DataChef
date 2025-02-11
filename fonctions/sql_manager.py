@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+from fonctions.gemini import categorize_ingredient, map_recipe, sweet_salt, weight_per_unit
 import json
 import logging
 import os
@@ -172,13 +173,16 @@ class SQL_recipe_manager():
             ingredients: list of dict
         """
 
+        recipe_data['sweet_salt'] = sweet_salt(recipe_data['name'])
+        recipe_data['country'] = map_recipe(recipe_data['name'])
+
         with DatabaseConnection() as db_connexion:
             try : 
                 c = db_connexion.cursor()
 
                 request = """
-                INSERT INTO recipe (id, name, nb_person, time_preparation, time_rest, time_cooking, time_total, difficulty, cost, image_link)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO recipe (id, name, nb_person, time_preparation, time_rest, time_cooking, time_total, difficulty, cost, image_link, sweet_salt, country)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
             
                 datas = (
@@ -192,6 +196,8 @@ class SQL_recipe_manager():
                     recipe_data['difficulty'],
                     recipe_data['cost'],
                     recipe_data['image_link'],
+                    recipe_data['sweet_salt'],
+                    recipe_data['country']
                 )
 
                 c.execute(request, datas)
@@ -263,19 +269,26 @@ class SQL_recipe_manager():
             unit: str
                 unit for this quantity
         """
-        
+        ingredient['category'] = categorize_ingredient(ingredient['name'])
+        if ingredient['unit'] == '' and ingredient['quantity'] != 0 and ingredient['category'] != 'Autre':
+            ingredient['weigh'] = weight_per_unit(ingredient['name'])
+        else:
+            ingredient['weigh'] = None
+
         with DatabaseConnection() as db_connexion:
             try : 
                 c = db_connexion.cursor()
 
                 request = """
-                INSERT INTO ingredient (id, name)
-                VALUES (%s, %s)
+                INSERT INTO ingredient (id, name, category, weigh)
+                VALUES (%s, %s, %s, %s)
                 """
                 
                 datas = [
                         int(ingredient['id']),
-                        ingredient['name'].capitalize().replace("'", "\'\'")
+                        ingredient['name'].capitalize().replace("'", "\'\'"),
+                        ingredient['category'],
+                        ingredient['weigh']
                 ]
 
                 c.execute(request, datas)
@@ -424,7 +437,7 @@ class SQL_recipe_manager():
             self.logger.info(f"{recipe_data['title']} is already in database")
 
 
-    def get_all_recipes(self):
+    def get_all_recipes(self)->pd.DataFrame:
         """
         Return all recipes name from recipe database
         """
@@ -818,6 +831,65 @@ class SQL_recipe_manager():
 
                 c.execute(request)
                 return pd.DataFrame(c.fetchall(), columns=['id', 'name', 'image_link'])
+
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+
+            finally:
+                c.close()
+
+    def request_planner(self, user_id:str)->pd.DataFrame:
+        """
+        Return all recipes from user's planner
+
+        Attibuts
+        -----------
+        - user_id: str
+            ID of the user
+        
+        Return
+        -----------
+        planner_recipe: pd.DataFrame
+            DataFrame with recipes informations
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = f"""
+                SELECT 
+                    id,
+                    name,
+                    nb_person,
+                    sweet_salt,
+                    time_preparation,
+                    time_rest,
+                    time_cooking,
+                    time_total,
+                    difficulty,
+                    cost,
+                    image_link,
+                    country
+                FROM recipe r
+                JOIN user_recipe ur ON r.id = ur.id_recipe
+                WHERE ur.id_user = '{user_id}'
+                AND ur.planner = TRUE
+                """
+                c.execute(request)
+                return pd.DataFrame(c.fetchall(), columns=[
+                    'id',
+                    'name',
+                    'nb_person',
+                    'sweet_salt',
+                    'time_preparation',
+                    'time_rest',
+                    'time_cooking',
+                    'time_total',
+                    'difficulty',
+                    'cost',
+                    'image_link',
+                    'country'
+                ])
 
             except psycopg2.OperationalError as err:
                 self.logger.error(f"Select error: {err}")

@@ -27,7 +27,7 @@ receipe_list = list(df['name'].values)
 
     # Selectbox for receipe choice
 def load_recipe() :
-    if 'selectbox' in st.session_state :
+    if 'selectbox' in st.session_state and st.session_state.selectbox in receipe_list:
         idx = df[df['name']==st.session_state["selectbox"]]['id'].values[0]
         st.session_state.current_receipe = sql_manager.get_recipe_detail(idx)
 st.selectbox("", receipe_list,index=None,key="selectbox", placeholder= 'Choisir une recette dans la liste', on_change= load_recipe)
@@ -110,7 +110,9 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
         with col2 :
             st.text_area(label = '',value = '' ,key = 'step_add')
 
-    if st.button('Sauvegarder'):
+    st.write('---')
+
+    if st.button('Ajouter à mon livre de recette',key='button_save'):
         msg = pop_up_start()
         sql_manager.add_user_recipe(
             recipe_data=st.session_state['current_receipe'],
@@ -124,6 +126,8 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
     st.markdown('''<style>
                 .st-key-ing_container label {display: none;}
                 .st-key-step_container label {display: none;}
+                .st-key-button_save {text-align: center}
+                .st-key-button_save button {background : #f4846a}
                 </style>''', unsafe_allow_html=True)
 
 # .st-key-step_container input {background-color: #DE684D;}

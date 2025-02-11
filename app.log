@@ -116,6 +116,7 @@ botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling t
 2025-02-10 11:35 - INFO - Ingredients list of recipe n°84335 clean
 2025-02-10 11:35 - INFO - Quantities added for recipe n°84335
 2025-02-10 11:35 - INFO - Steps were successfully add to database
+<<<<<<< HEAD
 2025-02-10 12:11 - WARNING - Python-dotenv could not parse statement starting at line 11
 2025-02-10 12:11 - WARNING - Python-dotenv could not parse statement starting at line 15
 2025-02-10 12:11 - WARNING - Python-dotenv could not parse statement starting at line 16
@@ -389,3 +390,4 @@ botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling t
 2025-02-11 09:38 - WARNING - Python-dotenv could not parse statement starting at line 20
 2025-02-11 09:38 - WARNING - Python-dotenv could not parse statement starting at line 23
 2025-02-11 09:38 - WARNING - Python-dotenv could not parse statement starting at line 24
+
