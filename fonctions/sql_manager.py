@@ -838,6 +838,7 @@ class SQL_recipe_manager():
             finally:
                 c.close()
 
+
     def request_planner(self, user_id:str)->pd.DataFrame:
         """
         Return all recipes from user's planner
@@ -898,7 +899,6 @@ class SQL_recipe_manager():
                 c.close()
     
 
-
     def get_profile_info (self, user_id:str) -> dict :
 
         with DatabaseConnection() as db_connexion :
@@ -919,6 +919,7 @@ class SQL_recipe_manager():
 
             finally:
                 c.close()
+
 
     def add_user_info(self,user_info, profil_parameters:dict)->None:
         """
@@ -950,3 +951,118 @@ class SQL_recipe_manager():
             finally:
                 c.close()
 
+
+    def update_recipe_in_planner(self, user_id: str, recipe_id: int)-> bool:
+        """
+        Update planner status of a recipe
+
+        Attributs
+        -------------
+        user_id: str
+            Id of the user
+        recipe_id: int
+            Id of the recipe
+
+        Return
+        -------------
+        bool: True if commit succeed
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = f"""
+                UPDATE user_recipe
+                SET planner = NOT planner
+                WHERE id_user = '{user_id}'
+                AND id_recipe = {int(recipe_id)}
+                """
+
+                c.execute(request)
+                db_connexion.commit()
+                return True
+            
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+                return False
+
+            finally:
+                c.close()
+
+
+    def check_recipe_in_user_book(self, user_id: str, recipe_id: int)-> bool:
+        """
+        Check if the recipe is in user's book
+
+        Attributs
+        -------------
+        user_id: str
+            Id of the user
+        recipe_id: int
+            Id of the recipe
+
+        Return
+        -------------
+        bool
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = f"""
+                SELECT id_recipe
+                FROM user_recipe
+                WHERE id_user = '{user_id}'
+                AND id_recipe = {int(recipe_id)}
+                """
+
+                c.execute(request)
+            
+                return bool(len(c.fetchall()))
+            
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+                return False
+
+            finally:
+                c.close()
+
+
+    def add_recipe_to_planner(self, user_id: str, recipe_id: int)-> bool:
+        """
+        If the recipe is not in user's book, add it.
+        Add the recipe to user's planner
+
+
+        Attributs
+        -------------
+        user_id: str
+            Id of the user
+        recipe_id: int
+            Id of the recipe
+
+        Return
+        -------------
+        bool: True if commit succeed
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = f"""
+                UPDATE user_recipe
+                SET planner = NOT planner
+                WHERE id_user = '{user_id}'
+                AND id_recipe = {int(recipe_id)}
+                """
+
+                c.execute(request)
+                db_connexion.commit()
+                return True
+            
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+                return False
+
+            finally:
+                c.close()

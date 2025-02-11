@@ -9,7 +9,7 @@ df_user.reset_index(drop=True, inplace=True)
 
 
 # Header / Title
-st.markdown("<h2 style='color: #DE684D;'>Bienvenue sur Data Chef !</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='color: #DE684D;'>Bienvenue sur Data Chef !</h2>", unsafe_allow_html=True) 
 st.write("---")
 
 # User Recipe
@@ -24,16 +24,23 @@ n_cols = 4
 n_rows = len(df_user) // n_cols
 remains = len(df_user) % n_cols
 
+
+
+
 for row in range(n_rows) :
     col_list = st.columns(n_cols)
     for idx, col in enumerate(col_list) :
         index = row * n_cols + idx
         with col :  
             st.image(df_user.iloc[index]['image_link'], width=1000)
+            
             if st.button(label=df_user.iloc[index]['name'], key=f'but_{index}',use_container_width =True) :
                 idx = df_user.iloc[index]['id']
                 st.session_state.current_receipe = sql_manager.get_recipe_detail(idx)
                 st.switch_page("app_receipe_page.py")
+
+            # 🟥🟥🟥 Ajouter fonction 'ajouter au planning' dans on_click
+            st.checkbox('dans le planning', key=f'check_{index}', on_change=None)
 
 if remains != 0:
     col_list = st.columns(n_cols)
@@ -45,6 +52,7 @@ if remains != 0:
                 idx = df_temp.iloc[idx]['id']
                 st.session_state.current_recipe = sql_manager.get_recipe_detail(id_recipe=idx)
                 st.switch_page("app_receipe_page.py")
+
 
 
 # Style 
