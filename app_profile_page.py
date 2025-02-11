@@ -9,7 +9,7 @@ st.write('---')
 
 
 # Collect of user data
-data = sql_manager.get_profile_info('112681526746337302579')
+data = sql_manager.get_profile_info(st.session_state.user_info['id'])
 if 'profil_parameters' not in st.session_state :
     st.session_state['profil_parameters'] = {'size' : data[1] if data[1] != None else 4 ,
                                             'diet' : data[2] if data[2] != None else None,
