@@ -3,6 +3,8 @@ from fonctions.sql_manager import SQL_recipe_manager
 
 sql_manager = SQL_recipe_manager()
 
+# 🟥🟥🟥🟥 Il faut régler le pb des paramètres qui reviennent par défaut quand on change de page 🟥🟥🟥🟥
+
 data = sql_manager.get_profile_info(st.session_state.user_info['id'])
 if 'profil_parameters' not in st.session_state :
     st.session_state['profil_parameters'] = {'size' : data[1] if data[1] != None else 4 ,
@@ -127,6 +129,11 @@ elif dinner_count_size <0 :
     st.markdown(f'##### ❌ <span style="color: red">Trop de parts pour les repas du soir</span>', unsafe_allow_html=True)
 else :
     st.write(f'##### Il reste <span style="color: #DE684D">**{dinner_count_size} parts**</span> à prévoir pour les repas du soir', unsafe_allow_html=True)
+
+
+
+st.write(planned_recipes)
+
 
 
 # Style

@@ -19,12 +19,11 @@ if 'profil_parameters' not in st.session_state :
 
 # Choice of default nb of portion
 st.markdown("<h5 '> Paramètres par défaut pour le semainier</h5>", unsafe_allow_html=True)
-st.number_input("Nombre de parts par défaut", 1, 12,value = st.session_state.profil_parameters['size'],key='size_test')
+st.number_input("Nombre de personnes par repas par défaut", 1, 12,value = st.session_state.profil_parameters['size'],key='size_test')
 st.checkbox('Prévoir les repas de midi en semaine',value=st.session_state.profil_parameters['lunch'],key='lunch_selec')
 st.checkbox('Prévoir les repas du week-end',value=st.session_state.profil_parameters['weekend'], key ='weekend_selec')
 st.write("---")
 
-# st.session_state.week_parameters['size'] = st.session_state['size_test'
 
 #  Choice of diet
 st.markdown("<h5 '> Régime alimentaire </h5>", unsafe_allow_html=True)
