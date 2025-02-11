@@ -125,3 +125,7 @@ botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling t
 2025-02-10 12:37 - INFO - Ingredients list of recipe n°31808 clean
 2025-02-10 12:37 - INFO - Quantities added for recipe n°31808
 2025-02-10 12:37 - INFO - Steps were successfully add to database
+2025-02-11 14:47 - INFO - Quiche lorraine maison was successfully add to database
+2025-02-11 14:47 - INFO - Ingredients list of recipe n°17591 clean
+2025-02-11 14:47 - INFO - Quantities added for recipe n°17591
+2025-02-11 14:47 - INFO - Steps were successfully add to database
