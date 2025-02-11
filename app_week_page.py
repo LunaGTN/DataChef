@@ -1,4 +1,11 @@
 import streamlit as st
+from fonctions.sql_manager import SQL_recipe_manager
+
+# Request recipes planned
+user_id = st.session_state.user_info['id']
+sql_manager = SQL_recipe_manager()
+planned_recipes = sql_manager.request_planner(user_id=user_id)
+planned_recipes.reset_index(drop=True, inplace=True)
 
 # Header / Title
 st.markdown("<h2 style='color: #DE684D;'> Mes menus de la semaine</h2>", unsafe_allow_html=True)
@@ -14,7 +21,7 @@ _, col = st.columns([1,10])
 disa_we = True
 disa_lunch = False
 with col :
-    if st.checkbox('Prévoir les repas de midi en semaine',value=True) == False :
+    if st.checkbox('Prévoir les repas de midi en semaine', key='lunch_selector') == False :
         disa_lunch = True
         testvalue = 0
     if st.checkbox('Prévoir les repas du week-end',value=False) :
@@ -61,6 +68,29 @@ st.write('---')
 # Add Recipes
 st.markdown("<h5 '> Choisir des recettes pour la semaine </h5>", unsafe_allow_html=True)
 st.write(" ")
+
+n_cols = 4
+n_rows = len(planned_recipes) // n_cols
+remains = len(planned_recipes) % n_cols
+
+for row in range(n_rows) :
+    col_list = st.columns(n_cols)
+    for idx, col in enumerate(col_list) :
+        index = row * n_cols + idx
+        with col :  
+            st.image(planned_recipes.iloc[index]['image_link'], width=1000)
+            if st.button(label=planned_recipes.iloc[index]['name'], key=f'but_{index}',use_container_width =True) :
+                idx = planned_recipes.iloc[index]['id']
+
+
+if remains != 0:
+    col_list = st.columns(n_cols)
+    df_temp = planned_recipes.tail(remains).reset_index(drop=True)
+    for idx, col in enumerate(col_list[0:remains]):
+        with col:
+            st.image(df_temp.iloc[idx]['image_link'], width=1000)
+            if st.button(label=df_temp.iloc[idx]['name'], key=f'but_{n_rows*4+idx}', use_container_width=True):
+                idx = df_temp.iloc[idx]['id']
 
 
 st.write('---')
