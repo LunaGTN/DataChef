@@ -203,3 +203,7 @@ botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling t
 2025-02-12 14:31 - INFO - lait is already in database
 2025-02-12 14:31 - INFO - Ingredients list of recipe n°00029085 clean
 2025-02-12 14:31 - INFO - Quantities added for recipe n°00029085
+2025-02-12 16:13 - INFO - 👤 Verrines colorées was successfully add to database
+2025-02-12 16:13 - INFO - Ingredients list of recipe n°70874 clean
+2025-02-12 16:13 - INFO - Quantities added for recipe n°70874
+2025-02-12 16:13 - INFO - Steps were successfully add to database

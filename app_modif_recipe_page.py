@@ -23,7 +23,7 @@ st.write('---')
 
 # Receipe Selection
     # Receipe list creation for the selectbox
-df = sql_manager.get_all_recipes(user_id=user_id)
+df = sql_manager.get_all_recipes_and_user(user_id=user_id)
 receipe_list = list(df['name'].values)
 
     # Selectbox for receipe choice
