@@ -9,7 +9,7 @@ from fonctions.sql_manager import SQL_recipe_manager
 sql_manager = SQL_recipe_manager()
 
 st.set_page_config(layout="wide")
-
+st.write(st.session_state)
 pages = {
     ' ':[st.Page("app_home_page.py", title="Accueil")],
     "Mon compte": [
@@ -56,7 +56,8 @@ with st.sidebar:
 _, mid, _ = st.columns([1,15,1])
 with mid :
     st.session_state.pg = st.navigation(pages)
-    st.session_state.pg.run()
+    if st.session_state['connected']:
+        st.session_state.pg.run()
 
 
 # Style 
