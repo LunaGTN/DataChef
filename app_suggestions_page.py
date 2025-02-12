@@ -22,7 +22,7 @@ def create_short_list():
 if 'short_list' not in st.session_state :
     create_short_list()
 
-if st.button("Changer les propositions",key='suggestion_button') :
+if st.button("🔄 **Changer les propositions**",key='suggestion_button') :
     create_short_list()
 st.write(' ')
      
@@ -39,8 +39,9 @@ for raw in range(3) :
                     st.switch_page("app_receipe_page.py")
 
 
-
 # Style 
 st.markdown('''<style>
             .st-key-suggestion_button {text-align: center}
+            .st-key-suggestion_button button {background : #f4846a;color:black}
+            .st-key-suggestion_button :hover  {color : white}
             </style>''', unsafe_allow_html=True)
