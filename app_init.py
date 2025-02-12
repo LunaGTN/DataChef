@@ -22,7 +22,8 @@ pages = {
         st.Page("app_suggestions_page.py", title="Suggestions")
     ],
     "Ma semaine" :[
-        st.Page("app_week_page.py", title="Planning de la semaine")
+        st.Page("app_week_page.py", title="Planning"),
+        st.Page("dashboard.py", title = "Dashboard")
     ]
 }
 
