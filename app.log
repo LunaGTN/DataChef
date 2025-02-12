@@ -203,3 +203,92 @@ botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling t
 2025-02-12 14:31 - INFO - lait is already in database
 2025-02-12 14:31 - INFO - Ingredients list of recipe n°00029085 clean
 2025-02-12 14:31 - INFO - Quantities added for recipe n°00029085
+2025-02-12 15:01 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-12 15:01 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-12 15:03 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-12 15:03 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-12 15:07 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-12 15:08 - INFO - file_cache is only supported with oauth2client<4.0.0
+2025-02-12 15:16 - INFO - 👤 Gâteau pommes, noix et cannelle was successfully add to database
+2025-02-12 15:16 - INFO - Ingredients list of recipe n°22292 clean
+2025-02-12 15:16 - INFO - Quantities added for recipe n°22292
+2025-02-12 15:16 - INFO - Steps were successfully add to database
+2025-02-12 16:22 - INFO - Tarte créole aux pommes was successfully add to database
+2025-02-12 16:22 - INFO - Steps were successfully add to database
+2025-02-12 16:22 - INFO - sucre glace is already in database
+2025-02-12 16:22 - INFO - rhum is already in database
+2025-02-12 16:22 - INFO - beurre is already in database
+2025-02-12 16:22 - INFO - sucre is already in database
+2025-02-12 16:22 - INFO - pâte sablée is already in database
+2025-02-12 16:22 - INFO - jaunes d'oeuf is already in database
+2025-02-12 16:22 - INFO - lait de coco is already in database
+2025-02-12 16:22 - INFO - cannelle is already in database
+2025-02-12 16:22 - INFO - pommes is already in database
+2025-02-12 16:22 - INFO - Ingredients list of recipe n°00020882 clean
+2025-02-12 16:22 - INFO - Quantities added for recipe n°00020882
+2025-02-12 16:25 - INFO - Soupe de poissons au bouquet provençal was successfully add to database
+2025-02-12 16:25 - INFO - Steps were successfully add to database
+2025-02-12 16:25 - INFO - poivre is already in database
+2025-02-12 16:25 - INFO - Piments de cayenne was successfully add to database
+2025-02-12 16:25 - INFO - thym is already in database
+2025-02-12 16:25 - INFO - écorces d'orange is already in database
+2025-02-12 16:25 - INFO - oignons is already in database
+2025-02-12 16:25 - INFO - tomates is already in database
+2025-02-12 16:25 - INFO - poireaux is already in database
+2025-02-12 16:25 - INFO - cubes de bouillon is already in database
+2025-02-12 16:26 - INFO - Poisson was successfully add to database
+2025-02-12 16:26 - INFO - crevettes is already in database
+2025-02-12 16:26 - INFO - ail is already in database
+2025-02-12 16:26 - INFO - fenouil is already in database
+2025-02-12 16:26 - INFO - céleri is already in database
+2025-02-12 16:26 - INFO - laurier is already in database
+2025-02-12 16:26 - INFO - huile d'olive is already in database
+2025-02-12 16:26 - INFO - Ingredients list of recipe n°00012720 clean
+2025-02-12 16:26 - INFO - Quantities added for recipe n°00012720
+2025-02-12 16:44 - INFO - Tourte au poulet, champignons et lardons was successfully add to database
+2025-02-12 16:44 - INFO - Steps were successfully add to database
+2025-02-12 16:44 - INFO - curry is already in database
+2025-02-12 16:44 - INFO - lardons is already in database
+2025-02-12 16:44 - INFO - pâte brisée is already in database
+2025-02-12 16:44 - INFO - blanc de poulet is already in database
+2025-02-12 16:44 - INFO - champignon is already in database
+2025-02-12 16:44 - INFO - Volaille was successfully add to database
+2025-02-12 16:44 - INFO - crème liquide is already in database
+2025-02-12 16:44 - INFO - Ingredients list of recipe n°00025849 clean
+2025-02-12 16:44 - INFO - Quantities added for recipe n°00025849
+2025-02-12 16:45 - INFO - Tourte au Poulet was successfully add to database
+2025-02-12 16:45 - INFO - Steps were successfully add to database
+2025-02-12 16:45 - INFO - persil is already in database
+2025-02-12 16:45 - INFO - sel is already in database
+2025-02-12 16:45 - INFO - poivre is already in database
+2025-02-12 16:45 - INFO - curry is already in database
+2025-02-12 16:45 - INFO - pâtes feuilletées is already in database
+2025-02-12 16:45 - INFO - gruyère râpé is already in database
+2025-02-12 16:45 - INFO - farine is already in database
+2025-02-12 16:45 - INFO - oignons is already in database
+2025-02-12 16:45 - INFO - escalopes de poulet is already in database
+2025-02-12 16:46 - INFO - Champignon frais was successfully add to database
+2025-02-12 16:46 - INFO - dés de jambon is already in database
+2025-02-12 16:46 - INFO - briques is already in database
+2025-02-12 16:46 - INFO - crème liquide is already in database
+2025-02-12 16:46 - INFO - jaunes d'oeuf is already in database
+2025-02-12 16:46 - INFO - Ingredients list of recipe n°00048684 clean
+2025-02-12 16:46 - INFO - Quantities added for recipe n°00048684
+2025-02-12 16:47 - INFO - Tourte simple was successfully add to database
+2025-02-12 16:47 - INFO - Steps were successfully add to database
+2025-02-12 16:47 - INFO - sel is already in database
+2025-02-12 16:47 - INFO - farine is already in database
+2025-02-12 16:47 - INFO - huile d'olive is already in database
+2025-02-12 16:47 - INFO - eau is already in database
+2025-02-12 16:47 - INFO - cumin is already in database
+2025-02-12 16:47 - INFO - muscade is already in database
+2025-02-12 16:47 - INFO - crème fraîche is already in database
+2025-02-12 16:47 - INFO - oignons is already in database
+2025-02-12 16:47 - INFO - poireaux is already in database
+2025-02-12 16:47 - INFO - carottes is already in database
+2025-02-12 16:47 - INFO - fromages de chèvre is already in database
+2025-02-12 16:47 - INFO - oeufs is already in database
+2025-02-12 16:47 - INFO - lait is already in database
+2025-02-12 16:47 - INFO - Ingredients list of recipe n°00063836 clean
+2025-02-12 16:47 - INFO - Quantities added for recipe n°00063836
+2025-02-12 16:50 - INFO - file_cache is only supported with oauth2client<4.0.0
