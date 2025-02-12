@@ -171,3 +171,24 @@ botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling t
 2025-02-12 11:43 - INFO - jaunes d'oeuf is already in database
 2025-02-12 11:43 - INFO - Ingredients list of recipe n°00036499 clean
 2025-02-12 11:43 - INFO - Quantities added for recipe n°00036499
+2025-02-12 12:16 - INFO - Glaçage royal pour déco polystirène was successfully add to database
+2025-02-12 12:16 - INFO - Steps were successfully add to database
+2025-02-12 12:16 - INFO - sucre glace is already in database
+2025-02-12 12:16 - INFO - blanc d'oeuf is already in database
+2025-02-12 12:16 - INFO - jus de citron is already in database
+2025-02-12 12:16 - INFO - Ingredients list of recipe n°00167655 clean
+2025-02-12 12:16 - INFO - Quantities added for recipe n°00167655
+2025-02-12 12:34 - INFO - Gâteau à l'ananas facile was successfully add to database
+2025-02-12 12:34 - INFO - Steps were successfully add to database
+2025-02-12 12:34 - INFO - levure is already in database
+2025-02-12 12:34 - INFO - rhum is already in database
+2025-02-12 12:34 - INFO - farine is already in database
+2025-02-12 12:34 - INFO - beurre is already in database
+2025-02-12 12:34 - INFO - sucre en poudre is already in database
+2025-02-12 12:34 - INFO - Ananas was successfully add to database
+2025-02-12 12:34 - INFO - oeufs is already in database
+2025-02-12 12:34 - INFO - citrons is already in database
+2025-02-12 12:34 - INFO - sucre is already in database
+2025-02-12 12:34 - INFO - eau is already in database
+2025-02-12 12:34 - INFO - Ingredients list of recipe n°00016263 clean
+2025-02-12 12:34 - INFO - Quantities added for recipe n°00016263

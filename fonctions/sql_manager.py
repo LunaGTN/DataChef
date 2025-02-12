@@ -131,7 +131,7 @@ class SQL_recipe_manager():
 
             Return
             -----------
-            id of item
+            True if a item exist
         """
 
         with DatabaseConnection() as db_connexion:
@@ -151,7 +151,7 @@ class SQL_recipe_manager():
                 c.close()
 
 
-    def add_recipe(self, recipe_data)->None:
+    def add_recipe(self, recipe_data, catalog=True)->None:
         """
         Add recipe to recipe database 
 
@@ -181,13 +181,13 @@ class SQL_recipe_manager():
                 c = db_connexion.cursor()
 
                 request = """
-                INSERT INTO recipe (id, name, nb_person, time_preparation, time_rest, time_cooking, time_total, difficulty, cost, image_link, sweet_salt, country)
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                INSERT INTO recipe (id, name, nb_person, time_preparation, time_rest, time_cooking, time_total, difficulty, cost, image_link, sweet_salt, country, catalog)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """
             
                 datas = (
                     int(recipe_data['id']),
-                    recipe_data['name'].capitalize().replace("'", "\'\'"),
+                    recipe_data['name'].replace("'", "\'\'"),
                     int(recipe_data['nb_person']),
                     self.fomat_time(recipe_data['time_preparation']),
                     self.fomat_time(recipe_data['time_rest']),
@@ -197,7 +197,8 @@ class SQL_recipe_manager():
                     recipe_data['cost'],
                     recipe_data['image_link'],
                     recipe_data['sweet_salt'],
-                    recipe_data['country']
+                    recipe_data['country'],
+                    str(1 if catalog==True else 0)
                 )
 
                 c.execute(request, datas)
@@ -421,7 +422,7 @@ class SQL_recipe_manager():
         """
 
         if not self.check_db_by_id(id=recipe_data['id'], table="recipe"):
-            self.add_recipe(recipe_data=recipe_data)
+            self.add_recipe(recipe_data=recipe_data, catalog=True)
             self.add_steps(steps=recipe_data['steps'], id_recipe=recipe_data['id'])
             
             for ingredient in recipe_data['ingredients']:
@@ -437,14 +438,24 @@ class SQL_recipe_manager():
             self.logger.info(f"{recipe_data['title']} is already in database")
 
 
-    def get_all_recipes(self)->pd.DataFrame:
+    def get_all_recipes(self, user_id:str)->pd.DataFrame:
         """
         Return all recipes name from recipe database
+        Recipes can be on catalog or connected with user
         """
         with DatabaseConnection() as db_connexion:
             try : 
                 c = db_connexion.cursor()
-                request = 'select id, name, image_link from recipe'
+                request = f"""
+                SELECT id, name, image_link
+                FROM recipe
+                WHERE catalog=True
+                OR id in (
+                    SELECT id_recipe
+                    FROM user_recipe
+                    WHERE id_user='{user_id}'
+                    )
+                """
 
                 c.execute(request)
                 return pd.DataFrame(c.fetchall(), columns=['id', 'name', 'image_link'])
@@ -769,7 +780,7 @@ class SQL_recipe_manager():
                 c.close()
 
 
-    def add_user_recipe(self, recipe_data:dict, user_id:str)->None:
+    def add_user_recipe(self, recipe_data:dict, user_id:str)->bool:
         """
         Add user's version of recipe in recipe database.
         Call other functions to add ingredients and quantities
@@ -781,11 +792,16 @@ class SQL_recipe_manager():
             datas of the recipe
         user_id: str
             id of the user
+
+        Return
+        -------------
+        True if no problem
         """
-        print(recipe_data['id'])
+
         recipe_data['id'] = self.generate_id('recipe')
-        self.add_recipe(recipe_data=recipe_data)
-        print(recipe_data['id'])
+        recipe_data['name'] = f"👤 {recipe_data['name'].capitalize()}"
+        self.add_recipe(recipe_data=recipe_data,catalog=False)
+
         for ingredient in recipe_data['ingredients']:
             if not self.check_db_by_name(name=ingredient['name'], table='ingredient'):
                 ingredient['id'] = self.generate_id('ingredient')
@@ -797,6 +813,8 @@ class SQL_recipe_manager():
         self.add_steps(steps=recipe_data['steps'], id_recipe=recipe_data['id'])
 
         self.connect_user_recipe(id_user=str(user_id), id_recipe=recipe_data['id'])
+
+        return True
 
 
     def get_user_recipes(self, user_id:str)->pd.DataFrame:
@@ -990,7 +1008,7 @@ class SQL_recipe_manager():
                 c.close()
 
 
-    def check_recipe_in_user_book(self, user_id: str, recipe_id: int)-> bool:
+    def check_recipe_in_user_planning(self, user_id: str, recipe_id: int)-> bool:
         """
         Check if the recipe is in user's book
 
@@ -1015,6 +1033,44 @@ class SQL_recipe_manager():
                 WHERE id_user = '{user_id}'
                 AND id_recipe = {int(recipe_id)}
                 AND planner = True
+                """
+
+                c.execute(request)
+            
+                return bool(len(c.fetchall()))
+            
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+                return False
+
+            finally:
+                c.close()
+
+
+    def check_recipe_in_user_book(self, user_id: str, recipe_id: int)-> bool:
+        """
+        Check if the recipe is in user's book
+
+        Attributs
+        -------------
+        user_id: str
+            Id of the user
+        recipe_id: int
+            Id of the recipe
+
+        Return
+        -------------
+        bool
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = f"""
+                SELECT id_recipe
+                FROM user_recipe
+                WHERE id_user = '{user_id}'
+                AND id_recipe = {int(recipe_id)}
                 """
 
                 c.execute(request)

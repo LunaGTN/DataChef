@@ -29,10 +29,10 @@ for row in range(n_rows) :
     col_list = st.columns(n_cols)
     for idx, col in enumerate(col_list) :
         index = row * n_cols + idx
-        in_planner = sql_manager.check_recipe_in_user_book(user_id=user_id, recipe_id=df_user.iloc[index]['id'])
+        in_planner = sql_manager.check_recipe_in_user_planning(user_id=user_id, recipe_id=df_user.iloc[index]['id'])
         with col :  
             st.image(df_user.iloc[index]['image_link'], width=1000)
-            if st.button(label=df_user.iloc[index]['name'], key=f'but_{index}',use_container_width =True) :
+            if st.button(label=df_user.iloc[index]['name'][2:].capitalize(), key=f'but_{index}',use_container_width =True) :
                 idx = df_user.iloc[index]['id']
                 st.session_state.current_receipe = sql_manager.get_recipe_detail(idx)
                 st.switch_page("app_receipe_page.py")
@@ -44,7 +44,7 @@ if remains != 0:
     for idx, col in enumerate(col_list[0:remains]):
         with col:
             st.image(df_temp.iloc[idx]['image_link'], width=1000)
-            if st.button(label=df_temp.iloc[idx]['name'], key=f'but_{n_rows*4+idx}', use_container_width=True):
+            if st.button(label=df_temp.iloc[idx]['name'][2:].capitalize(), key=f'but_{n_rows*4+idx}', use_container_width=True):
                 idx = df_temp.iloc[idx]['id']
                 st.session_state.current_recipe = sql_manager.get_recipe_detail(id_recipe=idx)
                 st.switch_page("app_receipe_page.py")
@@ -54,7 +54,7 @@ if remains != 0:
 filtre = {k: v for k, v in st.session_state.items() if 'check' in k}
 for key, value in filtre.items():
     idx= int(re.findall('\d+', key)[0])
-    if value != sql_manager.check_recipe_in_user_book(user_id=user_id, recipe_id=df_user.iloc[idx]['id']):
+    if value != sql_manager.check_recipe_in_user_planning(user_id=user_id, recipe_id=df_user.iloc[idx]['id']):
         sql_manager.update_recipe_in_planner(
             user_id=user_id,
             recipe_id=df_user.iloc[idx]['id']

@@ -84,6 +84,7 @@ def load_data(recipe_text_list):
         dict_recipes.append(reconstitution(recette, time_diff_cost, instructions, ingredient))
     return dict_recipes
 
+
 def load_recipe(url) :
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
