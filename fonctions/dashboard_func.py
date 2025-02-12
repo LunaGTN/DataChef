@@ -83,3 +83,30 @@ def card(calculation, _title):
                     width = 400, height = 225)
 
     fig.show()
+
+def get_nb_repas(user_id)-> dict:
+    with DatabaseConnection() as db_connexion:
+        try :
+            c = db_connexion.cursor()
+            request = f""" select week_lunch, week_we 
+                        from users
+                        where id = '{user_id}'
+            ;"""
+            c.execute(request)
+            columns = ["lunch", "we"]  # Récupère les noms des colonnes
+            result = [dict(zip(columns, row)) for row in c.fetchall()]
+        finally:
+            return result
+            c.close()
+
+def nb_conso_per_recipe(user_id, data):
+    nb_repas = get_nb_repas(user_id)[0]
+    nb_recettes = data.shape[0]
+    if nb_repas['lunch'] and not nb_repas['we']:
+        return int(10 / nb_recettes)
+    elif nb_repas['we'] and not nb_repas['lunch']:
+        return int(9 /nb_recettes)
+    elif nb_repas['lunch'] and nb_repas['we']:
+        return int(14/nb_recettes)
+    else:
+        return int(5/nb_recettes)
