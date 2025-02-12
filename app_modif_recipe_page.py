@@ -18,7 +18,7 @@ def pop_up_end(msg):
 
 
 # Header / Title
-st.markdown("<h2 style='color: #DE684D;'> Modifier un recette </h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='color: #DE684D;'> Modifier une recette </h2>", unsafe_allow_html=True)
 st.write('---')
 
 # Receipe Selection

@@ -7,7 +7,7 @@ sql_manager = SQL_recipe_manager()
 user_id = st.session_state.user_info['id']
 
 # Header / Title
-st.markdown("<h2 style='color: #DE684D;'> Recettes </h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='color: #DE684D;'> Consulter une recette </h2>", unsafe_allow_html=True)
 st.write('---')
 
 
