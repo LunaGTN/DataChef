@@ -8,7 +8,7 @@ df = sql_manager.get_all_recipes()
 receipe_list = list(zip(df['name'].values,df['image_link'].values))
 
 # Header / Title
-st.markdown("<h2 style='color: #DE684D;'>Bienvenue sur Data Chef !</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='color: #DE684D;'>Le catalogue de recettes !</h2>", unsafe_allow_html=True)
 st.write("---")
 
 # Recipe suggestion
