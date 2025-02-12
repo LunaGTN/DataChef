@@ -24,7 +24,7 @@ planned_recipes = sql_manager.request_planner(user_id=user_id)
 planned_recipes.reset_index(drop=True, inplace=True)
 
 # Header / Title
-st.markdown("<h2 style='color: #DE684D;'> Mes menus de la semaine</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='color: #DE684D;'> Mon menu de la semaine</h2>", unsafe_allow_html=True)
 st.write('---')
 
 # Size choice for each meal

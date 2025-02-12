@@ -382,7 +382,7 @@ class SQL_recipe_manager():
                 c.close()
 
 
-    def manage_recipe(self, recipe_data:json)-> None:
+    def manage_recipe(self, recipe_data :json)-> None:
         """
         Add recipe to recipe database 
         Add ingredients to ingredient database

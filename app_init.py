@@ -18,6 +18,7 @@ pages = {
     "Livre de recettes": [
         st.Page("app_receipe_page.py", title="Consulter une recette"),
         st.Page("app_modif_recipe_page.py", title="Modifier une recette"),
+        st.Page("app_add_recipe.py", title="Récupérer une recette"),
         st.Page("app_suggestions_page.py", title="Suggestions")
     ],
     "Ma semaine" :[
