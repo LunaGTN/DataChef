@@ -952,7 +952,7 @@ class SQL_recipe_manager():
                 c.close()
 
 
-    def update_recipe_in_planner(self, user_id: str, recipe_id: int)-> bool:
+    def update_recipe_in_planner(self, user_id: str, recipe_id: int):
         """
         Update planner status of a recipe
 
@@ -980,11 +980,11 @@ class SQL_recipe_manager():
 
                 c.execute(request)
                 db_connexion.commit()
-                return True
+                #return True
             
             except psycopg2.OperationalError as err:
                 self.logger.error(f"Select error: {err}")
-                return False
+                #return False
 
             finally:
                 c.close()
@@ -1014,6 +1014,7 @@ class SQL_recipe_manager():
                 FROM user_recipe
                 WHERE id_user = '{user_id}'
                 AND id_recipe = {int(recipe_id)}
+                AND planner = True
                 """
 
                 c.execute(request)
@@ -1051,7 +1052,7 @@ class SQL_recipe_manager():
                 c = db_connexion.cursor()
                 request = f"""
                 UPDATE user_recipe
-                SET planner = NOT planner
+                SET planner = True
                 WHERE id_user = '{user_id}'
                 AND id_recipe = {int(recipe_id)}
                 """
