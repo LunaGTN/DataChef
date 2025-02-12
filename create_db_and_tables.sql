@@ -65,6 +65,8 @@ CREATE TABLE user_recipe(
 	id_user VARCHAR(255) NOT NULL,
 	id_recipe INT NOT NULL,
 	planner BOOLEAN,
+	lunch_size int default 0,
+	dinner_size int default 0,
 	FOREIGN KEY(id_user) REFERENCES users(id),
 	FOREIGN KEY(id_recipe) REFERENCES recipe(id),
 	PRIMARY KEY(id_recipe, id_user)

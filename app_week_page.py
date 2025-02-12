@@ -1,5 +1,6 @@
-import streamlit as st
 from fonctions.sql_manager import SQL_recipe_manager
+import re
+import streamlit as st
 
 sql_manager = SQL_recipe_manager()
 
@@ -108,27 +109,42 @@ for idx, recipe in planned_recipes.iterrows():
         st.write("Soir")
     with col_2 :
         st.write('')
-        lunch_user_count += st.number_input(label="Midi", min_value=0, max_value=20, value=0, key=f"recipe_{idx}_lunch_size")
-        dinner_user_count += st.number_input(label="Soir", min_value=0, max_value=20, value=0, key=f"recipe_{idx}_dinner_size")
+        lunch_user_count += st.number_input(label="Midi", min_value=0, max_value=20, value=recipe['lunch_size'], key=f"recipe_{recipe['id']}_lunch_size")
+        dinner_user_count += st.number_input(label="Soir", min_value=0, max_value=20, value=recipe['dinner_size'], key=f"recipe_{recipe['id']}_dinner_size")
 
 st.write('---')
 
-# Display meals to plan
+# Display meals to plan and save button
+
+col_1, col_2 = st.columns(2)
+
 lunch_count_size -= lunch_user_count
 dinner_count_size -= dinner_user_count
-if lunch_count_size == 0 :
-    st.markdown(f'##### ✅ Tous vos repas de midi sont prévus', unsafe_allow_html=True)
-elif lunch_count_size < 0 :
-    st.markdown(f'##### ❌ <span style="color: red">Trop de parts pour les repas du midi</span>', unsafe_allow_html=True)
-else :
-    st.markdown(f'##### Il reste <span style="color: #DE684D">**{lunch_count_size} parts**</span> à prévoir pour les repas de midi', unsafe_allow_html=True)
-if dinner_count_size == 0 :
-    st.markdown(f'##### ✅ Tous vos repas du soir sont prévus', unsafe_allow_html=True)
-elif dinner_count_size <0 :
-    st.markdown(f'##### ❌ <span style="color: red">Trop de parts pour les repas du soir</span>', unsafe_allow_html=True)
-else :
-    st.write(f'##### Il reste <span style="color: #DE684D">**{dinner_count_size} parts**</span> à prévoir pour les repas du soir', unsafe_allow_html=True)
 
+with col_1:
+    if lunch_count_size == 0 :
+        st.markdown(f'##### ✅ Tous vos repas de midi sont prévus', unsafe_allow_html=True)
+    elif lunch_count_size < 0 :
+        st.markdown(f'##### ❌ <span style="color: red">Trop de parts pour les repas du midi</span>', unsafe_allow_html=True)
+    else :
+        st.markdown(f'##### Il reste <span style="color: #DE684D">**{lunch_count_size} parts**</span> à prévoir pour les repas de midi', unsafe_allow_html=True)
+    if dinner_count_size == 0 :
+        st.markdown(f'##### ✅ Tous vos repas du soir sont prévus', unsafe_allow_html=True)
+    elif dinner_count_size <0 :
+        st.markdown(f'##### ❌ <span style="color: red">Trop de parts pour les repas du soir</span>', unsafe_allow_html=True)
+    else :
+        st.write(f'##### Il reste <span style="color: #DE684D">**{dinner_count_size} parts**</span> à prévoir pour les repas du soir', unsafe_allow_html=True)
+
+with col_2:
+    if st.button("Sauvegarder mes portions", icon='💾'):
+        # Filter les portions dans le session state
+        filtre = {k: v for k, v in st.session_state.items() if 'dinner_size' in k or 'lunch_size' in k}
+        print(planned_recipes)
+        for key, value in filtre.items():
+            indice = int(re.findall(r'\d+', key)[0])
+            meal = 'dinner' if 'dinner' in key else 'lunch'
+            sql_manager.update_recipe_size(user_id=user_id, recipe_id=indice, meal=meal, size=value)
+        st.toast("Planning mis à jour", icon='😁')    
 
 # Style
 st.markdown('''<style>

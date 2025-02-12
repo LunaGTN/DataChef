@@ -438,7 +438,30 @@ class SQL_recipe_manager():
             self.logger.info(f"{recipe_data['title']} is already in database")
 
 
-    def get_all_recipes(self, user_id:str)->pd.DataFrame:
+    def get_all_recipes(self)->pd.DataFrame:
+        """
+        Return all recipes name from recipe database
+        """
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = f"""
+                SELECT id, name, image_link
+                FROM recipe
+                WHERE catalog=True
+                """
+
+                c.execute(request)
+                return pd.DataFrame(c.fetchall(), columns=['id', 'name', 'image_link'])
+
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+
+            finally:
+                c.close()
+
+
+    def get_all_recipes_and_user(self, user_id:str)->pd.DataFrame:
         """
         Return all recipes name from recipe database
         Recipes can be on catalog or connected with user
@@ -761,8 +784,8 @@ class SQL_recipe_manager():
             try : 
                 c = db_connexion.cursor()
                 request = """
-                INSERT INTO user_recipe (id_user, id_recipe)
-                VALUES (%s, %s)
+                INSERT INTO user_recipe (id_user, id_recipe, planner)
+                VALUES (%s, %s, FALSE)
                 """
 
                 datas = [
@@ -797,6 +820,7 @@ class SQL_recipe_manager():
         -------------
         True if no problem
         """
+
 
         recipe_data['id'] = self.generate_id('recipe')
         recipe_data['name'] = f"👤 {recipe_data['name'].capitalize()}"
@@ -888,7 +912,9 @@ class SQL_recipe_manager():
                     difficulty,
                     cost,
                     image_link,
-                    country
+                    country,
+                    ur.lunch_size,
+                    ur.dinner_size
                 FROM recipe r
                 JOIN user_recipe ur ON r.id = ur.id_recipe
                 WHERE ur.id_user = '{user_id}'
@@ -907,7 +933,9 @@ class SQL_recipe_manager():
                     'difficulty',
                     'cost',
                     'image_link',
-                    'country'
+                    'country',
+                    'lunch_size',
+                    'dinner_size'
                 ])
 
             except psycopg2.OperationalError as err:
@@ -1109,6 +1137,30 @@ class SQL_recipe_manager():
                 request = f"""
                 UPDATE user_recipe
                 SET planner = True
+                WHERE id_user = '{user_id}'
+                AND id_recipe = {int(recipe_id)}
+                """
+
+                c.execute(request)
+                db_connexion.commit()
+                return True
+            
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+                return False
+
+            finally:
+                c.close()
+
+    
+    def update_recipe_size(self, user_id:str, recipe_id:int, meal:Literal['lunch', 'dinner'], size:int):
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = f"""
+                UPDATE user_recipe
+                SET {meal}_size = {size}
                 WHERE id_user = '{user_id}'
                 AND id_recipe = {int(recipe_id)}
                 """

@@ -5,7 +5,7 @@ import re
 sql_manager = SQL_recipe_manager()
 user_id = st.session_state.user_info['id']
 
-df_user = sql_manager.get_user_recipes(user_id=st.session_state.user_info['id'])
+df_user = sql_manager.get_user_recipes(user_id=user_id)
 df_user.reset_index(drop=True, inplace=True)
 
 
@@ -32,11 +32,11 @@ for row in range(n_rows) :
         in_planner = sql_manager.check_recipe_in_user_planning(user_id=user_id, recipe_id=df_user.iloc[index]['id'])
         with col :  
             st.image(df_user.iloc[index]['image_link'], width=1000)
+            indice = df_user.iloc[index]['id']
             if st.button(label=df_user.iloc[index]['name'][2:].capitalize(), key=f'but_{index}',use_container_width =True) :
-                idx = df_user.iloc[index]['id']
-                st.session_state.current_receipe = sql_manager.get_recipe_detail(idx)
+                st.session_state.current_receipe = sql_manager.get_recipe_detail(indice)
                 st.switch_page("app_receipe_page.py")
-            st.checkbox(label='dans le planning', value=in_planner, key=f'check_{index}')
+            st.checkbox(label='dans le planning', value=in_planner, key=f'check_{indice}')
            
 if remains != 0:
     col_list = st.columns(n_cols)
@@ -44,20 +44,20 @@ if remains != 0:
     for idx, col in enumerate(col_list[0:remains]):
         with col:
             st.image(df_temp.iloc[idx]['image_link'], width=1000)
+            indice = df_temp.iloc[idx]['id']
             if st.button(label=df_temp.iloc[idx]['name'][2:].capitalize(), key=f'but_{n_rows*4+idx}', use_container_width=True):
-                idx = df_temp.iloc[idx]['id']
-                st.session_state.current_recipe = sql_manager.get_recipe_detail(id_recipe=idx)
+                st.session_state.current_recipe = sql_manager.get_recipe_detail(id_recipe=indice)
                 st.switch_page("app_receipe_page.py")
-            st.checkbox(label='dans le planning', value=in_planner, key=f'check_{n_rows*4+idx}')
+            st.checkbox(label='dans le planning', value=in_planner, key=f'check_{indice}')
 
 
 filtre = {k: v for k, v in st.session_state.items() if 'check' in k}
 for key, value in filtre.items():
-    idx= int(re.findall('\d+', key)[0])
-    if value != sql_manager.check_recipe_in_user_planning(user_id=user_id, recipe_id=df_user.iloc[idx]['id']):
+    idx = int(re.findall(r'\d+', key)[0])
+    if value != sql_manager.check_recipe_in_user_planning(user_id=user_id, recipe_id=idx):
         sql_manager.update_recipe_in_planner(
             user_id=user_id,
-            recipe_id=df_user.iloc[idx]['id']
+            recipe_id=idx
         )
 
 # Style 

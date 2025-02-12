@@ -7,13 +7,13 @@ sql_manager = SQL_recipe_manager()
 user_id = st.session_state.user_info['id']
 
 # Header / Title
-st.markdown("<h2 style='color: #DE684D;'> Recettes </h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='color: #DE684D;'> Consulter une recette </h2>", unsafe_allow_html=True)
 st.write('---')
 
 
 # Receipe Selection
     # Receipe list creation for the selectbox
-df = sql_manager.get_all_recipes(user_id=user_id)
+df = sql_manager.get_all_recipes_and_user(user_id=user_id)
 receipe_list = list(df['name'].values)
 
     # Selectbox for receipe choice
