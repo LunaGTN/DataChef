@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import plotly.express as px
 import matplotlib.pyplot as plt
-from fonctions.dashboard_func import get_weekly_recipe, get_weekly_ingredient, metric_system, conversion, card
+from fonctions.dashboard_func import get_weekly_recipe, get_weekly_ingredient, metric_system, conversion, card, nb_conso_per_recipe,get_nb_repas
 
 user_id = st.session_state['user_info']['id']
 
@@ -54,12 +54,11 @@ with st.expander("Explications"):
 
 data_ingredient = get_weekly_ingredient(str(user_id))
 
-
 dico_qtity = []  # Liste pour stocker les nouvelles quantités d'ingrédients
-conso_recette_hebdo = 2  # Nombre de fois que la personne consomme chaque recette 🟥🟥🟥 intégrer la formule
+conso_recette_hebdo = nb_conso_per_recipe(user_id,recettes_hebdo)  # Nombre de fois que la personne consomme chaque recette
+
 for ingredient in data_ingredient:
     quantity_g = metric_system(ingredient)
-
     # Normalisation à 1 personne et ajustement pour la consommation hebdomadaire
     normalized_quantity = round((quantity_g /ingredient['nb_person']) * conso_recette_hebdo)
     if ingredient["category"] != 'Autre':  # Exclusion des catégories "Autre"
@@ -102,5 +101,6 @@ with st.expander("Explications"):
             Cette visualisation vous montre les ingrédients qui apparaissent le plus souvent dans
             vos repas, vous permettant ainsi de mieux comprendre les tendances de votre alimentation hebdomadaire. """)
      
-
-st.write(st.session_state)
+card(recettes_hebdo['prepa'].mean(), 'Temps de préparation moyen')
+card(recettes_hebdo['prepa'].sum(), 'Temps de préparation Total')
+card(recettes_hebdo['cuisson'].sum(), 'Temps de cuisson Total')
