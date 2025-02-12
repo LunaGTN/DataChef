@@ -4,6 +4,7 @@ from time import sleep
 
 
 sql_manager = SQL_recipe_manager()
+user_id = st.session_state.user_info['id']
 
 # Pop up recette enregistrée
 def pop_up_start():
@@ -22,7 +23,7 @@ st.write('---')
 
 # Receipe Selection
     # Receipe list creation for the selectbox
-df = sql_manager.get_all_recipes()
+df = sql_manager.get_all_recipes(user_id=user_id)
 receipe_list = list(df['name'].values)
 
     # Selectbox for receipe choice

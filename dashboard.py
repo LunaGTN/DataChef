@@ -56,7 +56,7 @@ data_ingredient = get_weekly_ingredient(str(user_id))
 
 
 dico_qtity = []  # Liste pour stocker les nouvelles quantités d'ingrédients
-conso_recette_hebdo = 2  # Nombre de fois que la personne consomme chaque recette ⚠️ intégrer la formule
+conso_recette_hebdo = 2  # Nombre de fois que la personne consomme chaque recette 🟥🟥🟥 intégrer la formule
 for ingredient in data_ingredient:
     quantity_g = metric_system(ingredient)
 
@@ -103,3 +103,4 @@ with st.expander("Explications"):
             vos repas, vous permettant ainsi de mieux comprendre les tendances de votre alimentation hebdomadaire. """)
      
 
+st.write(st.session_state)

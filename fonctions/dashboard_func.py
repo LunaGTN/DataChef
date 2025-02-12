@@ -1,6 +1,6 @@
 from fonctions.sql_manager import  DatabaseConnection
 import plotly.graph_objects as go
-import plotly_express as px
+import plotly.express as px
 
 color_palet = px.colors.sequential.RdBu
 
