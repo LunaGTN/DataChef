@@ -35,20 +35,22 @@ st.multiselect('Choisir un ou plusieurs régime(s) alimentaire(s) spécifique(s)
 st.write("---")
 
 # Save button
-if st.button('Enregistrer') :
+if st.button('💾 **Enregistrer**',key='save') :
     st.session_state.profil_parameters['size'] = st.session_state['size_test']
     st.session_state.profil_parameters['lunch'] = st.session_state['lunch_selec']
     st.session_state.profil_parameters['weekend'] = st.session_state['weekend_selec']
     st.session_state.profil_parameters['diet'] = st.session_state['diet']
     sql_manager.add_user_info(st.session_state.user_info, st.session_state.profil_parameters)
 
-# Il reste à sauvegarder les variables np_person et diet dans la BDD
 
+# Style 
 st.markdown('''<style>
             [data-baseweb='input'] {width:50px; text-align: center}
             [data-baseweb='select'] {width:300px;}
             input {text-align: center}
+            .st-key-save button {background : #f4846a;color:black}
+            .st-key-save :hover  {color : white}
             </style>''', unsafe_allow_html=True)
 
 
-st.write(','.join(st.session_state['diet']))
+

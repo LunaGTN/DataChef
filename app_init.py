@@ -43,14 +43,12 @@ authenticator = Authenticate(
 
 authenticator.check_authentification()
 
-
-
 with st.sidebar:
     if st.session_state['connected']:
         user_info = st.session_state['user_info']
         if not sql_manager.check_db_by_id(id=user_info['id'], table='users'):
             sql_manager.add_user(user_info=user_info)
-        if st.button('Se déconnecter'): 
+        if st.button("**Se déconnecter**",key='logout'): 
             authenticator.logout()
     else:
         authenticator.login()
@@ -59,3 +57,9 @@ _, mid, _ = st.columns([1,15,1])
 with mid :
     st.session_state.pg = st.navigation(pages)
     st.session_state.pg.run()
+
+
+# Style 
+st.markdown('''<style>
+            .st-key-logout {text-align: center}
+            </style>''', unsafe_allow_html=True)

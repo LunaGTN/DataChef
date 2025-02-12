@@ -91,26 +91,25 @@ st.markdown("<h5 '> Choisir des recettes pour la semaine </h5>", unsafe_allow_ht
 st.write(" ")
 
 for idx, recipe in planned_recipes.iterrows():
-    col_1, col_2, col_3 = st.columns([0.4, 0.01, 0.5])
+    _, col,_ = st.columns([3,10,3])
+    with col :
+        st.write('---')
+        st.markdown(f"**{recipe['name']}**")
+        st.write('')
+    _, col_1, col_2, col_3, _ = st.columns([2, 3, 2, 1, 5])
     with col_1:
-        st.image(recipe['image_link'])
+        st.image(recipe['image_link'],width=250)
         st.write('')
     with col_3:
-        st.markdown(f"**{recipe['name']}**")
-        col_a, col_b = st.columns([0.1, 0.8], vertical_alignment='center')
-        with col_a:
-            st.write("Midi")
-        with col_b:
-            lunch_user_count += st.number_input(label="Midi", min_value=0, max_value=20, value=0, key=f"recipe_{idx}_lunch_size")
-            st.write('')
-        col_a, col_b = st.columns([0.1, 0.8])
-        with col_a:
-            st.write("Soir")
-        with col_b:
-            dinner_user_count += st.number_input(label="Soir", min_value=0, max_value=20, value=0, key=f"recipe_{idx}_dinner_size")
-        
+        st.write('')
+        st.write("Midi")
         st.write('')
         st.write('')
+        st.write("Soir")
+    with col_2 :
+        st.write('')
+        lunch_user_count += st.number_input(label="Midi", min_value=0, max_value=20, value=0, key=f"recipe_{idx}_lunch_size")
+        dinner_user_count += st.number_input(label="Soir", min_value=0, max_value=20, value=0, key=f"recipe_{idx}_dinner_size")
 
 st.write('---')
 
@@ -131,11 +130,6 @@ else :
     st.write(f'##### Il reste <span style="color: #DE684D">**{dinner_count_size} parts**</span> à prévoir pour les repas du soir', unsafe_allow_html=True)
 
 
-
-st.write(planned_recipes)
-
-
-
 # Style
 st.markdown('''<style>
             [data-baseweb='input'] {width:40px; text-align: center}
@@ -143,6 +137,8 @@ st.markdown('''<style>
             [data-testid='stNumberInputContainer'] {justify-content: center;}
             input {text-align: center}
             .stNumberInput label {display: none;}
+            p {text-align: center;margin: auto auto}
+            .stNumberInput > div {margin : auto}
             </style>''', unsafe_allow_html=True)
 
 #p {text-align: center;margin: auto auto}

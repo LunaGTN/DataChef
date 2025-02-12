@@ -112,7 +112,7 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
 
     st.write('---')
 
-    if st.button('Ajouter à mon livre de recette',key='button_save'):
+    if st.button('📘 **Ajouter à mon livre de recette**',key='button_save'):
         msg = pop_up_start()
         sql_manager.add_user_recipe(
             recipe_data=st.session_state['current_receipe'],
@@ -125,7 +125,8 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
                 .st-key-ing_container label {display: none;}
                 .st-key-step_container label {display: none;}
                 .st-key-button_save {text-align: center}
-                .st-key-button_save button {background : #f4846a}
+                .st-key-button_save button {background : #f4846a;color:black}
+                .st-key-button_save :hover  {color : white}
                 </style>''', unsafe_allow_html=True)
 
 # .st-key-step_container input {background-color: #DE684D;}
