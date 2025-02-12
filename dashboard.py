@@ -4,8 +4,10 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 from fonctions.dashboard_func import get_weekly_recipe, get_weekly_ingredient, metric_system, conversion, card
 
+user_id = st.session_state['user_info']['id']
+
 color_palet = px.colors.sequential.RdBu
-recettes_hebdo = pd.DataFrame(get_weekly_recipe("107579467101447351226")) #⚠️ remplacer par session.state ??
+recettes_hebdo = pd.DataFrame(get_weekly_recipe(str(user_id))) 
 
 # Pie chart Nationalité
 data_origin = recettes_hebdo['pays'].value_counts()
@@ -50,7 +52,7 @@ with st.expander("Explications"):
 
 # Quantité par catégories
 
-data_ingredient = get_weekly_ingredient('107579467101447351226')
+data_ingredient = get_weekly_ingredient(str(user_id))
 
 
 dico_qtity = []  # Liste pour stocker les nouvelles quantités d'ingrédients
