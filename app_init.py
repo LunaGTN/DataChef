@@ -9,7 +9,7 @@ from fonctions.sql_manager import SQL_recipe_manager
 sql_manager = SQL_recipe_manager()
 
 st.set_page_config(layout="wide")
-st.write(st.session_state)
+
 pages = {
     ' ':[st.Page("app_home_page.py", title="Accueil")],
     "Mon compte": [
