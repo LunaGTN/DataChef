@@ -116,8 +116,16 @@ st.markdown('''<style>
             .st-key-button-add button {background : #f4846a;color:}
             .st-key-button-add :hover  {color : white}
             .st-key-button_add_week {text-align: center}
+<<<<<<< Updated upstream
             .st-key-button_add_week button {background : #f4846a;color:black}
             .st-key-button_add_week :hover  {color : white}
+=======
+            .st-key-button_add_week button {background : #f4846a;color: white}
+            .st-key-button_add_week :hover  {color : #383838}
+            .st-key-button_add_book {text-align: center}
+            .st-key-button_add_book button {background : #f4846a;color: white}
+            .st-key-button_add_book :hover  {color : #383838}
+>>>>>>> Stashed changes
             [data-baseweb='input'] {background-color: #f4846a; width:50px;}
             </style>''', unsafe_allow_html=True)
 
