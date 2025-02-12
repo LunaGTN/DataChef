@@ -1,4 +1,5 @@
 from bs4 import BeautifulSoup
+import requests
 
 
 def info_recettes(_soup):
@@ -11,7 +12,7 @@ def info_recettes(_soup):
     image_link = _soup.find('img',{"class":"lazyload mrtn-print-only"}).get("data-src")
     nb_person = _soup.find("div",{"class":'mrtn-recette_ingredients-counter'}).get("data-servingsnb")
     return {
-        "title":titre,
+        "titre":titre,
         "id": id,
         "time_preparation" : time_preparation,
         "time_repos" : time_rest,
@@ -81,4 +82,15 @@ def load_data(recipe_text_list):
         instructions = instructions(soup)
         ingredient = ingredient(soup)
         dict_recipes.append(reconstitution(recette, time_diff_cost, instructions, ingredient))
+    return dict_recipes
+
+def load_recipe(url) :
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    dict_recipes= []
+    recette = info_recettes(soup)
+    time_diff_cost = get_time_diff_cost(soup)
+    instructions = get_instructions(soup)
+    ingredient = get_ingredient(soup)
+    dict_recipes.append(reconstitution(recette, time_diff_cost, instructions, ingredient))
     return dict_recipes

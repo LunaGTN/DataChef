@@ -129,3 +129,45 @@ botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling t
 2025-02-11 14:47 - INFO - Ingredients list of recipe n°17591 clean
 2025-02-11 14:47 - INFO - Quantities added for recipe n°17591
 2025-02-11 14:47 - INFO - Steps were successfully add to database
+2025-02-12 10:58 - WARNING - Compute Engine Metadata server unavailable on attempt 1 of 3. Reason: [WinError 10051] Une opération a été tentée sur un réseau impossible à atteindre
+2025-02-12 10:58 - WARNING - Compute Engine Metadata server unavailable on attempt 2 of 3. Reason: [WinError 10051] Une opération a été tentée sur un réseau impossible à atteindre
+2025-02-12 10:58 - WARNING - Compute Engine Metadata server unavailable on attempt 3 of 3. Reason: [WinError 10051] Une opération a été tentée sur un réseau impossible à atteindre
+2025-02-12 10:58 - WARNING - Authentication failed using Compute Engine authentication due to unavailable metadata server.
+2025-02-12 11:20 - WARNING - Compute Engine Metadata server unavailable on attempt 1 of 3. Reason: [WinError 10051] Une opération a été tentée sur un réseau impossible à atteindre
+2025-02-12 11:20 - WARNING - Compute Engine Metadata server unavailable on attempt 2 of 3. Reason: [WinError 10051] Une opération a été tentée sur un réseau impossible à atteindre
+2025-02-12 11:21 - WARNING - Compute Engine Metadata server unavailable on attempt 3 of 3. Reason: [WinError 10051] Une opération a été tentée sur un réseau impossible à atteindre
+2025-02-12 11:21 - WARNING - Authentication failed using Compute Engine authentication due to unavailable metadata server.
+2025-02-12 11:22 - WARNING - Compute Engine Metadata server unavailable on attempt 1 of 3. Reason: [WinError 10051] Une opération a été tentée sur un réseau impossible à atteindre
+2025-02-12 11:22 - WARNING - Compute Engine Metadata server unavailable on attempt 2 of 3. Reason: [WinError 10051] Une opération a été tentée sur un réseau impossible à atteindre
+2025-02-12 11:22 - WARNING - Compute Engine Metadata server unavailable on attempt 3 of 3. Reason: [WinError 10051] Une opération a été tentée sur un réseau impossible à atteindre
+2025-02-12 11:22 - WARNING - Authentication failed using Compute Engine authentication due to unavailable metadata server.
+2025-02-12 11:22 - WARNING - Compute Engine Metadata server unavailable on attempt 1 of 3. Reason: [WinError 10051] Une opération a été tentée sur un réseau impossible à atteindre
+2025-02-12 11:22 - WARNING - Compute Engine Metadata server unavailable on attempt 2 of 3. Reason: [WinError 10051] Une opération a été tentée sur un réseau impossible à atteindre
+2025-02-12 11:22 - WARNING - Compute Engine Metadata server unavailable on attempt 3 of 3. Reason: [WinError 10051] Une opération a été tentée sur un réseau impossible à atteindre
+2025-02-12 11:22 - WARNING - Authentication failed using Compute Engine authentication due to unavailable metadata server.
+2025-02-12 11:23 - WARNING - Compute Engine Metadata server unavailable on attempt 1 of 3. Reason: [WinError 10051] Une opération a été tentée sur un réseau impossible à atteindre
+2025-02-12 11:23 - WARNING - Compute Engine Metadata server unavailable on attempt 2 of 3. Reason: [WinError 10051] Une opération a été tentée sur un réseau impossible à atteindre
+2025-02-12 11:23 - WARNING - Compute Engine Metadata server unavailable on attempt 3 of 3. Reason: [WinError 10051] Une opération a été tentée sur un réseau impossible à atteindre
+2025-02-12 11:23 - WARNING - Authentication failed using Compute Engine authentication due to unavailable metadata server.
+2025-02-12 11:39 - INFO - chaussons de pommes au foie gras was successfully add to database
+2025-02-12 11:39 - INFO - Steps were successfully add to database
+2025-02-12 11:39 - INFO - sel is already in database
+2025-02-12 11:39 - INFO - poivre is already in database
+2025-02-12 11:39 - INFO - farine is already in database
+2025-02-12 11:39 - INFO - pâte feuilletée is already in database
+2025-02-12 11:39 - INFO - Foie gras is already in database
+2025-02-12 11:39 - INFO - pommes is already in database
+2025-02-12 11:39 - INFO - Fond de volaille was successfully add to database
+2025-02-12 11:39 - INFO - cidre is already in database
+2025-02-12 11:39 - INFO - oeufs is already in database
+2025-02-12 11:39 - INFO - beurre demi-sel is already in database
+2025-02-12 11:39 - INFO - Ingredients list of recipe n°00026149 clean
+2025-02-12 11:39 - INFO - Quantities added for recipe n°00026149
+2025-02-12 11:43 - INFO - Chausson aux pommes facile was successfully add to database
+2025-02-12 11:43 - INFO - Steps were successfully add to database
+2025-02-12 11:43 - INFO - pâtes brisées is already in database
+2025-02-12 11:43 - INFO - pâtes feuilletées is already in database
+2025-02-12 11:43 - INFO - pommes is already in database
+2025-02-12 11:43 - INFO - jaunes d'oeuf is already in database
+2025-02-12 11:43 - INFO - Ingredients list of recipe n°00036499 clean
+2025-02-12 11:43 - INFO - Quantities added for recipe n°00036499

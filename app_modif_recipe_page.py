@@ -121,8 +121,6 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
         pop_up_end(msg)
 
 
-
-
     st.markdown('''<style>
                 .st-key-ing_container label {display: none;}
                 .st-key-step_container label {display: none;}
