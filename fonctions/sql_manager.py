@@ -912,7 +912,9 @@ class SQL_recipe_manager():
                     difficulty,
                     cost,
                     image_link,
-                    country
+                    country,
+                    ur.lunch_size,
+                    ur.dinner_size
                 FROM recipe r
                 JOIN user_recipe ur ON r.id = ur.id_recipe
                 WHERE ur.id_user = '{user_id}'
@@ -931,7 +933,9 @@ class SQL_recipe_manager():
                     'difficulty',
                     'cost',
                     'image_link',
-                    'country'
+                    'country',
+                    'lunch_size',
+                    'dinner_size'
                 ])
 
             except psycopg2.OperationalError as err:
@@ -1133,6 +1137,30 @@ class SQL_recipe_manager():
                 request = f"""
                 UPDATE user_recipe
                 SET planner = True
+                WHERE id_user = '{user_id}'
+                AND id_recipe = {int(recipe_id)}
+                """
+
+                c.execute(request)
+                db_connexion.commit()
+                return True
+            
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+                return False
+
+            finally:
+                c.close()
+
+    
+    def update_recipe_size(self, user_id:str, recipe_id:int, meal:Literal['lunch', 'dinner'], size:int):
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = f"""
+                UPDATE user_recipe
+                SET {meal}_size = {size}
                 WHERE id_user = '{user_id}'
                 AND id_recipe = {int(recipe_id)}
                 """
