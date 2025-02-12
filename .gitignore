@@ -8,3 +8,5 @@ fake_recipe.py
 *.pyc
 *.log
 *.ipynb
+notebook_manage_sql.ipynb
+notebook_manage_sql.ipynb

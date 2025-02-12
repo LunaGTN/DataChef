@@ -1,9 +1,10 @@
 from fonctions.sql_manager import SQL_recipe_manager
 import streamlit as st
 from streamlit_extras.stylable_container import stylable_container
+from time import sleep
 
 sql_manager = SQL_recipe_manager()
-
+user_id = st.session_state.user_info['id']
 
 # Header / Title
 st.markdown("<h2 style='color: #DE684D;'> Recettes </h2>", unsafe_allow_html=True)
@@ -12,7 +13,7 @@ st.write('---')
 
 # Receipe Selection
     # Receipe list creation for the selectbox
-df = sql_manager.get_all_recipes()
+df = sql_manager.get_all_recipes(user_id=user_id)
 receipe_list = list(df['name'].values)
 
     # Selectbox for receipe choice
@@ -86,11 +87,23 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
     st.write('---')
     cols = st.columns (2)
     with cols[0] :
-        if st.button("📘 **Ajouter la recette à mon livre de recette**",key='button-add') :
+        if st.button("**Personnaliser la recette**",key='button-add', icon='✏️') :
             st.switch_page("app_modif_recipe_page.py")
     with cols[1] :
-        if st.button('📆 **Ajouter à mon menu de la semaine**',key='button_add_week') :
-            st.write("app_modif_recipe_page.py")
+        recipe_id=st.session_state.current_receipe['id']
+        if sql_manager.check_recipe_in_user_book(user_id=user_id, recipe_id=recipe_id):
+            if st.button('**Ajouter à mon menu de la semaine**',key='button_add_week', icon='📆') :
+                msg = st.toast('Préparation...', icon='🧑‍🍳')
+                sleep(1)
+                if sql_manager.add_recipe_to_planner(user_id=user_id, recipe_id=recipe_id):
+                    msg.toast('Recette ajoutée à mon planning', icon = '✅')
+        else:
+            if st.button('**Ajouter à mon livre**',key='button_add_book', icon='📕') :
+                msg = st.toast('Préparation...', icon='🧑‍🍳')
+                if sql_manager.add_user_recipe(recipe_data=sql_manager.get_recipe_detail(recipe_id), user_id=user_id):
+                    st.toast('Recette ajoutée à mon livre', icon = '✅')
+            #st.switch_page("app_modif_recipe_page.py")
+
 
 # Style 
 st.markdown('''<style>
