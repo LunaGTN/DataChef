@@ -13,13 +13,14 @@ st.markdown("<h2 style='color: #DE684D;'> Ajouter une recette Marmiton</h2>", un
 st.write('---')
 
 def run_scraping():
+    st.toast('Import de la recette...', icon='🔪')
     new_recipe = load_recipe(st.session_state.url)[0]
     new_recipe['name'] = new_recipe['titre']
     new_recipe['time_rest'] = new_recipe["time_repos"]
     new_recipe['time_cooking'] = new_recipe["time_cuisson"]
     new_recipe['image_link'] = new_recipe["image"]
     sql_manager.manage_recipe(recipe_data = new_recipe)
-
+    st.toast('Recette importée avec succès', icon='✅')
 
 # Url 
 st.markdown("<h5 '> Saisir l'URL de la recette Marmiton :</h5>", unsafe_allow_html=True)
