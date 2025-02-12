@@ -984,9 +984,11 @@ class SQL_recipe_manager():
                 UPDATE users
                 SET nb_person = {profil_parameters['size']},
                     week_lunch = {profil_parameters['lunch']} ,
-                    week_we = {profil_parameters['weekend']}
+                    week_we = {profil_parameters['weekend']},
+                    diet = '{', '.join(profil_parameters['diet'])}'
                 WHERE id = '{user_info['id']}'
                 """
+                print(f"{request =}")
 
                 c.execute(request)
                 db_connexion.commit()
