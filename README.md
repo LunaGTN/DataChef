@@ -8,22 +8,21 @@
   -  Step 3 : AI API Requests to add features on recipes
   -  Step 3 : Create a functional application
     
-- 🔧 **Tools :** Python, Pandas, Streamlit, Web-Scraping, AI-API, Cloud(AWS)
-\
+- 🔧 **Tools :** Python, Pandas, Streamlit, Web-Scraping, AI-API, Cloud(AWS)  
+<br>
 
- 
 ## 👋 Contributors
 
-&nbsp;&nbsp;&nbsp; 👩 [Luna](https://github.com/LunaGTN)  &nbsp;&nbsp;&nbsp;   🧑 [Romain](https://github.com/Romain-Data)  &nbsp;&nbsp;&nbsp;  🧑 [Thibaud](https://github.com/Thibaud-TR)
-\
+&nbsp;&nbsp;&nbsp; 👩 [Luna](https://github.com/LunaGTN)  &nbsp;&nbsp;&nbsp;   🧑 [Romain](https://github.com/Romain-Data)  &nbsp;&nbsp;&nbsp;  🧑 [Thibaud](https://github.com/Thibaud-TR)\
+<br>
 
 
 ## 📂 Repository structure
 
-📄 requirements.txt  &nbsp;&nbsp;# for dependency management\
-📄 app_page_....py  &nbsp;&nbsp;# streamlit script for every page on the app\
+📄 *requirements.txt*  &nbsp;&nbsp;# Dependency management\
+📄 *app_page_ ... .py*  &nbsp;&nbsp;# Streamlit script for every page of the app\
+📄 *scrapping.ipynb*  &nbsp;&nbsp;# Notebook for scraping test\
 📁 **fonctions** \
-│── 📄 sql_manager.py &nbsp;&nbsp; # Functions for interacting with the AWS RDS Database \
-│── 📄 gemini.py  &nbsp;&nbsp;# Functions for interacting with AI API (Google Gemini) \
-│── 📄 dashboard_func.py &nbsp;&nbsp;# Functions for dashboard creation \
- 
+│── 📄 *sql_manager.py* &nbsp;&nbsp; # Functions for interacting with the AWS RDS Database \
+│── 📄 *gemini.py*  &nbsp;&nbsp;# Functions for interacting with AI API (Google Gemini) \
+│── 📄 *dashboard_func.py* &nbsp;&nbsp;# Functions for dashboard creation 
