@@ -1029,7 +1029,7 @@ class SQL_recipe_manager():
         self.update_quantity(ingredients=recipe_data['ingredients'], id_recipe=recipe_data['id'])
 
         self.update_steps(steps=recipe_data['steps'], id_recipe=recipe_data['id'])
-        
+
         return True
 
 
@@ -1177,10 +1177,9 @@ class SQL_recipe_manager():
                 SET nb_person = {profil_parameters['size']},
                     week_lunch = {profil_parameters['lunch']} ,
                     week_we = {profil_parameters['weekend']},
-                    diet = '{', '.join(profil_parameters['diet'])}'
+                    diet = '{','.join(profil_parameters['diet'])}'
                 WHERE id = '{user_info['id']}'
                 """
-                print(f"{request =}")
 
                 c.execute(request)
                 db_connexion.commit()
