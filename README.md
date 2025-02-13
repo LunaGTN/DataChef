@@ -20,10 +20,10 @@
 
 ## 📂 Repository structure
 
-📄 requirements.txt  # for dependency management
-📄 app_page_....py  # streamlit script for every page on the app
+📄 requirements.txt  &nbsp;&nbsp;# for dependency management\
+📄 app_page_....py  &nbsp;&nbsp;# streamlit script for every page on the app\
 📁 **fonctions** \
-│── 📄 sql_manager.py  # Functions for interacting with the AWS RDS Database \
-│── 📄 gemini.py  # Functions for interacting with AI API (Google Gemini) \
-│── 📄 dashboard_func.py # Functions for dashboard creation \
+│── 📄 sql_manager.py &nbsp;&nbsp; # Functions for interacting with the AWS RDS Database \
+│── 📄 gemini.py  &nbsp;&nbsp;# Functions for interacting with AI API (Google Gemini) \
+│── 📄 dashboard_func.py &nbsp;&nbsp;# Functions for dashboard creation \
  
