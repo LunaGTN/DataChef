@@ -4,8 +4,6 @@ import streamlit as st
 
 sql_manager = SQL_recipe_manager()
 
-# 🟥🟥🟥🟥 Il faut régler le pb des paramètres qui reviennent par défaut quand on change de page 🟥🟥🟥🟥
-
 data = sql_manager.get_profile_info(st.session_state.user_info['id'])
 if 'profil_parameters' not in st.session_state :
     st.session_state['profil_parameters'] = {'size' : data[1] if data[1] != None else 4 ,
@@ -47,17 +45,18 @@ with col :
 st.write('')
 st.write('')
 
+cont_ing = st.container(border=True,key = 'container_ing')
     # Day names
 days = ['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche']
-cols = st.columns(8)
+cols = cont_ing.columns([1,2,2,2,2,2,2,2])
 for ind,col in enumerate(cols[1:]) :
     with col :
         st.markdown(f'<span style="color: #DE684D">**{days[ind].title()}**</span>', unsafe_allow_html=True)
-st.write('')
+cont_ing.write('')
 
     # Lunch choices
 lunch_count_size = 0
-cols = st.columns(8)
+cols = cont_ing.columns([1,2,2,2,2,2,2,2])
 with cols[0]:
     st.markdown(f'<span style="color: #DE684D">**Midi**</span>', unsafe_allow_html=True)
 for ind,col in enumerate(cols[1:]) :
@@ -66,12 +65,12 @@ for ind,col in enumerate(cols[1:]) :
             lunch_count_size+= st.number_input("", 0, 20, value = user_param['default_size'] * user_param['default_lunch'], key=f'lunch{days[ind]}', disabled= not user_param['default_lunch'])
         else : # Week end
             lunch_count_size+= st.number_input("", 0, 20, value = user_param['default_size'] * user_param['default_weekend'], key=f'lunch{days[ind]}', disabled= not user_param['default_weekend'])
-st.write('')
+cont_ing.write('')
 
 
     # dinner choices
 dinner_count_size = 0
-cols = st.columns(8)
+cols = cont_ing.columns([1,2,2,2,2,2,2,2])
 with cols[0]:
     st.markdown(f'<span style="color: #DE684D">**Soir**</span>', unsafe_allow_html=True)
 for ind,col in enumerate(cols[1:]) :
@@ -80,7 +79,7 @@ for ind,col in enumerate(cols[1:]) :
             dinner_count_size+= st.number_input("", 0, 20, value = user_param['default_size'], key=f'dinner{days[ind]}')
         else :
             dinner_count_size+= st.number_input("", 0, 20, value = user_param['default_size'] * user_param['default_weekend'], key=f'dinner{days[ind]}',disabled= not user_param['default_weekend'])
-st.write('')
+cont_ing.write('')
 st.write('---')
 
 # Add Recipes
@@ -97,20 +96,13 @@ for idx, recipe in planned_recipes.iterrows():
         st.write('---')
         st.markdown(f"**{recipe['name']}**")
         st.write('')
-    _, col_1, col_2, col_3, _ = st.columns([2, 3, 2, 1, 5])
+    _, col_1, col_2= st.columns([2, 3, 3])
     with col_1:
         st.image(recipe['image_link'],width=250)
         st.write('')
-    with col_3:
-        st.write('')
-        st.write("Midi")
-        st.write('')
-        st.write('')
-        st.write("Soir")
     with col_2 :
-        st.write('')
-        lunch_user_count += st.number_input(label="Midi", min_value=0, max_value=20, value=recipe['lunch_size'], key=f"recipe_{recipe['id']}_lunch_size")
-        dinner_user_count += st.number_input(label="Soir", min_value=0, max_value=20, value=recipe['dinner_size'], key=f"recipe_{recipe['id']}_dinner_size")
+        lunch_user_count += st.number_input(label="**Midi**", min_value=0, max_value=20, value=recipe['lunch_size'], key=f"recipe_{recipe['id']}_lunch_size")
+        dinner_user_count += st.number_input(label="**Soir**", min_value=0, max_value=20, value=recipe['dinner_size'], key=f"recipe_{recipe['id']}_dinner_size")
 
 st.write('---')
 
@@ -150,12 +142,9 @@ with col_2:
 st.markdown('''<style>
             [data-baseweb='input'] {width:40px; text-align: center}
             [data-baseweb='select'] {width:300px;}
-            [data-testid='stNumberInputContainer'] {justify-content: center;}
-            input {text-align: center}
-            .stNumberInput label {display: none;}
-            p {text-align: center;margin: auto auto}
-            .stNumberInput > div {margin : auto}
+            .st-key-container_ing [data-testid='stNumberInputContainer'] {justify-content: center;}
+            .st-key-container_ing input {text-align: center}
+            .st-key-container_ing .stNumberInput label {display: none;}
+            .st-key-container_ing p {text-align: center;margin: auto auto}
+            .st-key-container_ing  .stNumberInput > div {margin : auto}
             </style>''', unsafe_allow_html=True)
-
-#p {text-align: center;margin: auto auto}
-#.stNumberInput > div {margin : auto}
