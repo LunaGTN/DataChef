@@ -55,6 +55,12 @@ if remains != 0:
                 st.session_state.current_recipe = sql_manager.get_recipe_detail(id_recipe=indice)
                 st.switch_page("app_receipe_page.py")
             st.checkbox(label='dans le planning', value=in_planner, key=f'check_{indice}')
+            if st.button('Supprimer', icon='❌', key=f'del_{indice}'):
+                if sql_manager.delete_user_recipe(user_id=user_id, recipe_id=indice):
+                    st.toast('Recette supprimée de mon livre', icon=':material/ink_eraser:')
+                    st.rerun()
+                else:
+                    st.toast("Une erreur s'est produite", icon='❌')
 
 
 filtre = {k: v for k, v in st.session_state.items() if 'check' in k}

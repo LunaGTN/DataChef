@@ -13,8 +13,8 @@ def pop_up_start():
     msg.toast('Cuisson', icon='🍳')
     return msg
 
-def pop_up_end(msg):
-    msg.toast('Recette ajoutée à votre livre !', icon = "📕")
+def pop_up_end():
+    st.toast('Recette ajoutée à votre livre !', icon = "📕")
 
 
 # Header / Title
@@ -86,6 +86,10 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
     st.write('---')
 
     # Modification steps
+
+    def change(ind):
+        st.session_state.current_receipe['steps'][ind]['detail'] = st.session_state[f'step_{ind}']
+
     st.markdown("<h5 '>Etapes</h5>", unsafe_allow_html=True)
     container = st.container(key='step_container')
     with container :
@@ -97,8 +101,7 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
                     st.session_state.current_receipe['steps'].pop(ind)
                     st.rerun()
             with col2 :
-                st.text_area(label = '',value = step['detail'] ,key = f'step_{ind}')
-                st.session_state.current_receipe['steps'][ind]['detail'] = st.session_state[f'step_{ind}']
+                st.text_area(label = '',value = step['detail'] ,key = f'step_{ind}', on_change=change,args=(ind,))
 
         with col1 :
             st.write(' ')
