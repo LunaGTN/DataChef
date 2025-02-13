@@ -9,12 +9,14 @@
   -  Step 3 : Create a functional application
     
 - 🔧 **Tools :** Python, Pandas, Streamlit, Web-Scraping, AI-API, Cloud(AWS)
-
+\
+\
  
 ## 👋 Contributors
 
 &nbsp;&nbsp;&nbsp; 👩 [Luna](https://github.com/LunaGTN)  &nbsp;&nbsp;&nbsp;   🧑 [Romain](https://github.com/Romain-Data)  &nbsp;&nbsp;&nbsp;  🧑 [Thibaud](https://github.com/Thibaud-TR)
-
+\
+\
 
 ## 📂 Repository structure
 
