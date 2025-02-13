@@ -30,7 +30,7 @@ df = pd.DataFrame(dico_qtity)
 
 st.title("Votre Dashboard hebdomadaire 🧐")
 st.write('')
-st.subheader(f"Cette semaine, vous cuisinerez {recettes_hebdo.shape[0]} recettes !")
+st.subheader(f"Il y a {recettes_hebdo.shape[0]} recettes dans votre semainier !")
 st.write('')
 
 col1, col2 , col3, col4 = st.columns([2,2,2,3])
@@ -56,7 +56,7 @@ with col4:
                 vos repas, vous permettant ainsi de mieux comprendre les tendances de votre alimentation hebdomadaire. """)
 
 
-col1, col2, col3 = st.columns(3)
+col1, col2, col3 = st.columns([1,1.5,1.5])
 with col1:
     # Pie chart Nationalité
     data_origin = recettes_hebdo['pays'].value_counts()
