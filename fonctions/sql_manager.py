@@ -151,7 +151,7 @@ class SQL_recipe_manager():
                 c.close()
 
 
-    def add_recipe(self, recipe_data, catalog=True)->None:
+    def add_recipe(self, recipe_data, catalog: bool =True)->None:
         """
         Add recipe to recipe database 
 
@@ -1123,9 +1123,9 @@ class SQL_recipe_manager():
 
         Attributs
         -------------
-        user_id: str
+        - user_id: str
             Id of the user
-        recipe_id: int
+        - recipe_id: int
             Id of the recipe
 
         Return
@@ -1156,6 +1156,24 @@ class SQL_recipe_manager():
 
     
     def update_recipe_size(self, user_id:str, recipe_id:int, meal:Literal['lunch', 'dinner'], size:int):
+        """
+        Update size of recipe in recipe_user database
+
+        Attributs
+        -------------
+        - user_id: str
+            Id of the user
+        - recipe_id: int
+            Id of the recipe
+        - meal: str
+            lunch or dinner
+        - size: int
+            size of the meal
+
+        Return
+        -------------
+        bool: True if commit succeed
+        """
 
         with DatabaseConnection() as db_connexion:
             try : 
@@ -1177,3 +1195,167 @@ class SQL_recipe_manager():
 
             finally:
                 c.close()
+
+    
+    def remove_user_recipe(self, user_id: str, recipe_id: int)->bool:
+        """
+        Delete recipe from user_recipe
+
+        Attributs
+        -------------
+        user_id: str
+            Id of the user
+        recipe_id: int
+            Id of the recipe
+
+        Return
+        -------------
+        bool: True if commit succeed
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = f"""
+                DELETE FROM user_recipe
+                WHERE id_recipe = {recipe_id}
+                AND id_user = '{user_id}'
+                """
+
+                c.execute(request)
+                db_connexion.commit()
+                return True
+            
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+                return False
+
+            finally:
+                c.close()
+
+
+    def remove_recipe(self, recipe_id: int)->bool:
+        """
+        Delete recipe from recipe
+
+        Attributs
+        -------------
+        recipe_id: int
+            Id of the recipe
+
+        Return
+        -------------
+        bool: True if commit succeed
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = f"""
+                DELETE FROM recipe
+                WHERE id = {recipe_id}
+                """
+
+                c.execute(request)
+                db_connexion.commit()
+                return True
+            
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+                return False
+
+            finally:
+                c.close()
+
+    
+    def remove_steps(self, recipe_id: int)->bool:
+        """
+        Delete steps of a recipe
+
+        Attributs
+        -------------
+        recipe_id: int
+            Id of the recipe
+
+        Return
+        -------------
+        bool: True if commit succeed
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = f"""
+                DELETE FROM step
+                WHERE id_recipe = {recipe_id}
+                """
+
+                c.execute(request)
+                db_connexion.commit()
+                return True
+            
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+                return False
+
+            finally:
+                c.close()
+
+
+    def remove_ingredient_recipe(self, recipe_id: int)->bool:
+        """
+        Delete connexion between ingredients and recipe
+
+        Attributs
+        -------------
+        recipe_id: int
+            Id of the recipe
+
+        Return
+        -------------
+        bool: True if commit succeed
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = f"""
+                DELETE FROM ingredient_recipe
+                WHERE id_recipe = {recipe_id}
+                """
+
+                c.execute(request)
+                db_connexion.commit()
+                return True
+            
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+                return False
+
+            finally:
+                c.close()
+
+
+    def delete_user_recipe(self, user_id: str, recipe_id: int)->bool:
+            """
+            Delete recipe from user_recipe and recipe database
+
+            Attributs
+            -------------
+            user_id: str
+                Id of the user
+            recipe_id: int
+                Id of the recipe
+
+            Return
+            -------------
+            bool: True if commit succeed
+            """
+
+            user_recipe = self.remove_user_recipe(user_id, recipe_id)
+            steps = self.remove_steps(recipe_id)
+            ingredients = self.remove_ingredient_recipe(recipe_id)
+            recipe = self.remove_recipe(recipe_id)
+            return user_recipe and steps and ingredients and recipe
+            
+        
