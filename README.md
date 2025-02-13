@@ -22,6 +22,10 @@
 
 ## 📂 Repository structure
 
-📁 fonctions \
-│── 📄 sql_manager.py # Functions for Interacting with the AWS RDS Database \
-│── 📄 dataset.csv # Customer data file \
+📄 requirements.txt  # for dependency management
+📄 app_page_....py  # streamlit script for every page on the app
+📁 **fonctions** \
+│── 📄 sql_manager.py  # Functions for interacting with the AWS RDS Database \
+│── 📄 gemini.py  # Functions for interacting with AI API (Google Gemini) \
+│── 📄 dashboard_func.py # Functions for dashboard creation \
+ 
