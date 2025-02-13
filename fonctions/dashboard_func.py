@@ -1,6 +1,7 @@
 from fonctions.sql_manager import  DatabaseConnection
 import plotly.graph_objects as go
 import plotly.express as px
+import streamlit as st
 
 color_palet = px.colors.sequential.RdBu
 
@@ -68,21 +69,21 @@ def card(calculation, _title):
         fig = go.Figure(go.Indicator(
         mode = "number",
         value = minutes,
-        number = {'suffix': " min"},
+        number = {'suffix': " min", "font": {'color': color_palet[0]}},
         title = _title))
 
     else:
         fig = go.Figure(go.Indicator(
             mode="number",
             value=heures,  # Ajout des minutes sous forme décimale pour l'affichage
-            number={'suffix': f" h {minutes} min"},
+            number={'suffix': f" h {minutes} min", "font": {'color': color_palet[0]}},
             title=_title
         ))
 
     fig.update_layout(paper_bgcolor = color_palet[4],
                     width = 400, height = 225)
 
-    fig.show()
+    return fig
 
 def get_nb_repas(user_id)-> dict:
     with DatabaseConnection() as db_connexion:
