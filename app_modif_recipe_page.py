@@ -36,9 +36,6 @@ st.write('---')
 
 if 'current_receipe' in st.session_state and st.session_state.current_receipe is not None :
 
-    # idx = df[df['name']==st.session_state.current_receipe_name]['id'].values[0]
-    # current_receipe = sql_manager.get_recipe_detail(idx)
-
     # Modification title and details
     st.markdown("<h5 '> Informations</h5>", unsafe_allow_html=True)
     st.session_state.current_receipe['name'] = st.text_input('Modifier le titre',value = st.session_state.current_receipe['name'])
@@ -58,6 +55,11 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
 
 
     # Modification ingredients
+    def change_ing(ind):
+        st.session_state.current_receipe['ingredients'][ind]['quantity'] = float(st.session_state[f'qty_{ind}'])
+        st.session_state.current_receipe['ingredients'][ind]['unit'] = st.session_state[f'unit_{ind}']
+        st.session_state.current_receipe['ingredients'][ind]['name'] = st.session_state[f'name_{ind}']
+
     st.markdown("<h5 '>Ingrédients</h5>", unsafe_allow_html=True)
     st.write(' ')
 
@@ -71,14 +73,11 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
                     st.session_state.current_receipe['ingredients'].pop(ind)
                     st.rerun()
             with col1 :
-                st.text_input(label = '',value = ing['quantity'],key = f'qty_{ind}')
-                st.session_state.current_receipe['ingredients'][ind]['quantity'] = float(st.session_state[f'qty_{ind}'])
+                st.text_input(label = '',value = ing['quantity'],key = f'qty_{ind}',on_change=change_ing,args=(ind,))
             with col2 :
-                st.text_input(label = '',value = ing['unit'],key = f'unit_{ind}')
-                st.session_state.current_receipe['ingredients'][ind]['unit'] = st.session_state[f'unit_{ind}']
+                st.text_input(label = '',value = ing['unit'],key = f'unit_{ind}',on_change=change_ing,args=(ind,))
             with col3 :
-                st.text_input(label = '',value = ing['name'],key = f'name_{ind}')
-                st.session_state.current_receipe['ingredients'][ind]['name'] = st.session_state[f'name_{ind}']
+                st.text_input(label = '',value = ing['name'],key = f'name_{ind}',on_change=change_ing,args=(ind,))
         with col0 :
                 if st.button('➕',key = f'ing_b_{ind+1}') :
                     st.session_state.current_receipe['ingredients'].append({'name':'','unit': '', 'quantity':0, 'id': 0})
@@ -87,7 +86,7 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
 
     # Modification steps
 
-    def change(ind):
+    def change_step(ind):
         st.session_state.current_receipe['steps'][ind]['detail'] = st.session_state[f'step_{ind}']
 
     st.markdown("<h5 '>Etapes</h5>", unsafe_allow_html=True)
@@ -101,7 +100,7 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
                     st.session_state.current_receipe['steps'].pop(ind)
                     st.rerun()
             with col2 :
-                st.text_area(label = '',value = step['detail'] ,key = f'step_{ind}', on_change=change,args=(ind,))
+                st.text_area(label = '',value = step['detail'] ,key = f'step_{ind}', on_change=change_step,args=(ind,))
 
         with col1 :
             st.write(' ')
