@@ -11,9 +11,9 @@
  
 # Contributors
 
-👤 [Luna](https://github.com/LunaGTN) 
+👩 [Luna](https://github.com/LunaGTN) 
 
-👤 [Romain](https://github.com/Romain-Data) 
+🧑 [Romain](https://github.com/Romain-Data) 
 
-👤 [Thibaud](https://github.com/Thibaud-TR)
+🧑 [Thibaud](https://github.com/Thibaud-TR)
 
