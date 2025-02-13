@@ -213,9 +213,70 @@ class SQL_recipe_manager():
                 c.close()
 
 
+    def update_recipe(self, recipe_data)->bool:
+        """
+        update recipe to recipe database 
+
+        Attributs
+        -------------
+        recipe_data: json
+            name: str
+            link: str
+            id: str
+            time_preparation: str
+            time_repos: str
+            time_cuisson: str
+            image: str
+            nb_person: str
+            time_total: str
+            difficulty: str
+            cost: str
+            steps: list of str
+            ingredients: list of dict
+
+        Return
+        -------------
+        bool: True if succeed
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                
+                request = """
+                UPDATE recipe
+                SET (name, nb_person, time_preparation, time_rest, time_cooking, time_total, difficulty, cost)
+                = (%s, %s, %s, %s, %s, %s, %s, %s)
+                WHERE id = %s
+                """
+            
+                datas = (
+                    recipe_data['name'].replace("'", "\'\'"),
+                    int(recipe_data['nb_person']),
+                    self.fomat_time(recipe_data['time_preparation']),
+                    self.fomat_time(recipe_data['time_rest']),
+                    self.fomat_time(recipe_data['time_cooking']),
+                    self.fomat_time(recipe_data['time_total']),
+                    recipe_data['difficulty'],
+                    recipe_data['cost'],
+                    recipe_data['id']
+                )
+
+                c.execute(request, datas)
+                db_connexion.commit()
+
+                self.logger.info(f"{recipe_data['name']} was successfully update to database")
+        
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Insert error: {err}")
+
+            finally:
+                c.close()
+
+
     def add_steps(self, steps:List[str], id_recipe:int)->None:
         """
-        Add recipe to recipe database 
+        Add recipe's steps to step database 
 
         Attributs
         -------------
@@ -232,6 +293,7 @@ class SQL_recipe_manager():
             c = db_connexion.cursor()
             request = """INSERT INTO step (id_recipe, step_number, detail)
             VALUES(%s, %s, %s)"""
+            
             datas=[
                 [int(id_recipe),
                 id+1,
@@ -249,8 +311,50 @@ class SQL_recipe_manager():
                 self.logger.error(f"Insert error: {err}")
 
             finally:
-                if c.description is not None:
-                    c.fetchall()
+                c.close()
+
+
+    def update_steps(self, steps:List[str], id_recipe:int)->None:
+        """
+        Update recipe's steps to step database 
+
+        Attributs
+        -------------
+        id_recipe: str
+            id of recipe
+        steps: list of str
+            list of steps
+        """
+
+        if type(steps[0])==dict:
+            steps = [step['detail'] for step in steps]
+        
+        with DatabaseConnection() as db_connexion:
+            c = db_connexion.cursor()
+            request = """
+            UPDATE step
+            SET (step_number, detail)
+            = (%s, %s)
+            WHERE id_recipe = %s
+            """
+            
+            datas=[
+                [id+1,
+                step,
+                int(id_recipe)
+                ] for id, step in enumerate(steps)
+            ]
+
+            try:
+                c.executemany(request, datas)
+                db_connexion.commit()
+
+                self.logger.info(f"Steps were successfully update to database")
+
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Insert error: {err}")
+
+            finally:
                 c.close()
             
 
@@ -304,7 +408,7 @@ class SQL_recipe_manager():
                 c.close()
 
 
-    def check_duplicate_ingredient(self, ingredients:List[dict], id_recipe:int)->List[dict]:
+    def check_duplicate_ingredient(self, ingredients:List[dict], id_recipe:int)->List[list]:
         """
         Check if an ingredient appears twice or more in ingredients list.
         If it happens, add quantity in a single row
@@ -319,7 +423,11 @@ class SQL_recipe_manager():
         Return
         -------------
         datas : list of dict
-            clean list of ingredients datas
+            clean list of ingredients datas with:
+            - recipe_id
+            - ingredient_id
+            - quantity
+            - unit
         """
 
         list_id = []
@@ -366,8 +474,10 @@ class SQL_recipe_manager():
         with DatabaseConnection() as db_connexion:
 
             c = db_connexion.cursor()
-            request = """INSERT INTO ingredient_recipe (id_recipe, id_ingredient, quantity, unit)
-            VALUES (%s, %s, %s, %s)"""
+            request = """
+            INSERT INTO ingredient_recipe (id_recipe, id_ingredient, quantity, unit)
+            VALUES (%s, %s, %s, %s)
+            """
 
             try:
                 for row in datas:
@@ -380,6 +490,55 @@ class SQL_recipe_manager():
                 self.logger.error(f"Insert error: {err}")
 
             finally:
+                c.close()
+
+
+    def update_quantity(self, ingredients:List[dict], id_recipe:int)->None:
+        """
+        Update an quantity and unite to recipe_ingredient db
+
+        Attributs
+        -------------
+        id_recipe :int
+            id of recipe
+        ingredient: dict
+            id: int
+                id of ingredient
+            name: str
+                name of the ingredient
+            quantity: float
+                quantity of the ingredient
+            unit: str
+                unity for this quantity
+        """
+
+        datas = self.check_duplicate_ingredient(ingredients, id_recipe)
+
+        with DatabaseConnection() as db_connexion:
+            
+            # Reorder elements
+            order = [2,3,0,1]
+            for ingredient in datas:
+                ingredient = [ingredient[i] for i in order]
+
+            c = db_connexion.cursor()
+            request = """
+            UPDATE ingredient_recipe
+            SET (quantity, unit)
+            = (%s, %s)
+            WHERE id_recipe = %s
+            AND id_ingredient = %s
+            """
+
+            try:
+                c.execute(request, ingredient)
+                db_connexion.commit()  
+
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Insert error: {err}")
+
+            finally:
+                self.logger.info(f"Quantities update for recipe n°{id_recipe}")
                 c.close()
 
 
@@ -838,6 +997,39 @@ class SQL_recipe_manager():
 
         self.connect_user_recipe(id_user=str(user_id), id_recipe=recipe_data['id'])
 
+        return True
+    
+
+    def update_user_recipe(self, recipe_data:dict, user_id:str)->bool:
+        """
+        Update user's version of recipe in recipe database.
+        Call other functions to add ingredients and quantities
+        Finally, connect the new recipe and user in recipe_user database
+
+        Attributs
+        -------------
+        recipe_data: dict
+            datas of the recipe
+        user_id: str
+            id of the user
+
+        Return
+        -------------
+        True if no problem
+        """
+
+        self.update_recipe(recipe_data=recipe_data)
+
+        for ingredient in recipe_data['ingredients']:
+            if not self.check_db_by_name(name=ingredient['name'], table='ingredient'):
+                ingredient['id'] = self.generate_id('ingredient')
+                # Catégorise l'ingrédient
+                self.add_ingredient(ingredient=ingredient)
+
+        self.update_quantity(ingredients=recipe_data['ingredients'], id_recipe=recipe_data['id'])
+
+        self.update_steps(steps=recipe_data['steps'], id_recipe=recipe_data['id'])
+        
         return True
 
 

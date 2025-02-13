@@ -2,6 +2,7 @@ from fonctions.sql_manager import SQL_recipe_manager
 import streamlit as st
 from time import sleep
 
+#st.write(st.session_state)
 
 sql_manager = SQL_recipe_manager()
 user_id = st.session_state.user_info['id']
@@ -18,7 +19,13 @@ def pop_up_end():
 
 
 # Header / Title
-st.markdown("<h2 style='color: #DE684D;'> Modifier une recette </h2>", unsafe_allow_html=True)
+if 'current_receipe' in st.session_state and st.session_state.current_receipe is not None :
+    personnal_recipe =  st.session_state.current_receipe['name'][0] == '👤'
+    if not personnal_recipe:
+        st.markdown("<h2 style='color: #DE684D;'> Modifier une recette </h2>", unsafe_allow_html=True)
+    else:
+        st.markdown("<h2 style='color: #DE684D;'> Modifier ma recette </h2>", unsafe_allow_html=True)
+
 st.write('---')
 
 # Receipe Selection
@@ -38,7 +45,11 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
 
     # Modification title and details
     st.markdown("<h5 '> Informations</h5>", unsafe_allow_html=True)
-    st.session_state.current_receipe['name'] = st.text_input('Modifier le titre',value = st.session_state.current_receipe['name'])
+    if personnal_recipe:
+        st.session_state.current_receipe['temp_name'] = st.session_state.current_receipe['name'][2:]
+    else:
+        st.session_state.current_receipe['temp_name'] = st.session_state.current_receipe['name']
+    st.session_state.current_receipe['temp_name'] = st.text_input('Modifier le titre',value = st.session_state.current_receipe['temp_name'])
     st.write(' ')
     _ , col1, _ , col2, _ = st.columns([1,5,1,5,1])
     with col1 :
@@ -112,13 +123,33 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
 
     st.write('---')
 
-    if st.button('📘 **Ajouter à mon livre de recette**',key='button_save'):
-        msg = pop_up_start()
-        sql_manager.add_user_recipe(
-            recipe_data=st.session_state['current_receipe'],
-            user_id=st.session_state.user_info['id']
-        )
-        pop_up_end(msg)
+    if personnal_recipe:
+        col_1, col_2 = st.columns(2)
+        with col_1:
+            if st.button('**Modifier ma recette**', icon='✏️', key='button_save_1'):
+                msg = pop_up_start()
+                st.session_state.current_receipe['name'] = f"👤 {st.session_state.current_receipe['temp_name']}"
+                sql_manager.update_user_recipe(
+                    recipe_data=st.session_state['current_receipe'],
+                    user_id=user_id
+                )
+                st.toast('Recette modifiée', icon='👍')
+                
+        with col_2:
+            if st.button('**Créer une nouvelle version**', icon='💾', key='button_save_2'):
+                msg = pop_up_start()
+                st.session_state.current_receipe['name'] = st.session_state.current_receipe['temp_name']
+                sql_manager.add_user_recipe(recipe_data=st.session_state['current_receipe'], user_id=user_id)
+                pop_up_end()
+
+    else:
+        if st.button('📘 **Ajouter à mon livre de recette**',key='button_save'):
+            msg = pop_up_start()
+            sql_manager.add_user_recipe(
+                recipe_data=st.session_state['current_receipe'],
+                user_id=user_id
+            )
+            pop_up_end()
 
 
     st.markdown('''<style>
