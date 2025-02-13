@@ -10,7 +10,7 @@
     
 - 🔧 **Tools :** Python, Pandas, Streamlit, Web-Scraping, AI-API, Cloud(AWS)
  
-# Contributors
+## 👋 Contributors
 
 👩 [Luna](https://github.com/LunaGTN) 
 
@@ -18,3 +18,8 @@
 
 🧑 [Thibaud](https://github.com/Thibaud-TR)
 
+## 📂 Repository structure
+
+📁 fonctions
+│── 📄 sql_manager.py # Functions for Interacting with the AWS RDS Database
+│── 📄 dataset.csv # Customer data file
