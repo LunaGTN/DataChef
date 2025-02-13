@@ -5,11 +5,19 @@ from random import choices
 sql_manager = SQL_recipe_manager()
 
 df = sql_manager.get_all_recipes()
-receipe_list = list(zip(df['name'].values,df['image_link'].values))
 
 # Header / Title
 st.markdown("<h2 style='color: #DE684D;'>Le catalogue de recettes !</h2>", unsafe_allow_html=True)
 st.write("---")
+
+st.markdown("<h4 style='text-align: center; color: black;'>Filtres</h4>", unsafe_allow_html=True)
+st.write(" ")
+if st.pills('Saveur',["Sucré", "Salé"], default=["Sucré", "Salé"], selection_mode='multi', key="taste"):
+    tastes = [taste.lower() for taste in st.session_state['taste']]
+    flavor_filter =  df['sweet_salt'].isin(tastes)
+    df = df[flavor_filter]
+
+
 
 # Recipe suggestion
     # Title
@@ -17,6 +25,7 @@ st.markdown("<h4 style='text-align: center; color: black;'>Nos idées recettes</
 st.write(" ")
 
 def create_short_list():
+    receipe_list = list(zip(df['name'].values,df['image_link'].values))
     st.session_state.short_list = choices(receipe_list, k=12)
      
 if 'short_list' not in st.session_state :

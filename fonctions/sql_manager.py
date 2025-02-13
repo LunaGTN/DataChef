@@ -605,13 +605,13 @@ class SQL_recipe_manager():
             try : 
                 c = db_connexion.cursor()
                 request = f"""
-                SELECT id, name, image_link
+                SELECT id, name, sweet_salt, country, image_link
                 FROM recipe
                 WHERE catalog=True
                 """
 
                 c.execute(request)
-                return pd.DataFrame(c.fetchall(), columns=['id', 'name', 'image_link'])
+                return pd.DataFrame(c.fetchall(), columns=['id', 'name', 'sweet_salt', 'country', 'image_link'])
 
             except psycopg2.OperationalError as err:
                 self.logger.error(f"Select error: {err}")
