@@ -128,7 +128,7 @@ with col_1:
         st.write(f'##### Il reste <span style="color: #DE684D">**{dinner_count_size} parts**</span> à prévoir pour les repas du soir', unsafe_allow_html=True)
 
 with col_2:
-    if st.button("Sauvegarder mes portions", icon='💾'):
+    if st.button("**Enregistrer**", icon='💾',key='button_save'):
         # Filter les portions dans le session state
         filtre = {k: v for k, v in st.session_state.items() if 'dinner_size' in k or 'lunch_size' in k}
         print(planned_recipes)
@@ -147,4 +147,6 @@ st.markdown('''<style>
             .st-key-container_ing .stNumberInput label {display: none;}
             .st-key-container_ing p {text-align: center;margin: auto auto}
             .st-key-container_ing  .stNumberInput > div {margin : auto}
+            .st-key-button_save button {background : #f4846a;color:black}
+            .st-key-button_save :hover  {color : white}
             </style>''', unsafe_allow_html=True)

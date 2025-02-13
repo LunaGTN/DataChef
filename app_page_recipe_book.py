@@ -14,7 +14,7 @@ st.write("---")
 
 # User Recipe
     # Title
-st.markdown("<h4 style='text-align: center; color: black;'>Mes recettes</h4>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align: center; color: black;'>📘 Votre livre de recettes</h4>", unsafe_allow_html=True)
 st.write(" ")
   
 
@@ -34,9 +34,9 @@ for row in range(n_rows) :
             st.image(df_user.iloc[index]['image_link'], width=1000)
             if st.button(label=df_user.iloc[index]['name'][2:].capitalize(), key=f'but_{index}',use_container_width =True) :
                 st.session_state.current_receipe = sql_manager.get_recipe_detail(indice)
-                st.switch_page("app_receipe_page.py")
-            st.checkbox(label='dans le planning', value=in_planner, key=f'check_{indice}')
-            if st.button('Supprimer', icon='❌', key=f'del_{indice}'):
+                st.switch_page("app_page_show_recipe.py")
+            st.checkbox(label='Ajouter au menu', value=in_planner, key=f'check_{indice}')
+            if st.button('Supprimer de mon livre', icon='❌', key=f'del_{indice}'):
                 if sql_manager.delete_user_recipe(user_id=user_id, recipe_id=indice):
                     st.toast('Recette supprimée de mon livre', icon=':material/ink_eraser:')
                     st.rerun()
@@ -53,9 +53,9 @@ if remains != 0:
             st.image(df_temp.iloc[idx]['image_link'], width=1000)
             if st.button(label=df_temp.iloc[idx]['name'][2:].capitalize(), key=f'but_{n_rows*4+idx}', use_container_width=True):
                 st.session_state.current_recipe = sql_manager.get_recipe_detail(id_recipe=indice)
-                st.switch_page("app_receipe_page.py")
-            st.checkbox(label='dans le planning', value=in_planner, key=f'check_{indice}')
-            if st.button('Supprimer', icon='❌', key=f'del_{indice}'):
+                st.switch_page("app_page_show_recipe.py")
+            st.checkbox(label='Ajouter au menu', value=in_planner, key=f'check_{indice}')
+            if st.button('Supprimer de mon livre', icon='❌', key=f'del_{indice}'):
                 if sql_manager.delete_user_recipe(user_id=user_id, recipe_id=indice):
                     st.toast('Recette supprimée de mon livre', icon=':material/ink_eraser:')
                     st.rerun()

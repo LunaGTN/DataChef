@@ -20,6 +20,7 @@ def pop_up_end():
 # Header / Title
 st.markdown("<h2 style='color: #DE684D;'> Modifier une recette </h2>", unsafe_allow_html=True)
 st.write('---')
+st.write("Vous pouvez choisir une recette, la modifier et l'ajouter à votre propre livre de recette")
 
 # Receipe Selection
     # Receipe list creation for the selectbox

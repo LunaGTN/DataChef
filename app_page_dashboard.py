@@ -27,10 +27,10 @@ for ingredient in data_ingredient:
 
 df = pd.DataFrame(dico_qtity)
 
-
-st.title("Votre Dashboard hebdomadaire 🧐")
-st.write('')
-st.subheader(f"Cette semaine, vous cuisinerez {recettes_hebdo.shape[0]} recettes !")
+# Header / Title
+st.markdown("<h2 style='color: #DE684D;'> Votre Dashboard hebdomadaire 🧐</h2>", unsafe_allow_html=True)
+st.write('---')
+st.markdown(f"<h5 '> Cette semaine, vous cuisinerez {recettes_hebdo.shape[0]} recettes ! </h5>", unsafe_allow_html=True)
 st.write('')
 
 col1, col2 , col3, col4 = st.columns([2,2,2,3])
@@ -48,7 +48,7 @@ with col4:
     st.write("""**Top 3 des ingrédients** """)
     top_3 = df.sort_values(by = 'Quantité', ascending = False).head(3).reset_index(drop = True)
     top_3.index = top_3.index + 1
-    st.write(top_3)
+    st.dataframe(top_3,key='dataframe')
     with st.expander("Explications"):
         st.write("""Voici les 3 ingrédients les plus consommés cette semaine en termes de quantité.
                 Il s'agit des quantités **en grammes, pour une personne**.
@@ -122,3 +122,7 @@ with col3:
                 dans vos repas, en termes de poids.
                 Cela peut vous aider à mieux équilibrer vos repas ou encore à identifier des catégories qui sont très représentées.""")
 
+# Style 
+st.markdown('''<style>
+           
+            </style>''', unsafe_allow_html=True)

@@ -36,7 +36,7 @@ for raw in range(3) :
                 if st.button(label=st.session_state.short_list[ind][0], key=f'but_{ind}',use_container_width =True) :
                     idx = df[df['name']==st.session_state.short_list[ind][0]]['id'].values[0]
                     st.session_state.current_receipe = sql_manager.get_recipe_detail(idx)
-                    st.switch_page("app_receipe_page.py")
+                    st.switch_page("app_page_show_recipe.py")
 
 
 # Style 
