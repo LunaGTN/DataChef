@@ -21,5 +21,7 @@
 ## 📂 Repository structure
 
 📁 fonctions
+
 │── 📄 sql_manager.py # Functions for Interacting with the AWS RDS Database
+
 │── 📄 dataset.csv # Customer data file
