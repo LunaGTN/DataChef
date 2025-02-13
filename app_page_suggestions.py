@@ -21,8 +21,8 @@ col_flavor, col_country, col_ingredient = st.columns([1,2,2])
 
     # Flavor
 with col_flavor:
-    st.pills('Saveur',["Sucré", "Salé"], default=["Sucré", "Salé"], selection_mode='multi', key="taste")
-    if 'taste' in st.session_state:
+    st.pills('Saveur',["Sucré", "Salé"], default=None, selection_mode='multi', key="taste")
+    if 'taste' in st.session_state and len(st.session_state['taste']) !=0:
         tastes = [taste.lower() for taste in st.session_state['taste']]
         flavor_filter =  df['sweet_salt'].isin(tastes)
         df = df[flavor_filter]
@@ -80,57 +80,37 @@ st.write(' ')
 st.markdown("<h4 style='text-align: center; color: black;'>Nos idées recettes</h4>", unsafe_allow_html=True)
 st.write(" ")
 
-# n_cols = 3
-# n_rows = len(df) // n_cols
-# remains = len(df) % n_cols
-
-# for row in range(n_rows) :
-#     col_list = st.columns(n_cols)
-#     for idx, col in enumerate(col_list) :
-#         index = row * n_cols + idx
-#         indice = df.iloc[index]['id']
-#         in_planner = sql_manager.check_recipe_in_user_planning(user_id=user_id, recipe_id=indice)
-#         with col :
-#             st.image(st.session_state.short_list[ind][1])
-#             if st.button(label=st.session_state.short_list[ind][0], key=f'but_{ind}',use_container_width =True) :
-#                 idx = df[df['name']==st.session_state.short_list[ind][0]]['id'].values[0]
-#                 st.session_state.current_receipe = sql_manager.get_recipe_detail(idx)
-#                 st.switch_page("app_page_show_recipe.py")
-            
-# if remains != 0:
-#     col_list = st.columns(n_cols)
-#     df_temp = df_user.tail(remains).reset_index(drop=True)
-#     for idx, col in enumerate(col_list[0:remains]):
-#         indice =  df_temp.iloc[idx]['id']
-#         in_planner = sql_manager.check_recipe_in_user_planning(user_id=user_id, recipe_id=indice)
-#         with col:
-#             st.image(df_temp.iloc[idx]['image_link'], width=1000)
-#             if st.button(label=df_temp.iloc[idx]['name'][2:].capitalize(), key=f'but_{n_rows*4+idx}', use_container_width=True):
-#                 st.session_state.current_recipe = sql_manager.get_recipe_detail(id_recipe=indice)
-#                 st.switch_page("app_page_show_recipe.py")
-#             st.checkbox(label='Ajouter au menu', value=in_planner, key=f'check_{indice}')
-#             if st.button('Supprimer de mon livre', icon='❌', key=f'del_{indice}'):
-#                 if sql_manager.delete_user_recipe(user_id=user_id, recipe_id=indice):
-#                     st.toast('Recette supprimée de mon livre', icon=':material/ink_eraser:')
-#                     st.rerun()
-#                 else:
-#                     st.toast("Une erreur s'est produite", icon='❌')
-
-
-
-
     # Containers
-for raw in range(3) :
-    col_list = st.columns(4)
-    for n_col,col in enumerate(col_list) :
-        ind = raw*4 + n_col
-        with col :  
+
+if len(df) == 0:
+    st.subheader("Oups 😕\nIl n'y a pas de recette correspondant à vos critères dans le catalogue ")
+
+n_cols = 3
+n_rows = len(df) // n_cols
+remains = len(df) % n_cols
+
+if len(df) >= n_cols:
+    for raw in range(3) :
+        col_list = st.columns(4)
+        for n_col,col in enumerate(col_list) :
+            ind = raw*4 + n_col
+            with col :  
                 st.image(st.session_state.short_list[ind][1])
                 if st.button(label=st.session_state.short_list[ind][0], key=f'but_{ind}',use_container_width =True) :
                     idx = df[df['name']==st.session_state.short_list[ind][0]]['id'].values[0]
                     st.session_state.current_receipe = sql_manager.get_recipe_detail(idx)
                     st.switch_page("app_page_show_recipe.py")
-
+                    
+if remains != 0:
+    col_list = st.columns(n_cols)
+    df_temp = df.tail(remains).reset_index(drop=True)
+    for idx, col in enumerate(col_list[0:remains]):
+        indice =  df_temp.iloc[idx]['id']
+        with col : 
+            st.image(df_temp.iloc[idx]['image_link'])
+            if st.button(label=df_temp.iloc[idx]['name'], key=f'but_{indice}',use_container_width =True) :
+                st.session_state.current_receipe = sql_manager.get_recipe_detail(indice)
+                st.switch_page("app_page_show_recipe.py")
 
 # Style 
 st.markdown('''<style>
