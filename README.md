@@ -13,7 +13,7 @@
  
 ## 👋 Contributors
 
-👩 [Luna](https://github.com/LunaGTN)    🧑 [Romain](https://github.com/Romain-Data)    🧑 [Thibaud](https://github.com/Thibaud-TR)
+&nbsp;&nbsp;&nbsp; 👩 [Luna](https://github.com/LunaGTN)  &nbsp;&nbsp;&nbsp;   🧑 [Romain](https://github.com/Romain-Data)  &nbsp;&nbsp;&nbsp;  🧑 [Thibaud](https://github.com/Thibaud-TR)
 
 
 ## 📂 Repository structure
