@@ -6,13 +6,12 @@
   -  Step 3 : AI API Requests to add features on recipes
   -  Step 3 : Create a functional application
 - 🔧 **Tools :** Python, Pandas, Streamlit, Web-Scraping, AI-API, Cloud(AWS)
+ 
+# Contributors
 
+👤 [Luna](https://github.com/LunaGTN) 
 
+👤 [Romain](https://github.com/Romain-Data) 
 
-
-
-### Contributors
-👤 [Luna](https://github.com/LunaGTN)
-👤 [Romain](https://github.com/Romain-Data)
 👤 [Thibaud](https://github.com/Thibaud-TR)
 
