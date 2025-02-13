@@ -1,6 +1,8 @@
 from fonctions.sql_manager import SQL_recipe_manager
 import streamlit as st
-from random import choices
+from random import sample
+
+st.write(st.session_state)
 
 sql_manager = SQL_recipe_manager()
 
@@ -10,23 +12,40 @@ df = sql_manager.get_all_recipes()
 st.markdown("<h2 style='color: #DE684D;'>Le catalogue de recettes !</h2>", unsafe_allow_html=True)
 st.write("---")
 
+# Filter
+    
 st.markdown("<h4 style='text-align: center; color: black;'>Filtres</h4>", unsafe_allow_html=True)
 st.write(" ")
-if st.pills('Saveur',["Sucré", "Salé"], default=["Sucré", "Salé"], selection_mode='multi', key="taste"):
-    tastes = [taste.lower() for taste in st.session_state['taste']]
-    flavor_filter =  df['sweet_salt'].isin(tastes)
-    df = df[flavor_filter]
 
+col_flavor, col_country, _ = st.columns(3)
 
+    # Flavor
+with col_flavor:
+    st.pills('Saveur',["Sucré", "Salé"], default=["Sucré", "Salé"], selection_mode='multi', key="taste")
+    if 'taste' in st.session_state:
+        tastes = [taste.lower() for taste in st.session_state['taste']]
+        flavor_filter =  df['sweet_salt'].isin(tastes)
+        df = df[flavor_filter]
 
-# Recipe suggestion
-    # Title
-st.markdown("<h4 style='text-align: center; color: black;'>Nos idées recettes</h4>", unsafe_allow_html=True)
-st.write(" ")
+    # Country
+with col_country:
+    if 'countries' in st.session_state:
+        default_country = st.session_state['countries']
+    else:
+        default_country=None
+    countries = list(df['country'].unique())
+
+    st.multiselect('Nationalités', countries, key='countries', default=default_country)
+    if 'countries' in st.session_state and len(st.session_state['countries']) !=0:
+        origines = st.session_state['countries']
+        origines =  df['country'].isin(origines)
+        df = df[origines]
+
+st.write('')
 
 def create_short_list():
     receipe_list = list(zip(df['name'].values,df['image_link'].values))
-    st.session_state.short_list = choices(receipe_list, k=12)
+    st.session_state.short_list = sample(receipe_list, k=12)
      
 if 'short_list' not in st.session_state :
     create_short_list()
@@ -34,6 +53,11 @@ if 'short_list' not in st.session_state :
 if st.button("🔄 **Changer les propositions**",key='suggestion_button') :
     create_short_list()
 st.write(' ')
+
+# Recipe suggestion
+    # Title
+st.markdown("<h4 style='text-align: center; color: black;'>Nos idées recettes</h4>", unsafe_allow_html=True)
+st.write(" ")
      
     # Containers
 for raw in range(3) :
