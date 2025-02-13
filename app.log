@@ -299,6 +299,7 @@ botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling t
 2025-02-12 16:13 - INFO - Quantities added for recipe n°70874
 2025-02-12 16:13 - INFO - Steps were successfully add to database
 >>>>>>> bbd79b1c530bb22cc6c3879eeb7b83b3677f0673
+<<<<<<< HEAD
 2025-02-12 17:17 - WARNING - Python-dotenv could not parse statement starting at line 11
 2025-02-12 17:17 - WARNING - Python-dotenv could not parse statement starting at line 15
 2025-02-12 17:17 - WARNING - Python-dotenv could not parse statement starting at line 16
@@ -331,3 +332,21 @@ botocore.exceptions.ClientError: An error occurred (AccessDenied) when calling t
 2025-02-12 17:17 - WARNING - Python-dotenv could not parse statement starting at line 20
 2025-02-12 17:17 - WARNING - Python-dotenv could not parse statement starting at line 23
 2025-02-12 17:17 - WARNING - Python-dotenv could not parse statement starting at line 24
+=======
+2025-02-13 09:30 - INFO - 👤 Tourte au poulet was successfully add to database
+2025-02-13 09:30 - INFO - Ingredients list of recipe n°68952 clean
+2025-02-13 09:30 - INFO - Quantities added for recipe n°68952
+2025-02-13 09:30 - INFO - Steps were successfully add to database
+2025-02-13 09:56 - INFO - 👤 Cookies faciles was successfully add to database
+2025-02-13 09:56 - INFO - Ingredients list of recipe n°8710 clean
+2025-02-13 09:56 - INFO - Quantities added for recipe n°8710
+2025-02-13 09:56 - INFO - Steps were successfully add to database
+2025-02-13 10:21 - INFO - 👤 Cookies faciles was successfully add to database
+2025-02-13 10:21 - INFO - Ingredients list of recipe n°23136 clean
+2025-02-13 10:21 - INFO - Quantities added for recipe n°23136
+2025-02-13 10:21 - INFO - Steps were successfully add to database
+2025-02-13 10:22 - INFO - 👤 👤 cookies faciles was successfully add to database
+2025-02-13 10:22 - INFO - Ingredients list of recipe n°83514 clean
+2025-02-13 10:22 - INFO - Quantities added for recipe n°83514
+2025-02-13 10:22 - INFO - Steps were successfully add to database
+>>>>>>> a1b6301c9755aba6d52c5477ba8224128659f792

@@ -8,7 +8,6 @@ user_id = st.session_state.user_info['id']
 df_user = sql_manager.get_user_recipes(user_id=user_id)
 df_user.reset_index(drop=True, inplace=True)
 
-
 # Header / Title
 st.markdown("<h2 style='color: #DE684D;'>Bienvenue sur Data Chef !</h2>", unsafe_allow_html=True) 
 st.write("---")
@@ -29,26 +28,39 @@ for row in range(n_rows) :
     col_list = st.columns(n_cols)
     for idx, col in enumerate(col_list) :
         index = row * n_cols + idx
-        in_planner = sql_manager.check_recipe_in_user_planning(user_id=user_id, recipe_id=df_user.iloc[index]['id'])
-        with col :  
+        indice = df_user.iloc[index]['id']
+        in_planner = sql_manager.check_recipe_in_user_planning(user_id=user_id, recipe_id=indice)
+        with col :
             st.image(df_user.iloc[index]['image_link'], width=1000)
-            indice = df_user.iloc[index]['id']
             if st.button(label=df_user.iloc[index]['name'][2:].capitalize(), key=f'but_{index}',use_container_width =True) :
                 st.session_state.current_receipe = sql_manager.get_recipe_detail(indice)
                 st.switch_page("app_receipe_page.py")
             st.checkbox(label='dans le planning', value=in_planner, key=f'check_{indice}')
-           
+            if st.button('Supprimer', icon='❌', key=f'del_{indice}'):
+                if sql_manager.delete_user_recipe(user_id=user_id, recipe_id=indice):
+                    st.toast('Recette supprimée de mon livre', icon=':material/ink_eraser:')
+                    st.rerun()
+                else:
+                    st.toast("Une erreur s'est produite", icon='❌')
+            
 if remains != 0:
     col_list = st.columns(n_cols)
     df_temp = df_user.tail(remains).reset_index(drop=True)
     for idx, col in enumerate(col_list[0:remains]):
+        indice =  df_temp.iloc[idx]['id']
+        in_planner = sql_manager.check_recipe_in_user_planning(user_id=user_id, recipe_id=indice)
         with col:
             st.image(df_temp.iloc[idx]['image_link'], width=1000)
-            indice = df_temp.iloc[idx]['id']
             if st.button(label=df_temp.iloc[idx]['name'][2:].capitalize(), key=f'but_{n_rows*4+idx}', use_container_width=True):
                 st.session_state.current_recipe = sql_manager.get_recipe_detail(id_recipe=indice)
                 st.switch_page("app_receipe_page.py")
             st.checkbox(label='dans le planning', value=in_planner, key=f'check_{indice}')
+            if st.button('Supprimer', icon='❌', key=f'del_{indice}'):
+                if sql_manager.delete_user_recipe(user_id=user_id, recipe_id=indice):
+                    st.toast('Recette supprimée de mon livre', icon=':material/ink_eraser:')
+                    st.rerun()
+                else:
+                    st.toast("Une erreur s'est produite", icon='❌')
 
 
 filtre = {k: v for k, v in st.session_state.items() if 'check' in k}

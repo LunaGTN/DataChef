@@ -13,8 +13,8 @@ def pop_up_start():
     msg.toast('Cuisson', icon='🍳')
     return msg
 
-def pop_up_end(msg):
-    msg.toast('Recette ajoutée à votre livre !', icon = "📕")
+def pop_up_end():
+    st.toast('Recette ajoutée à votre livre !', icon = "📕")
 
 
 # Header / Title
@@ -72,24 +72,24 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
                     st.rerun()
             with col1 :
                 st.text_input(label = '',value = ing['quantity'],key = f'qty_{ind}')
+                st.session_state.current_receipe['ingredients'][ind]['quantity'] = float(st.session_state[f'qty_{ind}'])
             with col2 :
                 st.text_input(label = '',value = ing['unit'],key = f'unit_{ind}')
+                st.session_state.current_receipe['ingredients'][ind]['unit'] = st.session_state[f'unit_{ind}']
             with col3 :
                 st.text_input(label = '',value = ing['name'],key = f'name_{ind}')
+                st.session_state.current_receipe['ingredients'][ind]['name'] = st.session_state[f'name_{ind}']
         with col0 :
                 if st.button('➕',key = f'ing_b_{ind+1}') :
-                    st.session_state.current_receipe['ingredients'].append({'name':st.session_state.name_add,'unit':st.session_state.unit_add, 'quantity':st.session_state.qty_add, 'id': 0})
-                    st.session_state.name_add = st.session_state.unit_add = st.session_state.qty_add = ''
+                    st.session_state.current_receipe['ingredients'].append({'name':'','unit': '', 'quantity':0, 'id': 0})
                     st.rerun()
-        with col1 :
-            st.text_input(label = '',value = '',key = 'qty_add')
-        with col2 :
-            st.text_input(label = '',value = '',key = 'unit_add')
-        with col3 :
-            st.text_input(label = '',value = '',key = 'name_add')
     st.write('---')
 
     # Modification steps
+
+    def change(ind):
+        st.session_state.current_receipe['steps'][ind]['detail'] = st.session_state[f'step_{ind}']
+
     st.markdown("<h5 '>Etapes</h5>", unsafe_allow_html=True)
     container = st.container(key='step_container')
     with container :
@@ -101,15 +101,15 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
                     st.session_state.current_receipe['steps'].pop(ind)
                     st.rerun()
             with col2 :
-                st.text_area(label = '',value = step['detail'] ,key = f'step_{ind}')
+                st.text_area(label = '',value = step['detail'] ,key = f'step_{ind}', on_change=change,args=(ind,))
+
         with col1 :
-            st.markdown(f'**Etape sup.**')
+            st.write(' ')
+            st.write(' ')
             if st.button('➕',key = f'step_b_{ind+1}') :
-                st.session_state.current_receipe['steps'].append({"step_number" : ind+1 , 'detail' : st.session_state.step_add })
-                st.session_state.step_add  = ''
+                st.session_state.current_receipe['steps'].append({"step_number" : ind+2 , 'detail' : '' })
                 st.rerun()
-        with col2 :
-            st.text_area(label = '',value = '' ,key = 'step_add')
+
 
     st.write('---')
 
@@ -131,3 +131,4 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
                 </style>''', unsafe_allow_html=True)
 
 # .st-key-step_container input {background-color: #DE684D;}
+
