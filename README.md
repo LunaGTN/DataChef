@@ -9,6 +9,7 @@
   -  Step 3 : Create a functional application
     
 - 🔧 **Tools :** Python, Pandas, Streamlit, Web-Scraping, AI-API, Cloud(AWS)
+
  
 ## 👋 Contributors
 
@@ -18,8 +19,11 @@
 
 🧑 [Thibaud](https://github.com/Thibaud-TR)
 
+
 ## 📂 Repository structure
 
 📁 fonctions
+sdfdsg
 │── 📄 sql_manager.py # Functions for Interacting with the AWS RDS Database
+sdg
 │── 📄 dataset.csv # Customer data file
