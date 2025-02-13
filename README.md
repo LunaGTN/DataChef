@@ -22,8 +22,6 @@
 
 ## 📂 Repository structure
 
-📁 fonctions
-sdfdsg
-│── 📄 sql_manager.py # Functions for Interacting with the AWS RDS Database
-sdg
-│── 📄 dataset.csv # Customer data file
+📁 fonctions \
+│── 📄 sql_manager.py # Functions for Interacting with the AWS RDS Database \
+│── 📄 dataset.csv # Customer data file \
