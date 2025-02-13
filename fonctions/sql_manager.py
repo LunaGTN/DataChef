@@ -605,13 +605,17 @@ class SQL_recipe_manager():
             try : 
                 c = db_connexion.cursor()
                 request = f"""
-                SELECT id, name, sweet_salt, country, image_link
-                FROM recipe
-                WHERE catalog=True
+                SELECT 
+	                r.id, r.name, r.sweet_salt, r.country, r.image_link, string_agg(i."name",  ',' ) as ingredient_list
+                FROM recipe r
+                join ingredient_recipe ir on ir.id_recipe  = r.id 
+                join ingredient i on i.id = ir.id_ingredient 
+                WHERE catalog=true
+                group by r.id, r.name, r.sweet_salt, r.country, r.image_link;
                 """
 
                 c.execute(request)
-                return pd.DataFrame(c.fetchall(), columns=['id', 'name', 'sweet_salt', 'country', 'image_link'])
+                return pd.DataFrame(c.fetchall(), columns=['id', 'name', 'sweet_salt', 'country', 'image_link', 'ingredient_list'])
 
             except psycopg2.OperationalError as err:
                 self.logger.error(f"Select error: {err}")
