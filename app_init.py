@@ -47,16 +47,16 @@ if st.session_state['connected']:
             sql_manager.add_user(user_info=user_info)
         if st.button("**Se déconnecter**",key='button_logout'): 
             authenticator.logout()
-            pages={}
+            #pages={}
 else:
     authenticator.login()
 
 
 if st.session_state['connected']:
 
-    user_info = st.session_state['user_info']
-    if not sql_manager.check_db_by_id(id=user_info['id'], table='users'):
-        sql_manager.add_user(user_info=user_info)
+    # user_info = st.session_state['user_info']
+    # if not sql_manager.check_db_by_id(id=user_info['id'], table='users'):
+    #     sql_manager.add_user(user_info=user_info)
 
     pages = {
         "Mon compte": [

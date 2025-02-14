@@ -24,6 +24,11 @@ logging.basicConfig(
 
 
 class DatabaseConnection():
+    """
+    Create connection to RDS database with psycopg2
+    Read connexion infos from .env file
+    """
+
     def __init__(self):
         self.username=os.getenv('UTILISATEUR')
         self.password=os.getenv('PASSWORD')
@@ -46,6 +51,9 @@ class DatabaseConnection():
 
 
 class SQL_recipe_manager():
+    """
+    Manage all relations with Datachef database
+    """
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
