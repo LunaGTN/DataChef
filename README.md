@@ -20,6 +20,7 @@
 ## 📂 Repository structure
 
 📄 *requirements.txt*  &nbsp;&nbsp;# Dependency management\
+📄 *app_init.py*  &nbsp;&nbsp;# Streamlit app laucher and authentication page\
 📄 *app_page_ ... .py*  &nbsp;&nbsp;# Streamlit script for every page of the app\
 📄 *scrapping.ipynb*  &nbsp;&nbsp;# Notebook for scraping test\
 📁 **fonctions** \
