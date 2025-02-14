@@ -26,4 +26,10 @@
 📁 **fonctions** \
 │── 📄 *sql_manager.py* &nbsp;&nbsp; # Functions for interacting with the AWS RDS Database \
 │── 📄 *gemini.py*  &nbsp;&nbsp;# Functions for interacting with AI API (Google Gemini) \
-│── 📄 *dashboard_func.py* &nbsp;&nbsp;# Functions for dashboard creation 
+│── 📄 *dashboard_func.py* &nbsp;&nbsp;# Functions for dashboard creation \
+📁 **data_loaders** | 
+📁 **transformers** | 
+📁 **data_exporters** |
+📁 **custom_templates**  &nbsp;&nbsp;# ETL files (MAGE) 
+
+
