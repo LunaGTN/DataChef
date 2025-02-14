@@ -145,7 +145,7 @@ class SQL_recipe_manager():
         with DatabaseConnection() as db_connexion:
             try :
                 c = db_connexion.cursor()
-                request = f"SELECT * FROM {table} WHERE name = '{name.capitalize().replace("'", "\'\'")}'"
+                request = f"""SELECT * FROM {table} WHERE name = '{name.capitalize().replace("'", "\'\'")}'"""
                 c.execute(request)
                 results = c.fetchall()
                 return bool(results)
