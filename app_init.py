@@ -24,7 +24,7 @@ authenticator = Authenticate(
     secret_credentials_path= google_credential,
     cookie_name=cookie_name,
     cookie_key= cookie_key,
-    redirect_uri='http://localhost:8501'
+    redirect_uri='https://datachef.streamlit.app'
 )
 
 authenticator.check_authentification()
