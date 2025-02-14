@@ -1,4 +1,4 @@
-json
+pypi-json
 logging
 re
 streamlit
