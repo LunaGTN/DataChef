@@ -6,11 +6,17 @@ from dotenv import load_dotenv
 import requests
 from fonctions.sql_manager import SQL_recipe_manager
 import json
+from google_auth_oauthlib.flow import Flow
 
 sql_manager = SQL_recipe_manager()
 
 st.set_page_config(layout="wide")
 
+flow = Flow.from_client_secrets_file(
+    "google_credential.json",
+    scopes=["https://www.googleapis.com/auth/userinfo.email", "openid"],
+    redirect_uri="https://datachief.streamlit.app"
+)
 
 # Charger les variables depuis .env
 load_dotenv()
