@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 import requests
 from fonctions.sql_manager import SQL_recipe_manager
+import json
 
 sql_manager = SQL_recipe_manager()
 
