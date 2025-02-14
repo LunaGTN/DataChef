@@ -12,6 +12,8 @@ sql_manager = SQL_recipe_manager()
 st.markdown("<h2 style='color: #DE684D;'> Ajouter une recette Marmiton</h2>", unsafe_allow_html=True)
 st.write('---')
 
+st.write('Grâce à cette page, vous pouvez importer une recette qui vous plait depuis le site Marmiton')
+
 def run_scraping():
     msg = st.toast('Recherche de la recette...', icon='🔍')
     new_recipe = load_recipe(st.session_state.url)[0]
