@@ -45,7 +45,7 @@ blocks:
   language: python
   name: intriguing frog
   retry_config: null
-  status: executed
+  status: updated
   timeout: null
   type: transformer
   upstream_blocks:
@@ -92,5 +92,5 @@ spark_config: {}
 tags: []
 type: python
 uuid: data_chef
-variables_dir: /Users/romai/.mage_data/Marmiton
+variables_dir: /home/luna/.mage_data/Marmiton
 widgets: []
