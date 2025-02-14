@@ -12,12 +12,6 @@ sql_manager = SQL_recipe_manager()
 
 st.set_page_config(layout="wide")
 
-flow = Flow.from_client_secrets_file(
-    "google_credential.json",
-    scopes=["https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="https://datachief.streamlit.app"
-)
-
 # Charger les variables depuis .env
 load_dotenv()
 
@@ -28,7 +22,13 @@ google_credential = json.loads(st.secrets['GOOGLE_CREDENTIALS'])
 
 with open("./credentials.json","w") as file:
     json.dump(google_credential, file)
-    
+
+flow = Flow.from_client_secrets_file(
+    "./credentials.json",
+    scopes=["https://www.googleapis.com/auth/userinfo.email", "openid"],
+    redirect_uri="https://datachef.streamlit.app"
+)
+
 authenticator = Authenticate(
     secret_credentials_path= "./credentials.json",
     cookie_name=cookie_name,
