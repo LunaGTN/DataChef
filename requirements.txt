@@ -1,6 +1,6 @@
 pypi-json
 logging
-re
+regex
 streamlit
 typing
 python-dotenv
