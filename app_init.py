@@ -17,9 +17,10 @@ load_dotenv()
 # Récupérer les valeurs des variables
 cookie_key = os.getenv("COOKIE_KEY")
 cookie_name = os.getenv("COOKIE_NAME")
+google_credential = json.loads(st.secrets['GOOGLE_CREDENTIALS'])
 
 authenticator = Authenticate(
-    secret_credentials_path='google_credentials.json',
+    secret_credentials_path= google_credential,
     cookie_name=cookie_name,
     cookie_key= cookie_key,
     redirect_uri='http://localhost:8501'
