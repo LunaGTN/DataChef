@@ -20,8 +20,11 @@ cookie_key = os.getenv("COOKIE_KEY")
 cookie_name = os.getenv("COOKIE_NAME")
 google_credential = json.loads(st.secrets['GOOGLE_CREDENTIALS'])
 
+with open("./credentials.json","w") as file:
+    json.dump(google_credential, file)
+    
 authenticator = Authenticate(
-    secret_credentials_path= google_credential,
+    secret_credentials_path= "./credentials.json",
     cookie_name=cookie_name,
     cookie_key= cookie_key,
     redirect_uri='https://datachef.streamlit.app'
