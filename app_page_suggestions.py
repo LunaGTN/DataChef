@@ -35,7 +35,7 @@ with col_country:
         default_country=None
     countries = list(df['country'].unique())
 
-    st.multiselect('Nationalités', countries, key='countries', default=default_country)
+    st.multiselect('Nationalités', countries, key='countries', default=default_country, placeholder='Choisissez la nationalité des plats')
     if 'countries' in st.session_state and len(st.session_state['countries']) !=0:
         origines = st.session_state['countries']
         origines =  df['country'].isin(origines)
@@ -50,7 +50,7 @@ with col_ingredient:
     ingredient_list = list(df['ingredient_list'].values)
     ingredient_list = set((','.join(ingredient_list)).split(','))
 
-    st.multiselect('Ingredients', ingredient_list, key='ingredients', default=default_ingredient)
+    st.multiselect('Ingredients', ingredient_list, key='ingredients', default=default_ingredient, placeholder='Choisissez vos ingrédients')
     if 'ingredients' in st.session_state and len(st.session_state['ingredients']) !=0:
         ingredient_list = st.session_state['ingredients']
         for ingredient in ingredient_list:
