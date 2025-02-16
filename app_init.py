@@ -18,22 +18,22 @@ load_dotenv()
 # Récupérer les valeurs des variables
 cookie_key = os.getenv("COOKIE_KEY")
 cookie_name = os.getenv("COOKIE_NAME")
-google_credential = json.loads(st.secrets['GOOGLE_CREDENTIALS'])
+#google_credential = json.loads(st.secrets['GOOGLE_CREDENTIALS'])
 
-with open("./credentials.json","w") as file:
-    json.dump(google_credential, file)
+#with open("./credentials.json","w") as file:
+#    json.dump(google_credential, file)
 
 flow = Flow.from_client_secrets_file(
-    "./credentials.json",
+    "google_credentials.json",
     scopes=["https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="https://datachef.streamlit.app"
+    redirect_uri="https://datachef.atelierpixel42.com/"
 )
 
 authenticator = Authenticate(
-    secret_credentials_path= "./credentials.json",
+    secret_credentials_path= "google_credentials.json",
     cookie_name=cookie_name,
     cookie_key= cookie_key,
-    redirect_uri='https://datachef.streamlit.app'
+    redirect_uri='https://datachef.atelierpixel42.com/'
 )
 
 authenticator.check_authentification()
