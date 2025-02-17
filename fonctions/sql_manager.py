@@ -939,6 +939,37 @@ class SQL_recipe_manager():
                 c.close()
 
 
+    def add_guest_user(self)->None:
+        """
+        Add guest user to database with random id
+        """
+
+        generated_id = 'guest_' + str(self.generate_id('users'))
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = """
+                INSERT INTO users (id, name)
+                VALUES (%s, %s)
+                """
+
+                datas = [
+                        generated_id,
+                        'Guest'
+                ]
+
+                c.execute(request, datas)
+                db_connexion.commit()
+                return generated_id
+
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+
+            finally:
+                c.close()
+
+
     def connect_user_recipe(self, id_user:str, id_recipe:int)->None:
         """
         Add a row to user_recipe database.

@@ -2,11 +2,14 @@ from fonctions.sql_manager import SQL_recipe_manager
 import streamlit as st
 from random import sample
 
-st.write(st.session_state)
+#st.write(st.session_state)
 
 sql_manager = SQL_recipe_manager()
 
 df = sql_manager.get_all_recipes()
+
+if 'df' not in st.session_state:
+    st.session_state['df']= df
 
 # Header / Title
 st.markdown("<h2 style='color: #DE684D;'>Le catalogue de recettes !</h2>", unsafe_allow_html=True)
@@ -26,13 +29,15 @@ with col_flavor:
         tastes = [taste.lower() for taste in st.session_state['taste']]
         flavor_filter =  df['sweet_salt'].isin(tastes)
         df = df[flavor_filter]
+        st.session_state['df'] = df
+
 
     # Country
 with col_country:
     if 'countries' in st.session_state:
         default_country = st.session_state['countries']
     else:
-        default_country=None
+        default_country = None
     countries = list(df['country'].unique())
 
     st.multiselect('Nationalités', countries, key='countries', default=default_country, placeholder='Choisissez la nationalité des plats')
