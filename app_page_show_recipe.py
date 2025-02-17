@@ -6,7 +6,7 @@ from time import sleep
 sql_manager = SQL_recipe_manager()
 user_id = st.session_state.user_info['id']
 
-
+st.write(st.session_state)
 
 # Header / Title
 st.markdown("<h2 style='color: #DE684D;'> Consulter une recette </h2>", unsafe_allow_html=True)
