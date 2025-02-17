@@ -1591,5 +1591,48 @@ class SQL_recipe_manager():
             ingredients = self.remove_ingredient_recipe(recipe_id)
             recipe = self.remove_recipe(recipe_id)
             return user_recipe and steps and ingredients and recipe
+
+
+    def get_guest_ids(self):
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request = """Select id from users where name='Guest'"""
+
+                c.execute(request)
+                return c.fetchall()
             
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+
+            finally:
+                c.close()
+
+
+    def delete_guests(self):
         
+        guest_ids = self.get_guest_ids()
+
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                for guest_id in guest_ids:
+                    recipes = self.get_user_recipes(user_id=guest_id)
+                    recipes_id = list(recipes['id'].values)
+
+                    for recipe_id in recipes_id:
+                        self.delete_user_recipe(user_id=guest_id, recipe_id=recipe_id)
+
+                    c = db_connexion.cursor()
+                    request="""
+                        DELETE FROM users
+                        WHERE id = %s"""
+                    c.execute(request, guest_id)
+                    db_connexion.commit()
+            
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+
+            finally:
+                c.close()
+                self.logger.info(f"Guest {guest_ids} successfully deleted")
