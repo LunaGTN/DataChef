@@ -7,7 +7,6 @@ sql_manager = SQL_recipe_manager()
 user_id = st.session_state.user_info['id']
 
 
-
 # Header / Title
 st.markdown("<h2 style='color: #DE684D;'> Consulter une recette </h2>", unsafe_allow_html=True)
 st.write('---')
@@ -28,7 +27,10 @@ st.write('---')
 
 # Display receipe and details 
 if 'current_receipe' in st.session_state and st.session_state.current_receipe is not None:
-    idx = df[df['name']==st.session_state.current_receipe['name']]['id'].values[0]
+    if st.session_state.current_receipe[0]=='👤':
+        idx = st.session_state.current_receipe['id']
+    else:
+        idx = df[df['name']==st.session_state.current_receipe['name']]['id'].values[0]
     current_receipe = sql_manager.get_recipe_detail(idx)
 
     # First line (picture and name)
