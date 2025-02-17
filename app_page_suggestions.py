@@ -5,21 +5,11 @@ import re
 import streamlit as st
 
 
-st.write(st.session_state)
+#st.write(st.session_state)
 
 sql_manager = SQL_recipe_manager()
 
 df = sql_manager.get_all_recipes()
-
-if 'df' not in st.session_state:
-    st.session_state['df']= df
-else:
-    raw_text = 'idx' + st.session_state['df']
-    liste = raw_text.split('\n')
-    liste = [re.split(r'\s{2,}', el) for el in liste]
-    columns = [el.split(' ') for el in liste[0]]
-    columns = [x for sublist in columns for x in sublist]
-    df = pd.DataFrame(liste[1:-2], columns=columns).drop(columns='idx')
 
 # Header / Title
 st.markdown("<h2 style='color: #DE684D;'>Le catalogue de recettes !</h2>", unsafe_allow_html=True)
@@ -27,50 +17,23 @@ st.write("---")
 
 # Filter
     
-st.markdown("<h4 style='text-align: center; color: black;'>Filtres</h4>", unsafe_allow_html=True)
+st.markdown("<h4 style='text-align: center; color: black;'>Filtre par ingrédient</h4>", unsafe_allow_html=True)
 st.write(" ")
 
-col_flavor, col_country, col_ingredient = st.columns([1,2,2])
+st.write( )
+if 'ingredients' in st.session_state:
+    default_ingredient = st.session_state['ingredients']
+else:
+    default_ingredient=None
+ingredient_list = list(df['ingredient_list'].values)
+ingredient_list = set((','.join(ingredient_list)).split(','))
 
-    # Flavor
-with col_flavor:
-    st.pills('Saveur',["Sucré", "Salé"], default=None, selection_mode='multi', key="taste")
-    if 'taste' in st.session_state and len(st.session_state['taste']) !=0:
-        tastes = [taste.lower() for taste in st.session_state['taste']]
-        flavor_filter =  df['sweet_salt'].isin(tastes)
-        df = df[flavor_filter]
-        st.session_state['df'] = df
-
-
-    # Country
-with col_country:
-    if 'countries' in st.session_state:
-        default_country = st.session_state['countries']
-    else:
-        default_country = None
-    countries = list(df['country'].unique())
-
-    st.multiselect('Nationalités', countries, key='countries', default=default_country, placeholder='Choisissez la nationalité des plats')
-    if 'countries' in st.session_state and len(st.session_state['countries']) !=0:
-        origines = st.session_state['countries']
-        origines =  df['country'].isin(origines)
-        df = df[origines]
-
-    # Ingredients
-with col_ingredient:
-    if 'ingredients' in st.session_state:
-        default_ingredient = st.session_state['ingredients']
-    else:
-        default_ingredient=None
-    ingredient_list = list(df['ingredient_list'].values)
-    ingredient_list = set((','.join(ingredient_list)).split(','))
-
-    st.multiselect('Ingredients', ingredient_list, key='ingredients', default=default_ingredient, placeholder='Choisissez vos ingrédients')
-    if 'ingredients' in st.session_state and len(st.session_state['ingredients']) !=0:
-        ingredient_list = st.session_state['ingredients']
-        for ingredient in ingredient_list:
-            ingredient_filter =  df['ingredient_list'].str.contains(ingredient)
-            df = df[ingredient_filter]
+st.multiselect('Ingredients', ingredient_list, key='ingredients', default=default_ingredient, placeholder='Choisissez vos ingrédients')
+if 'ingredients' in st.session_state and len(st.session_state['ingredients']) !=0:
+    ingredient_list = st.session_state['ingredients']
+    for ingredient in ingredient_list:
+        ingredient_filter =  df['ingredient_list'].str.contains(ingredient)
+        df = df[ingredient_filter]
 
 st.write('')
 
