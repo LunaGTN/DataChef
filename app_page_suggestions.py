@@ -68,10 +68,10 @@ n_rows = len(df) // n_cols
 remains = len(df) % n_cols
 
 if len(df) >= n_cols:
-    for raw in range(3) :
+    for raw in range(n_rows) :
         col_list = st.columns(n_cols)
         for n_col,col in enumerate(col_list) :
-            ind = raw*4 + n_col
+            ind = raw*n_cols + n_col
             with col :  
                 st.image(st.session_state.short_list[ind][1])
                 if st.button(label=st.session_state.short_list[ind][0], key=f'but_{ind}',use_container_width =True) :
