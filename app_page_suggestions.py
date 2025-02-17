@@ -1,8 +1,11 @@
 from fonctions.sql_manager import SQL_recipe_manager
-import streamlit as st
+import pandas as pd
 from random import sample
+import re
+import streamlit as st
 
-#st.write(st.session_state)
+
+st.write(st.session_state)
 
 sql_manager = SQL_recipe_manager()
 
@@ -10,6 +13,13 @@ df = sql_manager.get_all_recipes()
 
 if 'df' not in st.session_state:
     st.session_state['df']= df
+else:
+    raw_text = 'idx' + st.session_state['df']
+    liste = raw_text.split('\n')
+    liste = [re.split(r'\s{2,}', el) for el in liste]
+    columns = [el.split(' ') for el in liste[0]]
+    columns = [x for sublist in columns for x in sublist]
+    df = pd.DataFrame(liste[1:-2], columns=columns).drop(columns='idx')
 
 # Header / Title
 st.markdown("<h2 style='color: #DE684D;'>Le catalogue de recettes !</h2>", unsafe_allow_html=True)
