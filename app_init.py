@@ -57,7 +57,7 @@ else:
         if st.button("**Se déconnecter**",key='button_logout'): 
             authenticator.logout()
             pages={}
-        st.image('https://drive.google.com/file/d/1jUpbdqKk1rwFJ_Nhby8UrBm8bn32U5xp/view?usp=sharing')
+        st.image('https://github.com/LunaGTN/DataChef/blob/online-v1/qr_code.png?raw=true')
 
     user_info = st.session_state['user_info']
     if not sql_manager.check_db_by_id(id=user_info['id'], table='users'):
