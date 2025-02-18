@@ -64,7 +64,10 @@ if len(df) == 0:
     st.subheader("Oups 😕\nIl n'y a pas de recette correspondant à vos critères dans le catalogue ")
 
 n_cols = 4
-n_rows = len(df) // n_cols
+if len(df) // n_cols > 3:
+    n_rows = 3
+else:
+    nrows = len(df) // n_cols
 remains = len(df) % n_cols
 
 if len(df) >= n_cols:
