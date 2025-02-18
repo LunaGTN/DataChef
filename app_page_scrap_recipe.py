@@ -67,7 +67,7 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe ==
                 st.swtich_page('app_page_recipe_book.py')
     with col_2:
         if st.button("**Personnaliser la recette**",key='button-add', icon='✏️') :
-            st.switch_page("app_modif_recipe_page.py")
+            st.switch_page("app_page_modif_recipe.py")
 st.write('---')
 
 # if 'message' in st.session_state :
