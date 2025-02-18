@@ -33,7 +33,7 @@ def run_scraping():
         new_recipe['image_link'] = new_recipe["image"]
         sql_manager.manage_recipe(recipe_data = new_recipe)
         st.toast('Recette importée avec succès', icon='✅')
-        st.session_state['message'] = f'✅ La recette {new_recipe['titre']} a été ajoutée à la base de donnée'
+        st.session_state['message'] = f'✅ La recette {new_recipe['titre']} a été ajoutée à la base de données'
         return new_recipe
 
 def reset_message():
@@ -66,9 +66,11 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe ==
             msg = st.toast('Préparation...', icon='🧑‍🍳')
             if sql_manager.add_user_recipe(recipe_data=sql_manager.get_recipe_detail(st.session_state.current_receipe['id']), user_id=user_id):
                 st.toast('Recette ajoutée à mon livre', icon = '✅')
+                del st.session_state.current_recipe
                 st.swtich_page('app_page_recipe_book.py')
     with col_2:
         if st.button("**Personnaliser la recette**",key='button-add', icon='✏️') :
+            del st.session_state.current_recipe
             st.switch_page("app_page_modif_recipe.py")
 st.write('---')
 

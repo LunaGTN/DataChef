@@ -39,7 +39,7 @@ if st.button('💾 **Enregistrer**',key='save') :
     st.session_state.profil_parameters['size'] = st.session_state['size_test']
     st.session_state.profil_parameters['lunch'] = st.session_state['lunch_selec']
     st.session_state.profil_parameters['weekend'] = st.session_state['weekend_selec']
-    st.session_state.profil_parameters['diet'] = st.session_state['diet']
+    #st.session_state.profil_parameters['diet'] = st.session_state['diet']
     sql_manager.add_user_info(st.session_state.user_info, st.session_state.profil_parameters)
     st.stoast('Profil mis à jour', icon='🧑‍🍳')
 
