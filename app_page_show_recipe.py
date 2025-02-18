@@ -89,7 +89,7 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
     cols = st.columns (2)
     with cols[0] :
         if st.button("**Personnaliser la recette**",key='button-add', icon='✏️') :
-            st.switch_page("app_modif_recipe_page.py")
+            st.switch_page("app_page_modif_recipe.py")
     with cols[1] :
         recipe_id=st.session_state.current_receipe['id']
         if sql_manager.check_recipe_in_user_book(user_id=user_id, recipe_id=recipe_id):
