@@ -48,7 +48,9 @@ if 'url' in st.session_state and st.session_state.url != None :
         st.write('')
         if st.button('🔽 **Lancer la récupération**',key='scrap'):
             st.session_state.current_recipe = run_scraping()
+            st.session_state.current_recipe["steps"] = [{"step_number": idx+1, "detail": step} for idx, step in enumerate(st.session_state.current_recipe['steps'])]
             st.session_state.current_receipe = st.session_state.current_recipe
+
     else :
         st.write('')
         st.markdown("❌ Le lien n'est pas valide", unsafe_allow_html=True)
