@@ -22,6 +22,7 @@ def run_scraping():
     if sql_manager.check_db_by_id(int(new_recipe['id']),'recipe') :
         msg.toast('La recette est déja dans la base de données')
         st.session_state['message'] = '👍 Cette recette est déja dans la base de données'
+        return False
     else :
         msg.toast('Import de la recette...', icon='🔪')
         new_recipe['name'] = new_recipe['titre']
@@ -31,19 +32,7 @@ def run_scraping():
         sql_manager.manage_recipe(recipe_data = new_recipe)
         st.toast('Recette importée avec succès', icon='✅')
         st.session_state['message'] = f'✅ La recette {new_recipe['titre']} a été ajoutée à la base de donnée'
-        
-        col_1, col_2 = st.columns(2)
-        with col_1:
-            if st.button('**Ajouter à mon livre**',key='button_add_book', icon='📕') :
-                msg = st.toast('Préparation...', icon='🧑‍🍳')
-                if sql_manager.add_user_recipe(recipe_data=sql_manager.get_recipe_detail(new_recipe['id']), user_id=user_id):
-                    st.toast('Recette ajoutée à mon livre', icon = '✅')
-                    st.swtich_page('app_page_recipe_book.py')
-        with col_2:
-            if st.button("**Personnaliser la recette**",key='button-add', icon='✏️') :
-                st.session_state.current_receipe = new_recipe
-                st.switch_page("app_modif_recipe_page.py")
-
+        return new_recipe
 
 def reset_message():
     st.session_state['message']=''
@@ -57,7 +46,20 @@ if 'url' in st.session_state and st.session_state.url !=None :
         # st.write('')
         # st.markdown("✅ Le lien est conforme pour la récupération de la recette", unsafe_allow_html=True)
         st.write('')
-        st.button('🔽 **Lancer la récupération**',key='scrap',on_click=run_scraping)
+        if st.button('🔽 **Lancer la récupération**',key='scrap'):
+            new_recipe = run_scraping()
+            if bool(new_recipe):
+                col_1, col_2 = st.columns(2)
+                with col_1:
+                    if st.button('**Ajouter à mon livre**',key='button_add_book', icon='📕') :
+                        msg = st.toast('Préparation...', icon='🧑‍🍳')
+                        if sql_manager.add_user_recipe(recipe_data=sql_manager.get_recipe_detail(new_recipe['id']), user_id=user_id):
+                            st.toast('Recette ajoutée à mon livre', icon = '✅')
+                            st.swtich_page('app_page_recipe_book.py')
+                with col_2:
+                    if st.button("**Personnaliser la recette**",key='button-add', icon='✏️') :
+                        st.session_state.current_receipe = new_recipe
+                        st.switch_page("app_modif_recipe_page.py")
     else :
         st.write('')
         st.markdown("❌ Le lien n'est pas valide", unsafe_allow_html=True)
