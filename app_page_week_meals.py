@@ -29,11 +29,12 @@ st.markdown("<h4 '> Etape n°1 - Sélectionnez parmi vos recettes, celles que vo
 st.write('---')
 # Size choice for each meal
 st.markdown("<h4 '> Etape n°2 - Choisir le nombre de repas dans la semaine </h4>", unsafe_allow_html=True)
-st.write('')
+st.write(' ')
     # Filters
 _, col = st.columns([1,10])
 disa_we = True
 disa_lunch = False
+
 with col :
     if st.checkbox('Prévoir les repas de midi en semaine', value=user_param['default_lunch'] ,key='lunch_selector') != user_param['default_lunch'] :
         user_param['default_lunch'] = st.session_state['lunch_selector']
@@ -54,7 +55,7 @@ for ind,col in enumerate(cols[1:]) :
         st.markdown(f'<span style="color: #DE684D">**{days[ind].title()}**</span>', unsafe_allow_html=True)
 cont_ing.write('')
 
-    # Lunch choices
+# Lunch choices
 lunch_count_size = 0
 cols = cont_ing.columns([1,2,2,2,2,2,2,2])
 with cols[0]:
@@ -67,8 +68,7 @@ for ind,col in enumerate(cols[1:]) :
             lunch_count_size+= st.number_input("", 0, 20, value = user_param['default_size'] * user_param['default_weekend'], key=f'lunch{days[ind]}', disabled= not user_param['default_weekend'])
 cont_ing.write('')
 
-
-    # dinner choices
+# dinner choices
 dinner_count_size = 0
 cols = cont_ing.columns([1,2,2,2,2,2,2,2])
 with cols[0]:
@@ -83,7 +83,6 @@ cont_ing.write('')
 st.write('---')
 
 # Add Recipes
-
 lunch_user_count = 0
 dinner_user_count = 0
 
@@ -139,7 +138,6 @@ with col_2:
             meal = 'dinner' if 'dinner' in key else 'lunch'
             sql_manager.update_recipe_size(user_id=user_id, recipe_id=indice, meal=meal, size=value)
         st.toast("Planning mis à jour", icon='😁')    
-
 # Style
 st.markdown('''<style>
             [data-baseweb='input'] {width:40px; text-align: center}
