@@ -93,7 +93,7 @@ st.write('---')
 for idx, recipe in planned_recipes.iterrows():
     _, col,_ = st.columns([3,10,3])
     with col :
-        st.markdown(f"**{recipe['name']}**")
+        st.markdown(f"**{recipe['name'].strip()[2:]}**")
         st.write('')
     _, col_1, col_2= st.columns([2, 3, 3])
     with col_1:
