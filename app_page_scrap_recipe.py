@@ -41,15 +41,12 @@ def reset_message():
 # Url 
 st.markdown("<h5 '> Saisir l'URL de la recette Marmiton :</h5>", unsafe_allow_html=True)
 st.text_input("", key='url',value=None,placeholder='https://www.marmiton.org/recettes/...',on_change = reset_message)
-if 'url' in st.session_state and st.session_state.url !=None :
+if 'url' in st.session_state and st.session_state.url != None :
     if 'https://www.marmiton.org/recettes/' in st.session_state.url :
-        # st.write('')
-        # st.markdown("✅ Le lien est conforme pour la récupération de la recette", unsafe_allow_html=True)
         st.write('')
         if st.button('🔽 **Lancer la récupération**',key='scrap'):
-            new_recipe = run_scraping()
-            if bool(new_recipe):
-                st.session_state.current_receipe = new_recipe
+            st.session_state.current_recipe = run_scraping()
+            st.session_state.current_receipe = st.session_state.current_recipe
     else :
         st.write('')
         st.markdown("❌ Le lien n'est pas valide", unsafe_allow_html=True)
@@ -58,17 +55,16 @@ if 'url' in st.session_state and st.session_state.url !=None :
 if 'message' in st.session_state :
     st.write(st.session_state['message'])
 
-if 'current_receipe' in st.session_state and st.session_state.current_receipe == new_recipe:
+if 'current_receipe' in st.session_state and st.session_state.current_receipe == st.session_state.current_recipe:
     col_1, col_2 = st.columns(2)
     with col_1:
         if st.button('**Ajouter à mon livre**',key='button_add_book', icon='📕') :
             msg = st.toast('Préparation...', icon='🧑‍🍳')
-            if sql_manager.add_user_recipe(recipe_data=sql_manager.get_recipe_detail(new_recipe['id']), user_id=user_id):
+            if sql_manager.add_user_recipe(recipe_data=sql_manager.get_recipe_detail(st.session_state.current_receipe['id']), user_id=user_id):
                 st.toast('Recette ajoutée à mon livre', icon = '✅')
                 st.swtich_page('app_page_recipe_book.py')
     with col_2:
         if st.button("**Personnaliser la recette**",key='button-add', icon='✏️') :
-            
             st.switch_page("app_modif_recipe_page.py")
 st.write('---')
 
