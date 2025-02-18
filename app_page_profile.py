@@ -26,13 +26,13 @@ st.write("---")
 
 
 #  Choice of diet
-st.markdown("<h5 '> Régime alimentaire </h5>", unsafe_allow_html=True)
-st.multiselect('Choisir un ou plusieurs régime(s) alimentaire(s) spécifique(s)',
-                        ['Végétarien','Vegan','Sans Gluten','Sans Lactose'],
-                        placeholder = 'Choisir un régime',
-                        default = st.session_state.profil_parameters['diet'],
-                        key ='diet')
-st.write("---")
+# st.markdown("<h5 '> Régime alimentaire </h5>", unsafe_allow_html=True)
+# st.multiselect('Choisir un ou plusieurs régime(s) alimentaire(s) spécifique(s)',
+#                         ['Végétarien','Vegan','Sans Gluten','Sans Lactose'],
+#                         placeholder = 'Choisir un régime',
+#                         default = st.session_state.profil_parameters['diet'],
+#                         key ='diet')
+# st.write("---")
 
 # Save button
 if st.button('💾 **Enregistrer**',key='save') :
