@@ -5,7 +5,7 @@ import re
 import streamlit as st
 
 
-st.write(st.session_state)
+#st.write(st.session_state)
 
 sql_manager = SQL_recipe_manager()
 
@@ -73,7 +73,6 @@ if len(st.session_state.short_list) >= n_cols:
         for n_col,col in enumerate(col_list) :
             ind = raw * n_cols + n_col
             with col :  
-                st.write(ind)
                 st.image(st.session_state.short_list[ind][1])
                 if st.button(label=st.session_state.short_list[ind][0], key=f'but_{ind}',use_container_width =True) :
                     idx = df[df['name']==st.session_state.short_list[ind][0]]['id'].values[0]
