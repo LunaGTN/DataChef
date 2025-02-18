@@ -88,11 +88,11 @@ dinner_user_count = 0
 
 st.markdown("<h4 '> Etape n°4 - Assigner un nombre de part et un repas pour chaque recette </h4>", unsafe_allow_html=True)
 st.write('')
+st.write('---')
 
 for idx, recipe in planned_recipes.iterrows():
     _, col,_ = st.columns([3,10,3])
     with col :
-        st.write('---')
         st.markdown(f"**{recipe['name']}**")
         st.write('')
     _, col_1, col_2= st.columns([2, 3, 3])
