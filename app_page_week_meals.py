@@ -25,12 +25,11 @@ planned_recipes.reset_index(drop=True, inplace=True)
 # Header / Title
 st.markdown("<h2 style='color: #DE684D;'> Mon menu de la semaine</h2>", unsafe_allow_html=True)
 st.write('---')
-
+st.markdown("<h4 '> Etape n°1 - Sélectionnez parmi vos recettes, celles que vous voulez plannifier pour la semaine </h4>", unsafe_allow_html=True)
+st.write('---')
 # Size choice for each meal
-st.markdown("<h5 '> Choisir le nombre de part pour chaque repas </h5>", unsafe_allow_html=True)
-st.write(" ")
+st.markdown("<h4 '> Etape n°2 - Choisir le nombre de repas dans la semaine </h4>", unsafe_allow_html=True)
 st.write('')
-
     # Filters
 _, col = st.columns([1,10])
 disa_we = True
@@ -43,8 +42,9 @@ with col :
     if st.checkbox('Prévoir les repas du week-end',value=user_param['default_weekend'], key='weekend_selector') != user_param['default_weekend']:
         user_param['default_weekend'] = st.session_state['weekend_selector']
 st.write('')
-st.write('')
-
+st.write('---')
+st.markdown("<h4 '> Etape n°3 - Si vous avez des invités, modifiez le nombre de couverts </h4>", unsafe_allow_html=True)
+st.write(" ")
 cont_ing = st.container(border=True,key = 'container_ing')
     # Day names
 days = ['lundi','mardi','mercredi','jeudi','vendredi','samedi','dimanche']
@@ -87,8 +87,8 @@ st.write('---')
 lunch_user_count = 0
 dinner_user_count = 0
 
-st.markdown("<h5 '> Choisir des recettes pour la semaine </h5>", unsafe_allow_html=True)
-st.write(" ")
+st.markdown("<h4 '> Etape n°4 - Assigner un nombre de part et un repas pour chaque recette </h4>", unsafe_allow_html=True)
+st.write('')
 
 for idx, recipe in planned_recipes.iterrows():
     _, col,_ = st.columns([3,10,3])
@@ -106,6 +106,8 @@ for idx, recipe in planned_recipes.iterrows():
 
 st.write('---')
 
+st.markdown("<h4 '> Etape n°5 - Une fois le planning terminé, sauvegardez ! </h4>", unsafe_allow_html=True)
+st.write('')
 # Display meals to plan and save button
 
 col_1, col_2 = st.columns(2)
