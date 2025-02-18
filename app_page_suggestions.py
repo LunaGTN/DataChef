@@ -64,13 +64,10 @@ if len(df) == 0:
     st.subheader("Oups 😕\nIl n'y a pas de recette correspondant à vos critères dans le catalogue ")
 
 n_cols = 4
-if len(df) // n_cols > 3:
-    n_rows = 3
-else:
-    nrows = len(df) // n_cols
-remains = len(df) % n_cols
+n_rows =  len(st.session_state.short_list) // n_cols
+remains = len(st.session_state.short_list) % n_cols
 
-if len(df) >= n_cols:
+if len(st.session_state.short_list) >= n_cols:
     for raw in range(n_rows) :
         col_list = st.columns(n_cols)
         for n_col,col in enumerate(col_list) :
