@@ -52,7 +52,7 @@ if remains != 0:
         with col:
             st.image(df_temp.iloc[idx]['image_link'], width=1000)
             if st.button(label=df_temp.iloc[idx]['name'][2:].capitalize(), key=f'but_{n_rows*4+idx}', use_container_width=True):
-                st.session_state.current_recipe = sql_manager.get_recipe_detail(id_recipe=indice)
+                st.session_state.current_receipe = sql_manager.get_recipe_detail(id_recipe=indice)
                 st.switch_page("app_page_show_recipe.py")
             st.checkbox(label='Ajouter au menu', value=in_planner, key=f'check_{indice}')
             if st.button('Supprimer de mon livre', icon='❌', key=f'del_{indice}'):

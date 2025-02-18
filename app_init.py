@@ -8,45 +8,48 @@ from fonctions.sql_manager import SQL_recipe_manager
 import json
 from google_auth_oauthlib.flow import Flow
 
+#st.write(st.session_state)
+
 sql_manager = SQL_recipe_manager()
 
 st.set_page_config(layout="wide")
 
-# Charger les variables depuis .env
 load_dotenv()
 
-# Récupérer les valeurs des variables
 cookie_key = os.getenv("COOKIE_KEY")
 cookie_name = os.getenv("COOKIE_NAME")
-google_credential = json.loads(st.secrets['GOOGLE_CREDENTIALS'])
-
-with open("./credentials.json","w") as file:
-    json.dump(google_credential, file)
 
 flow = Flow.from_client_secrets_file(
-    "./credentials.json",
+    "google_credentials.json",
     scopes=["https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="https://datachef.streamlit.app"
+    redirect_uri="https://datachef.atelierpixel42.com/"
 )
 
 authenticator = Authenticate(
-    secret_credentials_path= "./credentials.json",
+    secret_credentials_path= "google_credentials.json",
     cookie_name=cookie_name,
     cookie_key= cookie_key,
-    redirect_uri='https://datachef.streamlit.app'
+    redirect_uri='https://datachef.atelierpixel42.com/'
 )
 
 authenticator.check_authentification()
 
 # Title
-if st.session_state['connected'] == False:
+if not st.session_state['connected']:
     st.markdown("<h2 style='color: #DE684D;text-align: center;'>Bienvenue sur Data Chef !</h2>", unsafe_allow_html=True)
     _,logo,_=st.columns([5,3,5])
     with logo :
         st.image('https://github.com/LunaGTN/DataChef/blob/main/logo.png?raw=true',use_container_width=True)
     st.markdown("<h5 style='text-align: center;'>Connectez vous avec votre compte google !</h5>", unsafe_allow_html=True)
+    authenticator.login()
+    if st.button("Continuer en tant qu'invité", key='guest'):
+        generated_id = sql_manager.add_guest_user()
+        st.session_state['user_info']= {'id':generated_id}
+        st.session_state['connected'] = True
+        st.rerun()
 
-if st.session_state['connected']:
+
+else:
     with st.sidebar :
         user_info = st.session_state['user_info']
         if not sql_manager.check_db_by_id(id=user_info['id'], table='users'):
@@ -54,11 +57,6 @@ if st.session_state['connected']:
         if st.button("**Se déconnecter**",key='button_logout'): 
             authenticator.logout()
             pages={}
-else:
-    authenticator.login()
-
-
-if st.session_state['connected']:
 
     user_info = st.session_state['user_info']
     if not sql_manager.check_db_by_id(id=user_info['id'], table='users'):
@@ -88,5 +86,6 @@ if st.session_state['connected']:
 # Style 
 st.markdown('''<style>
             .st-key-logout {text-align: center}
+            .st-key-guest {text-align: center}
             </style>''', unsafe_allow_html=True)
 
