@@ -6,6 +6,8 @@ import pandas as pd
 import re
 from transformers.utils import *
 
+user_id = st.session_state.user_info['id']
+
 sql_manager = SQL_recipe_manager()
 
 # Header / Title
@@ -28,7 +30,20 @@ def run_scraping():
         new_recipe['image_link'] = new_recipe["image"]
         sql_manager.manage_recipe(recipe_data = new_recipe)
         st.toast('Recette importée avec succès', icon='✅')
-        st.session_state['message'] = f'✅ La recette {new_recipe['titre']} a été ajouté à la base de donnée'
+        st.session_state['message'] = f'✅ La recette {new_recipe['titre']} a été ajoutée à la base de donnée'
+        
+        col_1, col_2 = st.columns(2)
+        with col_1:
+            if st.button('**Ajouter à mon livre**',key='button_add_book', icon='📕') :
+                msg = st.toast('Préparation...', icon='🧑‍🍳')
+                if sql_manager.add_user_recipe(recipe_data=sql_manager.get_recipe_detail(new_recipe['id']), user_id=user_id):
+                    st.toast('Recette ajoutée à mon livre', icon = '✅')
+                    st.swtich_page('app_page_recipe_book.py')
+        with col_2:
+            if st.button("**Personnaliser la recette**",key='button-add', icon='✏️') :
+                st.session_state.current_receipe = new_recipe
+                st.switch_page("app_modif_recipe_page.py")
+
 
 def reset_message():
     st.session_state['message']=''
