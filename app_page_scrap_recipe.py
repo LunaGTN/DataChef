@@ -8,7 +8,7 @@ from transformers.utils import *
 
 user_id = st.session_state.user_info['id']
 
-st.write(st.session_state)
+#st.write(st.session_state)
 
 sql_manager = SQL_recipe_manager()
 
