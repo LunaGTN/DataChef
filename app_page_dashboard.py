@@ -137,7 +137,7 @@ else:
     col1, col2 = st.columns(2)
     with col1:
         if st.button("**Voir mon livre de recettes**", icon='📕'):
-            st.switch_page('app_page_recipe_book.py.py')
+            st.switch_page('app_page_recipe_book.py')
     with col2:
         if st.button("**Découvrir des plats**", icon='🥙'):
             st.switch_page('app_page_suggestions.py')
