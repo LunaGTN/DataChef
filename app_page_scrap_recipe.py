@@ -49,22 +49,27 @@ if 'url' in st.session_state and st.session_state.url !=None :
         if st.button('🔽 **Lancer la récupération**',key='scrap'):
             new_recipe = run_scraping()
             if bool(new_recipe):
-                col_1, col_2 = st.columns(2)
-                with col_1:
-                    if st.button('**Ajouter à mon livre**',key='button_add_book', icon='📕') :
-                        msg = st.toast('Préparation...', icon='🧑‍🍳')
-                        if sql_manager.add_user_recipe(recipe_data=sql_manager.get_recipe_detail(new_recipe['id']), user_id=user_id):
-                            st.toast('Recette ajoutée à mon livre', icon = '✅')
-                            st.swtich_page('app_page_recipe_book.py')
-                with col_2:
-                    if st.button("**Personnaliser la recette**",key='button-add', icon='✏️') :
-                        st.session_state.current_receipe = new_recipe
-                        st.switch_page("app_modif_recipe_page.py")
+                st.session_state.current_receipe = new_recipe
     else :
         st.write('')
         st.markdown("❌ Le lien n'est pas valide", unsafe_allow_html=True)
-    if 'message' in st.session_state :
-        st.write(st.session_state['message'])
+
+
+if 'message' in st.session_state :
+    st.write(st.session_state['message'])
+
+if st.session_state.current_receipe == new_recipe:
+    col_1, col_2 = st.columns(2)
+    with col_1:
+        if st.button('**Ajouter à mon livre**',key='button_add_book', icon='📕') :
+            msg = st.toast('Préparation...', icon='🧑‍🍳')
+            if sql_manager.add_user_recipe(recipe_data=sql_manager.get_recipe_detail(new_recipe['id']), user_id=user_id):
+                st.toast('Recette ajoutée à mon livre', icon = '✅')
+                st.swtich_page('app_page_recipe_book.py')
+    with col_2:
+        if st.button("**Personnaliser la recette**",key='button-add', icon='✏️') :
+            
+            st.switch_page("app_modif_recipe_page.py")
 st.write('---')
 
 # if 'message' in st.session_state :
