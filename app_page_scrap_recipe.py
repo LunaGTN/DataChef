@@ -58,7 +58,7 @@ if 'url' in st.session_state and st.session_state.url !=None :
 if 'message' in st.session_state :
     st.write(st.session_state['message'])
 
-if st.session_state.current_receipe == new_recipe:
+if 'current_receipe' in st.session_state and st.session_state.current_receipe == new_recipe:
     col_1, col_2 = st.columns(2)
     with col_1:
         if st.button('**Ajouter à mon livre**',key='button_add_book', icon='📕') :
