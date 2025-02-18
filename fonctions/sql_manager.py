@@ -1600,7 +1600,8 @@ class SQL_recipe_manager():
                 request = """Select id from users where name='Guest'"""
 
                 c.execute(request)
-                return c.fetchall()
+                ids = c.fetchall()
+                return [str(el[0]) for el in ids]
             
             except psycopg2.OperationalError as err:
                 self.logger.error(f"Select error: {err}")
@@ -1612,27 +1613,25 @@ class SQL_recipe_manager():
     def delete_guests(self):
         
         guest_ids = self.get_guest_ids()
+        for guest_id in guest_ids:
+            recipes = self.get_user_recipes(user_id=guest_id)
+            recipes_id = list(recipes['id'].values)
 
+            for recipe_id in recipes_id:
+                self.delete_user_recipe(user_id=guest_id, recipe_id=recipe_id)
 
-        with DatabaseConnection() as db_connexion:
-            try : 
-                for guest_id in guest_ids:
-                    recipes = self.get_user_recipes(user_id=guest_id)
-                    recipes_id = list(recipes['id'].values)
-
-                    for recipe_id in recipes_id:
-                        self.delete_user_recipe(user_id=guest_id, recipe_id=recipe_id)
-
+            with DatabaseConnection() as db_connexion:
+                try : 
                     c = db_connexion.cursor()
-                    request="""
+                    request=f"""
                         DELETE FROM users
-                        WHERE id = %s"""
-                    c.execute(request, guest_id)
+                        WHERE id = '{guest_id}'"""
+                    c.execute(request)
                     db_connexion.commit()
             
-            except psycopg2.OperationalError as err:
-                self.logger.error(f"Select error: {err}")
+                except psycopg2.OperationalError as err:
+                    self.logger.error(f"Select error: {err}")
 
-            finally:
-                c.close()
-                self.logger.info(f"Guest {guest_ids} successfully deleted")
+                finally:
+                    c.close()
+                    self.logger.info(f"Guest {guest_ids} successfully deleted")
