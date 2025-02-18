@@ -11,6 +11,9 @@
 - 🔧 **Tools :** Python, Pandas, Streamlit, Web-Scraping, AI-API, Cloud(AWS)  
 <br>
 
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;🌟 [Link to the website](https://datachef.atelierpixel42.com/)
+<br>
+
 ## 👋 Contributors
 
 &nbsp;&nbsp;&nbsp; 👩 [Luna](https://github.com/LunaGTN)  &nbsp;&nbsp;&nbsp;   🧑 [Romain](https://github.com/Romain-Data)  &nbsp;&nbsp;&nbsp;  🧑 [Thibaud](https://github.com/Thibaud-TR)\
