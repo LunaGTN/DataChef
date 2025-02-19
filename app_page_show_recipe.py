@@ -92,13 +92,13 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
         recipe_id=st.session_state.current_receipe['id']
         if sql_manager.check_recipe_in_user_book(user_id=user_id, recipe_id=recipe_id):
             if st.button('**Ajouter à mon menu de la semaine**',key='button_add_week', icon='📆') :
-                msg = st.toast('Préparation...', icon='🧑‍🍳')
+                msg = st.toast('Préparation...', icon='🍳')
                 sleep(1)
                 if sql_manager.add_recipe_to_planner(user_id=user_id, recipe_id=recipe_id):
                     msg.toast('Recette ajoutée à mon planning', icon = '✅')
         else:
             if st.button('**Ajouter à mon livre**',key='button_add_book', icon='📕') :
-                msg = st.toast('Préparation...', icon='🧑‍🍳')
+                msg = st.toast('Préparation...', icon='🍳')
                 if sql_manager.add_user_recipe(recipe_data=sql_manager.get_recipe_detail(recipe_id), user_id=user_id):
                     st.toast('Recette ajoutée à mon livre', icon = '✅')
             #st.switch_page("app_modif_recipe_page.py")

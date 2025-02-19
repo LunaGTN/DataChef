@@ -73,8 +73,6 @@ else:
 st.write('---')
 
 
-
-
 # Style 
 st.markdown('''<style>
             .st-key-scrap {text-align: center;}
