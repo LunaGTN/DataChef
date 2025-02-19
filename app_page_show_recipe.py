@@ -57,7 +57,7 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
         st.write(' ')
         b_container = stylable_container(css_styles= """{
                                         border-radius: 20px;
-                                        background-color: #f4846a;
+                                        background-color: #fff2e6;
                                         padding: 0em 2em 2em 2em ;
                                         """, key='ingredients')
         with b_container :
