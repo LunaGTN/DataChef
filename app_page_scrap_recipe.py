@@ -63,7 +63,7 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe ==
             msg = st.toast('Préparation...', icon='🧑‍🍳')
             if sql_manager.add_user_recipe(recipe_data=sql_manager.get_recipe_detail(st.session_state.current_receipe['id']), user_id=user_id):
                 st.toast('Recette ajoutée à mon livre', icon = '✅')
-                st.swtich_page('app_page_recipe_book.py')
+                st.switch_page('app_page_recipe_book.py')
     with col_2:
         if st.button("**Personnaliser la recette**",key='button-add', icon='✏️') :
             st.switch_page("app_page_modif_recipe.py")
