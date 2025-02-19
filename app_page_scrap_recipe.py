@@ -8,7 +8,7 @@ from transformers.utils import *
 
 user_id = st.session_state.user_info['id']
 
-st.write(st.session_state)
+#st.write(st.session_state)
 
 sql_manager = SQL_recipe_manager()
 
@@ -33,7 +33,7 @@ def run_scraping():
         new_recipe['image_link'] = new_recipe["image"]
         sql_manager.manage_recipe(recipe_data = new_recipe)
         st.toast('Recette importée avec succès', icon='✅')
-        st.session_state['message'] = f'✅ La recette {new_recipe['titre']} a été ajoutée à la base de donnée'
+        st.session_state['message'] = f'✅ La recette {new_recipe['titre']} a été ajoutée à la base de données'
         return new_recipe
 
 def reset_message():
@@ -48,7 +48,9 @@ if 'url' in st.session_state and st.session_state.url != None :
         st.write('')
         if st.button('🔽 **Lancer la récupération**',key='scrap'):
             st.session_state.current_recipe = run_scraping()
+            st.session_state.current_recipe["steps"] = [{"step_number": idx+1, "detail": step} for idx, step in enumerate(st.session_state.current_recipe['steps'])]
             st.session_state.current_receipe = st.session_state.current_recipe
+
     else :
         st.write('')
         st.markdown("❌ Le lien n'est pas valide", unsafe_allow_html=True)
@@ -64,9 +66,11 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe ==
             msg = st.toast('Préparation...', icon='🧑‍🍳')
             if sql_manager.add_user_recipe(recipe_data=sql_manager.get_recipe_detail(st.session_state.current_receipe['id']), user_id=user_id):
                 st.toast('Recette ajoutée à mon livre', icon = '✅')
+                del st.session_state.current_recipe
                 st.swtich_page('app_page_recipe_book.py')
     with col_2:
         if st.button("**Personnaliser la recette**",key='button-add', icon='✏️') :
+            del st.session_state.current_recipe
             st.switch_page("app_page_modif_recipe.py")
 else:
    st.session_state.current_recipe == None   

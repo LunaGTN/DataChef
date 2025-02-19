@@ -12,7 +12,7 @@ st.write('---')
 data = sql_manager.get_profile_info(st.session_state.user_info['id'])
 if 'profil_parameters' not in st.session_state :
     st.session_state['profil_parameters'] = {'size' : data[1] if data[1] != None else 4 ,
-                                            'diet' : data[2] if data[2] != None and data[2] != [''] else None,
+                                            #'diet' : data[2] if data[2] != None and data[2] != [''] else None,
                                             'lunch' : data[3] if data[3] != None else True,
                                             'weekend' : data[4] if data[4] != None else False}
 
@@ -26,21 +26,22 @@ st.write("---")
 
 
 #  Choice of diet
-st.markdown("<h5 '> Régime alimentaire </h5>", unsafe_allow_html=True)
-st.multiselect('Choisir un ou plusieurs régime(s) alimentaire(s) spécifique(s)',
-                        ['Végétarien','Vegan','Sans Gluten','Sans Lactose'],
-                        placeholder = 'Choisir un régime',
-                        default = st.session_state.profil_parameters['diet'],
-                        key ='diet')
-st.write("---")
+# st.markdown("<h5 '> Régime alimentaire </h5>", unsafe_allow_html=True)
+# st.multiselect('Choisir un ou plusieurs régime(s) alimentaire(s) spécifique(s)',
+#                         ['Végétarien','Vegan','Sans Gluten','Sans Lactose'],
+#                         placeholder = 'Choisir un régime',
+#                         default = st.session_state.profil_parameters['diet'],
+#                         key ='diet')
+# st.write("---")
 
 # Save button
 if st.button('💾 **Enregistrer**',key='save') :
     st.session_state.profil_parameters['size'] = st.session_state['size_test']
     st.session_state.profil_parameters['lunch'] = st.session_state['lunch_selec']
     st.session_state.profil_parameters['weekend'] = st.session_state['weekend_selec']
-    st.session_state.profil_parameters['diet'] = st.session_state['diet']
+    #st.session_state.profil_parameters['diet'] = st.session_state['diet']
     sql_manager.add_user_info(st.session_state.user_info, st.session_state.profil_parameters)
+    st.toast('Profil mis à jour', icon='🧑‍🍳')
 
 
 # Style 

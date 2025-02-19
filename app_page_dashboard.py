@@ -32,11 +32,10 @@ if len(recettes_hebdo) != 0:
 
     df = pd.DataFrame(dico_qtity)
 
-
-    st.markdown(f"<h5 '> Cette semaine, vous cuisinerez {recettes_hebdo.shape[0]} recettes ! </h5>", unsafe_allow_html=True)
-    st.write('')
-
-    st.subheader(f"Il y a {recettes_hebdo.shape[0]} recettes dans votre semainier !")
+    if len(recettes_hebdo) == 1:
+        st.subheader(f"Il y a {recettes_hebdo.shape[0]} recette dans votre semainier !")
+    else:
+        st.subheader(f"Il y a {recettes_hebdo.shape[0]} recettes dans votre semainier !")
     st.write('')
 
     col1, col2 , col3, col4 = st.columns([2,2,2,3])

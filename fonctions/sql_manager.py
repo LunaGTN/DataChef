@@ -1219,10 +1219,10 @@ class SQL_recipe_manager():
                 UPDATE users
                 SET nb_person = {profil_parameters['size']},
                     week_lunch = {profil_parameters['lunch']} ,
-                    week_we = {profil_parameters['weekend']},
-                    diet = '{','.join(profil_parameters['diet'])}'
+                    week_we = {profil_parameters['weekend']}
                 WHERE id = '{user_info['id']}'
                 """
+                # Add diet = '{','.join(profil_parameters['diet'])}' if diet managed
 
                 c.execute(request)
                 db_connexion.commit()

@@ -1,6 +1,7 @@
 from fonctions.sql_manager import SQL_recipe_manager
-import streamlit as st
 import re
+import streamlit as st
+from time import sleep
 
 sql_manager = SQL_recipe_manager()
 user_id = st.session_state.user_info['id']
@@ -39,6 +40,7 @@ for row in range(n_rows) :
             if st.button('Supprimer de mon livre', icon='❌', key=f'del_{indice}'):
                 if sql_manager.delete_user_recipe(user_id=user_id, recipe_id=indice):
                     st.toast('Recette supprimée de mon livre', icon=':material/ink_eraser:')
+                    sleep(2)
                     st.rerun()
                 else:
                     st.toast("Une erreur s'est produite", icon='❌')
@@ -58,6 +60,7 @@ if remains != 0:
             if st.button('Supprimer de mon livre', icon='❌', key=f'del_{indice}'):
                 if sql_manager.delete_user_recipe(user_id=user_id, recipe_id=indice):
                     st.toast('Recette supprimée de mon livre', icon=':material/ink_eraser:')
+                    sleep(2)
                     st.rerun()
                 else:
                     st.toast("Une erreur s'est produite", icon='❌')
