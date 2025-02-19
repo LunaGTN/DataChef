@@ -46,7 +46,7 @@ st.write('')
 st.write('---')
 st.markdown("<h4 '> Etape n°3 - Si vous avez des invités, modifiez le nombre de couverts </h4>", unsafe_allow_html=True)
 st.write(" ")
-st.info('Sur téléphone, tournez votre écran', icon='":material/screen_rotation:"')
+st.info('Sur téléphone, tournez votre écran', icon=":material/screen_rotation:")
 st.write(" ")
 
 cont_ing = st.container(border=True,key = 'container_ing')
