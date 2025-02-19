@@ -111,16 +111,22 @@ st.markdown('''<style>
             .test {background-color: #f4846a;}
             .st-key-size_selector input {text-align: center}
             .st-key-size_selector p {font-size: 1rem;}
-            .st-key-button-add {text-align: center}
-            .st-key-button-add button {background : #f4846a;color:black}
-            .st-key-button-add :hover  {color : white}
-            .st-key-button_add_week {text-align: center}
-            .st-key-button_add_week button {background : #f4846a;color:black}
-            .st-key-button_add_week :hover  {color : white}
-            .st-key-button_add_book {text-align: center}
-            .st-key-button_add_book button {background : #f4846a;color: black}
-            .st-key-button_add_book :hover  {color : white}
-            [data-baseweb='input'] {background-color: #f4846a; width:50px;}
+            .st-key-button-add {text-align: center;}
+            .st-key-button-add button {background : #d2a679 ;color:black}
+            .st-key-button-add :hover {color : white; border: white;}
+            .st-key-button-add :focus {border: #996600}
+            .st-key-button-add :focus p {color : #990000}
+            .st-key-button_add_week {text-align: center;}
+            .st-key-button_add_week button {background : #d2a679 ;color:black}
+            .st-key-button_add_week :hover {color : white; border: white;}
+            .st-key-button_add_week :focus {border: #996600}
+            .st-key-button_add_week :focus p {color : #990000}
+            .st-key-button_add_book {text-align: center;}
+            .st-key-button_add_book button {background : #d2a679 ;color:black}
+            .st-key-button_add_book :hover {color : white; border: white;}
+            .st-key-button_add_book :focus {border: #996600}
+            .st-key-button_add_book :focus p {color : #990000}
+            [data-baseweb='input'] {width:50px;}
             </style>''', unsafe_allow_html=True)
 
 

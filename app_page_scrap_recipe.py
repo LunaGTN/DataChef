@@ -77,6 +77,9 @@ st.write('---')
 
 # Style 
 st.markdown('''<style>
-            .st-key-scrap button {background : #f4846a;color:black}
-            .st-key-scrap :hover  {color : white}
+            .st-key-scrap {text-align: center;}
+            .st-key-scrap button {background : #d2a679 ;color:black}
+            .st-key-scrap :hover {color : white; border: white;}
+            .st-key-scrap :focus {border: #996600}
+            .st-key-scrap :focus p {color : #990000}
             </style>''', unsafe_allow_html=True)

@@ -156,9 +156,11 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
     st.markdown('''<style>
                 .st-key-ing_container label {display: none;}
                 .st-key-step_container label {display: none;}
-                .st-key-button_save {text-align: center}
-                .st-key-button_save button {background : #f4846a;color:black}
-                .st-key-button_save :hover  {color : white}
+                .st-key-button_save_1 .st-key-button_save_2 {text-align: center;}
+                .st-key-button_save_1 .st-key-button_save_2 button {background : #d2a679 ;color:black}
+                .st-key-button_save_1 .st-key-button_save_2 :hover {color : white; border: white;}
+                .st-key-button_save_1 .st-key-button_save_2 :focus {border: #996600}
+                .st-key-button_save_1 .st-key-button_save_2 :focus p {color : #990000}
                 </style>''', unsafe_allow_html=True)
 
 # .st-key-step_container input {background-color: #DE684D;}

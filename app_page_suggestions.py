@@ -92,7 +92,9 @@ if remains != 0:
 
 # Style 
 st.markdown('''<style>
-            .st-key-suggestion_button {text-align: center}
-            .st-key-suggestion_button button {background : #f4846a;color:black}
-            .st-key-suggestion_button :hover  {color : white}
+                .st-key-suggestion_button {text-align: center;}
+                .st-key-suggestion_button button {background : #d2a679 ;color:black}
+                .st-key-suggestion_button :hover {color : white; border: white;}
+                .st-key-suggestion_button :focus {border: #996600}
+                .st-key-suggestion_button :focus p {color : #990000}
             </style>''', unsafe_allow_html=True)

@@ -86,6 +86,8 @@ else:
 
 # Style 
 st.markdown('''<style>
+            .stApp {background-color: #fffff6}
+            .stApp input{background-color: #fff2e6}
             .st-key-logout {text-align: center}
             .st-key-guest {text-align: center}
             </style>''', unsafe_allow_html=True)

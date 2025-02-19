@@ -49,8 +49,11 @@ st.markdown('''<style>
             [data-baseweb='input'] {width:50px; text-align: center}
             [data-baseweb='select'] {width:300px;}
             input {text-align: center}
-            .st-key-save button {background : #f4846a;color:black}
-            .st-key-save :hover  {color : white}
+            .st-key-save {text-align: center;}
+            .st-key-save button {background : #d2a679 ;color:black}
+            .st-key-save :hover {color : white; border: white;}
+            .st-key-save :focus {border: #996600}
+            .st-key-save :focus p {color : #990000}
             </style>''', unsafe_allow_html=True)
 
 

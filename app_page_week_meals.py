@@ -147,6 +147,9 @@ st.markdown('''<style>
             .st-key-container_ing .stNumberInput label {display: none;}
             .st-key-container_ing p {text-align: center;margin: auto auto}
             .st-key-container_ing  .stNumberInput > div {margin : auto}
-            .st-key-button_save button {background : #f4846a;color:black}
-            .st-key-button_save :hover  {color : white}
+            .st-key-button_save {text-align: center;}
+            .st-key-button_save button {background : #d2a679 ;color:black}
+            .st-key-button_save :hover {color : white; border: white;}
+            .st-key-button_save :focus {border: #996600}
+            .st-key-button_save :focus p {color : #990000}
             </style>''', unsafe_allow_html=True)

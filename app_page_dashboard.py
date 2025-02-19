@@ -135,13 +135,22 @@ else:
 
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("**Voir mon livre de recettes**", icon='📕'):
+        if st.button("**Voir mon livre de recettes**", icon='📕',key='recipe_book'):
             st.switch_page('app_page_recipe_book.py')
     with col2:
-        if st.button("**Découvrir des plats**", icon='🥙'):
+        if st.button("**Découvrir des plats**", icon='🥙',key='suggestions'):
             st.switch_page('app_page_suggestions.py')
 
 # Style 
 st.markdown('''<style>
-           
+            .st-key-recipe_book {text-align: center;}
+            .st-key-recipe_book button {background : #d2a679 ;color:black}
+            .st-key-recipe_book :hover {color : white; border: white;}
+            .st-key-recipe_book :focus {border: #996600}
+            .st-key-recipe_book :focus p {color : #990000}
+            .st-key-suggestions {text-align: center;}
+            .st-key-suggestions button {background : #d2a679 ;color:black}
+            .st-key-suggestions :hover {color : white; border: white;}
+            .st-key-suggestions :focus {border: #996600}
+            .st-key-suggestions :focus p {color : #990000}
             </style>''', unsafe_allow_html=True)
