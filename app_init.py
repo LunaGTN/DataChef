@@ -90,7 +90,10 @@ st.markdown('''<style>
             .stApp input{background-color: #fff2e6}
             .stApp textarea{background-color: #fff2e6}
             .stApp [data-testid='stNumberInputStepDown'] {background-color: #fff2e6}
-            .stApp [data-testid='stNumberInputStepUp'] button {background-color: #fff2e6}
+            .stApp [data-testid='stNumberInputStepUp'] {background-color: #fff2e6}
             .st-key-logout {text-align: center}
             .st-key-guest {text-align: center}
+            [data-baseweb='input'] {width:50px; text-align: center}
+            [data-baseweb='select'] {width:300px;}
+            input {text-align: center}
             </style>''', unsafe_allow_html=True)
