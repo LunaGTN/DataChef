@@ -8,8 +8,10 @@ from transformers.utils import *
 
 user_id = st.session_state.user_info['id']
 
-
 sql_manager = SQL_recipe_manager()
+
+if 'current_recipe' not in st.session_state :
+    st.session_state.current_recipe = None
 
 # Header / Title
 st.markdown("<h2 style='color: #DE684D;'> Ajouter une recette Marmiton</h2>", unsafe_allow_html=True)
