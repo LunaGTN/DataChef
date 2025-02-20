@@ -4,14 +4,20 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from fonctions.dashboard_func import get_weekly_recipe, get_weekly_ingredient, metric_system, conversion, card, nb_conso_per_recipe,get_nb_repas
+from streamlit_extras.let_it_rain import rain
 
 user_id = st.session_state['user_info']['id']
 
 color_palet = px.colors.sequential.RdBu
 recettes_hebdo = pd.DataFrame(get_weekly_recipe(str(user_id)))
 
-# Header / Title
-st.markdown("<h2 style='color: #DE684D;'> Votre Dashboard hebdomadaire 🧐</h2>", unsafe_allow_html=True)
+# Header / Title / Bonus 
+col_1, col_2 = st.columns([8,2])
+with col_1:
+    st.markdown("<h2 style='color: #DE684D;'> Votre Dashboard hebdomadaire 🧐</h2>", unsafe_allow_html=True)
+with col_2:
+    if st.button('Fin de présentation', icon='🎁'):
+        rain(emoji='♥️', font_size=100, falling_speed=10, animation_length='infinite')
 st.write('---')
 
 if len(recettes_hebdo) != 0:
