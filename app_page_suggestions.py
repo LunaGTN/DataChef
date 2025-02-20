@@ -16,11 +16,19 @@ st.markdown("<h2 style='color: #DE684D;'>Le catalogue de recettes !</h2>", unsaf
 st.write("---")
 
 # Filter
-    
+
+def create_short_list():
+    receipe_list = list(zip(df['name'].values,df['image_link'].values))
+    k = 12
+    if len(df) > k:
+        st.session_state.short_list = sample(receipe_list, k=k)
+    else:
+        st.session_state.short_list = sample(receipe_list, k=len(df))
+
 st.markdown("<h4 style='text-align: center; color: black;'>Filtre par ingrédient</h4>", unsafe_allow_html=True)
 st.write(" ")
 
-st.write( )
+
 if 'ingredients' in st.session_state:
     default_ingredient = st.session_state['ingredients']
 else:
@@ -34,17 +42,9 @@ if 'ingredients' in st.session_state and len(st.session_state['ingredients']) !=
     for ingredient in ingredient_list:
         ingredient_filter =  df['ingredient_list'].str.contains(ingredient)
         df = df[ingredient_filter]
+    create_short_list()
 
 st.write('')
-
-def create_short_list():
-    receipe_list = list(zip(df['name'].values,df['image_link'].values))
-    k = 12
-    if len(df) > k:
-        st.session_state.short_list = sample(receipe_list, k=k)
-    else:
-        st.session_state.short_list = sample(receipe_list, k=len(df))
-
      
 if 'short_list' not in st.session_state :
     create_short_list()
