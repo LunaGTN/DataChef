@@ -9,9 +9,8 @@ from time import sleep
 
 st.markdown("""
 <style>
-    .st-bb {margin:auto auto;
+    .st-al {margin:auto auto;
             text-align:center}
-    .st-br div {text-align:center}
 <style>
 """, unsafe_allow_html=True)
 
@@ -26,7 +25,7 @@ def vote():
     st.markdown("## Merci Léo")
 
 # Header / Title / Bonus 
-col_1, col_2 = st.columns([8,2], vertical_alignment='center')
+col_1, col_2 = st.columns([8,2], vertical_alignment='bottom')
 with col_1:
     st.markdown("<h2 style='color: #DE684D;'> Votre Dashboard hebdomadaire 🧐</h2>", unsafe_allow_html=True)
 with col_2:
