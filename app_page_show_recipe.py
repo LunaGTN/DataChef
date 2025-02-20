@@ -38,15 +38,15 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
 
     with col2:
         st.write(' ')
-        st.markdown(f"**Temps de préparation :** {st.session_state.current_receipe['time_preparation']}", unsafe_allow_html=True)
-        st.markdown(f"**Temps de repos :** {st.session_state.current_receipe['time_rest']}", unsafe_allow_html=True)
-        st.markdown(f"**Temps de cuisson :** {st.session_state.current_receipe['time_cooking']}", unsafe_allow_html=True)
+        st.markdown(f"**Temps de préparation :** {st.session_state.current_receipe['time_preparation']} min", unsafe_allow_html=True)
+        st.markdown(f"**Temps de repos :** {st.session_state.current_receipe['time_rest']} min", unsafe_allow_html=True)
+        st.markdown(f"**Temps de cuisson :** {st.session_state.current_receipe['time_cooking']} min", unsafe_allow_html=True)
 
 
     with col3 :
         st.write(' ')
-        st.markdown(f"**Coût :** {st.session_state.current_receipe['cost']}")
-        st.markdown(f"**Difficulté :** {st.session_state.current_receipe['difficulty']}")
+        st.markdown(f"**Coût :** {st.session_state.current_receipe['cost'].title()}")
+        st.markdown(f"**Difficulté :** {st.session_state.current_receipe['difficulty'].title()}")
         size = st.number_input("**Nombre de part :**", 1, 20,value = int(st.session_state.current_receipe['nb_person'] ), key='size_selector')
     st.write(' ')
 

@@ -54,9 +54,9 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
     st.write(' ')
     _ , col1, _ , col2, _ = st.columns([1,5,1,5,1])
     with col1 :
-        st.text_input("Temps de préparation :", value = st.session_state.current_receipe['time_preparation'])
-        st.text_input("Temps de repos :", value = st.session_state.current_receipe['time_rest'])
-        st.text_input("Temps de cuisson :", value = st.session_state.current_receipe['time_cooking'])
+        st.text_input("Temps de préparation (min) :", value = st.session_state.current_receipe['time_preparation'])
+        st.text_input("Temps de repos (min) :", value = st.session_state.current_receipe['time_rest'])
+        st.text_input("Temps de cuisson (min) :", value = st.session_state.current_receipe['time_cooking'])
 
     with col2 :
         st.text_input("Coût :", value = st.session_state.current_receipe['cost'])
