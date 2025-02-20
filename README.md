@@ -6,7 +6,7 @@
   -  Step 1 : Design and implementation of the SQL database on AWS RDS
   -  Step 2 : Web scraping to populate the database with recipes
   -  Step 3 : AI API Requests to add features on recipes
-  -  Step 3 : Create a functional application
+  -  Step 4 : Create a functional application
     
 - 🔧 **Tools :** Python, Pandas, Streamlit, Web-Scraping, AI-API, Cloud(AWS)  
 <br>
