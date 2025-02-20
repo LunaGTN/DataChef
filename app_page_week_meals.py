@@ -95,7 +95,7 @@ for ind,col in enumerate(cols[1:]) :
             default_value = (user_param['saved_dinner_sizes'][ind] if user_param['saved_dinner_sizes'] !=None else user_param['default_size'])
             dinner_count_size+= st.number_input("", 0, 20, value = default_value, key=f'dinner{days[ind]}')
         else :
-            default_value = (user_param['saved_dinner_sizes'][ind] if user_param['saved_dinner_sizes'] !=None else user_param['default_size'])
+            default_value = (user_param['saved_dinner_sizes'][ind] if user_param['saved_dinner_sizes'] !=None else user_param['default_size']) * user_param['default_lunch']
             dinner_count_size+= st.number_input("", 0, 20, value = default_value, key=f'dinner{days[ind]}',disabled= not user_param['default_weekend'])
 cont_ing.write('')
 st.write('---')
