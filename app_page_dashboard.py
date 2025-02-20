@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from fonctions.dashboard_func import get_weekly_recipe, get_weekly_ingredient, metric_system, conversion, card, nb_conso_per_recipe,get_nb_repas
 from streamlit_extras.let_it_rain import rain
+from time import sleep
 
 user_id = st.session_state['user_info']['id']
 
