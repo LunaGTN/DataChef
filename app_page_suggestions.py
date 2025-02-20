@@ -49,13 +49,13 @@ st.write('')
 if 'short_list' not in st.session_state :
     create_short_list()
 
-if st.button("🔄 **Changer les propositions**",key='suggestion_button') :
-    create_short_list()
 st.write(' ')
 
 # Recipe suggestion
     # Title
 st.markdown("<h4 style='text-align: center; color: black;'>Nos idées recettes</h4>", unsafe_allow_html=True)
+if st.button("🔄 **Changer les propositions**",key='suggestion_button') :
+    create_short_list()
 st.write(" ")
 
     # Containers
