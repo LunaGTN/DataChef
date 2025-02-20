@@ -79,6 +79,7 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
     
     with container :
         col0 ,col1, _ , col2, _ , col3 , _ = st.columns([1,2,0.5,2,0.5,5,1])
+        ind=0
         for ind,ing in enumerate(st.session_state.current_receipe['ingredients']):
             with col0 :
                 if st.button('❌',key = f'ing_b_{ind}') :
