@@ -51,6 +51,7 @@ if len(recettes_hebdo) != 0:
 
     with col4:
         st.write("""**Top 3 des ingrédients** """)
+        df.rename(columns = {'Quantité': 'Quantité (g)'})
         top_3 = df.sort_values(by = 'Quantité', ascending = False).head(3).reset_index(drop = True)
         top_3.index = top_3.index + 1
         st.write(top_3)
@@ -82,7 +83,7 @@ if len(recettes_hebdo) != 0:
             recettes_hebdo, 
             x=recettes_hebdo.index, 
             y=["prepa", "cuisson"],  # Empilage des deux colonnes
-            title="Temps de préparation et cuisson des recettes",
+            title="Temps de préparation et de cuisson des recettes",
             labels={"value": "Temps (min)", "variable": "Type de temps", "x": "Recettes"},
             color_discrete_map={"prepa": color_palet[0], "cuisson": color_palet[2]},
             text_auto = True,
@@ -108,7 +109,7 @@ if len(recettes_hebdo) != 0:
         data = df.drop(columns = 'Nom').groupby('Catégorie').sum()
         data = data.sort_values(by = 'Quantité', ascending = False)
         bar_qtity = px.bar(data, x='Quantité', y=data.index, orientation='h',
-                        title='Répartition de la quantité par catégorie',
+                        title='Quantité consommée par catégorie',
                         color_discrete_sequence=color_palet,
                         color=data.index,
                         text_auto = True,
