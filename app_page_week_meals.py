@@ -140,7 +140,23 @@ with col_2:
             indice = int(re.findall(r'\d+', key)[0])
             meal = 'dinner' if 'dinner' in key else 'lunch'
             sql_manager.update_recipe_size(user_id=user_id, recipe_id=indice, meal=meal, size=value)
+
+        # Enregistrer les portions de la semaine
+        order_lunch_sizes = []
+        for day in days : 
+            order_lunch_sizes.append([str(v) for k,v in st.session_state.items() if day in k and 'lunch' in k][0])
+        list_order_lunch_sizes = ','.join(order_lunch_sizes)
+
+        order_dinner_sizes = []
+        for day in days : 
+            order_dinner_sizes.append([str(v) for k,v in st.session_state.items() if day in k and 'dinner' in k][0])
+        list_order_dinner_sizes = ','.join(order_dinner_sizes)
+
+        sql_manager.update_meal_sizes(user_id=user_id, lunch_sizes=list_order_lunch_sizes, dinner_sizes=list_order_dinner_sizes)
+
         st.toast("Planning mis à jour", icon='😁')    
+
+        
 # Style
 st.markdown('''<style>
             [data-baseweb='input'] {width:40px; text-align: center}
