@@ -1180,19 +1180,22 @@ class SQL_recipe_manager():
                 c.close()
     
 
-    def get_profile_info (self, user_id:str) -> dict :
+    def get_profile_info (self, user_id:str) -> list :
 
         with DatabaseConnection() as db_connexion :
             try : 
                 c = db_connexion.cursor()
                 request = f"""
-                select name, nb_person, diet, week_lunch, week_we
+                select name, nb_person, diet, week_lunch, week_we, lunch_sizes, dinner_sizes
                 from users
                 where id  = '{user_id}'
                 """
                 c.execute(request)
                 result = list(c.fetchall()[0])
                 result[2] = result[2].split(',') if result[2] != None else result[2]
+                result[5] = list(map(int, result[5].split(','))) if result[5] != None else None
+                result[6] = list(map(int, result[6].split(','))) if result[6] != None else None
+                
                 return result
 
             except psycopg2.OperationalError as err:
@@ -1635,3 +1638,31 @@ class SQL_recipe_manager():
                 finally:
                     c.close()
                     self.logger.info(f"Guest {guest_ids} successfully deleted")
+
+    
+    def update_meal_sizes(self, user_id:str, lunch_sizes:List[int], dinner_sizes)-> bool:
+         
+
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request="""
+                    UPDATE users
+                    SET lunch_sizes = %s,
+                    dinner_sizes = %s
+                    WHERE id = %s
+                """
+                data = [lunch_sizes, dinner_sizes, user_id]
+
+                c.execute(request, data)
+                db_connexion.commit()
+                return True
+        
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+                return False
+
+            finally:
+                c.close()
+                self.logger.info(f"Meal sizes updated for user {user_id}")

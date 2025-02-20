@@ -9,12 +9,23 @@ if 'profil_parameters' not in st.session_state :
     st.session_state['profil_parameters'] = {'size' : data[1] if data[1] != None else 4 ,
                                             'diet' : data[2] if data[2] != None else None,
                                             'lunch' : data[3] if data[3] != None else True,
-                                            'weekend' : data[4] if data[4] != None else False}
+                                            'weekend' : data[4] if data[4] != None else False,
+                                            'saved_lunch_sizes': data[5],
+                                            'saved_dinner_sizes': data[6]}
+else:
+    st.session_state['profil_parameters'] = {'size' : data[1] if data[1] != None else 4 ,
+                                            'diet' : data[2] if data[2] != None else None,
+                                            'lunch' : data[3] if data[3] != None else True,
+                                            'weekend' : data[4] if data[4] != None else False,
+                                            'saved_lunch_sizes': data[5],
+                                            'saved_dinner_sizes': data[6]}
 
 user_param = {
     "default_size": st.session_state.profil_parameters['size'],
     "default_lunch": st.session_state.profil_parameters['lunch'],
-    "default_weekend": st.session_state.profil_parameters['weekend']
+    "default_weekend": st.session_state.profil_parameters['weekend'],
+    'saved_lunch_sizes': st.session_state.profil_parameters["saved_lunch_sizes"],
+    'saved_dinner_sizes': st.session_state.profil_parameters["saved_dinner_sizes"]
 }
 
 # Request recipes planned
@@ -66,9 +77,11 @@ with cols[0]:
 for ind,col in enumerate(cols[1:]) :
     with col :
         if ind < 5 : # Week day 
-            lunch_count_size+= st.number_input("", 0, 20, value = user_param['default_size'] * user_param['default_lunch'], key=f'lunch{days[ind]}', disabled= not user_param['default_lunch'])
+            default_value = (user_param['saved_lunch_sizes'][ind] if user_param['saved_lunch_sizes'] !=None else user_param['default_size']) * user_param['default_lunch']
+            lunch_count_size+= st.number_input("", 0, 20, value = default_value, key=f'lunch{days[ind]}', disabled= not user_param['default_lunch'])
         else : # Week end
-            lunch_count_size+= st.number_input("", 0, 20, value = user_param['default_size'] * user_param['default_weekend'], key=f'lunch{days[ind]}', disabled= not user_param['default_weekend'])
+            default_value = (user_param['saved_lunch_sizes'][ind] if user_param['saved_lunch_sizes'] !=None else user_param['default_size']) * user_param['default_weekend']
+            lunch_count_size+= st.number_input("", 0, 20, value = default_value, key=f'lunch{days[ind]}', disabled= not user_param['default_weekend'])
 cont_ing.write('')
 
 # dinner choices
@@ -79,9 +92,11 @@ with cols[0]:
 for ind,col in enumerate(cols[1:]) :
     with col :
         if ind < 5 :
-            dinner_count_size+= st.number_input("", 0, 20, value = user_param['default_size'], key=f'dinner{days[ind]}')
+            default_value = (user_param['saved_dinner_sizes'][ind] if user_param['saved_dinner_sizes'] !=None else user_param['default_size'])
+            dinner_count_size+= st.number_input("", 0, 20, value = default_value, key=f'dinner{days[ind]}')
         else :
-            dinner_count_size+= st.number_input("", 0, 20, value = user_param['default_size'] * user_param['default_weekend'], key=f'dinner{days[ind]}',disabled= not user_param['default_weekend'])
+            default_value = (user_param['saved_dinner_sizes'][ind] if user_param['saved_dinner_sizes'] !=None else user_param['default_size']) * user_param['default_weekend']
+            dinner_count_size+= st.number_input("", 0, 20, value = default_value, key=f'dinner{days[ind]}',disabled= not user_param['default_weekend'])
 cont_ing.write('')
 st.write('---')
 
@@ -140,7 +155,23 @@ with col_2:
             indice = int(re.findall(r'\d+', key)[0])
             meal = 'dinner' if 'dinner' in key else 'lunch'
             sql_manager.update_recipe_size(user_id=user_id, recipe_id=indice, meal=meal, size=value)
+
+        # Enregistrer les portions de la semaine
+        order_lunch_sizes = []
+        for day in days : 
+            order_lunch_sizes.append([str(v) for k,v in st.session_state.items() if day in k and 'lunch' in k][0])
+        list_order_lunch_sizes = ','.join(order_lunch_sizes)
+
+        order_dinner_sizes = []
+        for day in days : 
+            order_dinner_sizes.append([str(v) for k,v in st.session_state.items() if day in k and 'dinner' in k][0])
+        list_order_dinner_sizes = ','.join(order_dinner_sizes)
+
+        sql_manager.update_meal_sizes(user_id=user_id, lunch_sizes=list_order_lunch_sizes, dinner_sizes=list_order_dinner_sizes)
+
         st.toast("Planning mis à jour", icon='😁')    
+
+
 # Style
 st.markdown('''<style>
             [data-baseweb='input'] {width:40px; text-align: center}

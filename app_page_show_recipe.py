@@ -47,7 +47,7 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
         st.write(' ')
         st.markdown(f"**Coût :** {st.session_state.current_receipe['cost'].title()}")
         st.markdown(f"**Difficulté :** {st.session_state.current_receipe['difficulty'].title()}")
-        size = st.number_input("**Nombre de part :**", 1, 20,value = int(st.session_state.current_receipe['nb_person'] ), key='size_selector')
+        size = st.number_input("**Nombre de part :**", 1, 100,value = int(st.session_state.current_receipe['nb_person'] ), key='size_selector')
     st.write(' ')
 
     # Lists of ingredients and steps
@@ -68,11 +68,11 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
                 if ing['quantity'] == 0 or str(ing['quantity']) == '' :
                     result = f"**{ing['name']}**"
                 elif ing['unit'] == '' :
-                    result = f"{round(int(ing['quantity'])/int(current_receipe['nb_person'])*size)} **{ing['name']}**"
+                    result = f"{round(ing['quantity']/int(current_receipe['nb_person'])*size)} **{ing['name']}**"
                 elif ing['name'][0].lower() in ['a','e','i','o','u','h'] or  ing['name'][:5].lower()in ['huile','huitr','huîtr','herbe'] : 
-                    result = f"{round(int(ing['quantity'])/int(current_receipe['nb_person'])*size)} {ing['unit']} d'**{ing['name']}**"
+                    result = f"{round(ing['quantity']/int(current_receipe['nb_person'])*size)} {ing['unit']} d'**{ing['name']}**"
                 else :
-                    result = f"{round(int(ing['quantity'])/int(current_receipe['nb_person'])*size)} {ing['unit']} de **{ing['name']}**"
+                    result = f"{round(ing['quantity']/int(current_receipe['nb_person'])*size)} {ing['unit']} de **{ing['name']}**"
                 
                 container.markdown(f'- {result}')
 

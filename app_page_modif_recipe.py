@@ -61,7 +61,7 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
     with col2 :
         st.text_input("Coût :", value = st.session_state.current_receipe['cost'])
         st.text_input("Difficulté :", value = st.session_state.current_receipe['difficulty'])
-        st.number_input("Nombre de part :", 1,20, value = int(st.session_state.current_receipe['nb_person']))
+        st.number_input("Nombre de part :", 1,100, value = int(st.session_state.current_receipe['nb_person']))
 
     st.write('---')
 
@@ -78,8 +78,9 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
     container = st.container(key='ing_container')
     
     with container :
+        col0 ,col1, _ , col2, _ , col3 , _ = st.columns([1,2,0.5,2,0.5,5,1])
+        ind=0
         for ind,ing in enumerate(st.session_state.current_receipe['ingredients']):
-            col0 ,col1, _ , col2, _ , col3 , _ = st.columns([1,2,0.5,2,0.5,5,1])
             with col0 :
                 if st.button('❌',key = f'ing_b_{ind}') :
                     st.session_state.current_receipe['ingredients'].pop(ind)
