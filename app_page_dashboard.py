@@ -7,24 +7,38 @@ from fonctions.dashboard_func import get_weekly_recipe, get_weekly_ingredient, m
 from streamlit_extras.let_it_rain import rain
 from time import sleep
 
+st.markdown("""
+<style>
+    .st-bb {margin:auto auto;
+            text-align:center}
+    .st-br div {text-align:center}
+<style>
+""", unsafe_allow_html=True)
+
 user_id = st.session_state['user_info']['id']
 
 color_palet = px.colors.sequential.RdBu
 recettes_hebdo = pd.DataFrame(get_weekly_recipe(str(user_id)))
 
+@st.dialog(" ", width='small', )
+def vote():
+    st.markdown("# Merci de votre attention")
+    st.markdown("## Merci Léo")
+
 # Header / Title / Bonus 
-col_1, col_2 = st.columns([8,2])
+col_1, col_2 = st.columns([8,2], vertical_alignment='center')
 with col_1:
     st.markdown("<h2 style='color: #DE684D;'> Votre Dashboard hebdomadaire 🧐</h2>", unsafe_allow_html=True)
 with col_2:
     if st.button('Fin de présentation', icon='🎁'):
-        rain(emoji='♥️', font_size=50, falling_speed=50, animation_length='infinite')
-        sleep(2)
-        rain(emoji='♠️', font_size=50, falling_speed=150, animation_length='infinite')
-        sleep(2)
-        rain(emoji='♦️', font_size=35, falling_speed=300, animation_length='infinite')
-        sleep(2)
-        rain(emoji='♣️', font_size=65, falling_speed=100, animation_length='infinite')
+        vote()
+        rain(emoji='♥️', font_size=50, falling_speed=5, animation_length='infinite')
+        sleep(0.5)
+        rain(emoji='♠️', font_size=50, falling_speed=3, animation_length='infinite')
+        sleep(0.5)
+        rain(emoji='♦️', font_size=50, falling_speed=4, animation_length='infinite')
+        sleep(0.5)
+        rain(emoji='♣️', font_size=50, falling_speed=4, animation_length='infinite')
 st.write('---')
 
 if len(recettes_hebdo) != 0:
