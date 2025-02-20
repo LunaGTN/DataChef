@@ -107,15 +107,15 @@ if len(recettes_hebdo) != 0:
 
     with col3:
         data = df.drop(columns = 'Nom').groupby('Catégorie').sum()
-        data = data.sort_values(by = 'Quantité', ascending = False)
-        bar_qtity = px.bar(data, x='Quantité', y=data.index, orientation='h',
+        data = data.sort_values(by = 'Quantité (g)', ascending = False)
+        bar_qtity = px.bar(data, x='Quantité (g)', y=data.index, orientation='h',
                         title='Quantité consommée par catégorie',
                         color_discrete_sequence=color_palet,
                         color=data.index,
                         text_auto = True,
                         width = 570, height = 400 )
         bar_qtity.update_layout(
-            xaxis_title="Quantité (grammes)",
+            xaxis_title="Quantité (g)",
             yaxis_title="",
         )
         st.plotly_chart(bar_qtity)
