@@ -12,6 +12,13 @@ if 'profil_parameters' not in st.session_state :
                                             'weekend' : data[4] if data[4] != None else False,
                                             'saved_lunch_sizes': data[5],
                                             'saved_dinner_sizes': data[6]}
+else:
+    st.session_state['profil_parameters'] = {'size' : data[1] if data[1] != None else 4 ,
+                                            'diet' : data[2] if data[2] != None else None,
+                                            'lunch' : data[3] if data[3] != None else True,
+                                            'weekend' : data[4] if data[4] != None else False,
+                                            'saved_lunch_sizes': data[5],
+                                            'saved_dinner_sizes': data[6]}
 
 user_param = {
     "default_size": st.session_state.profil_parameters['size'],
