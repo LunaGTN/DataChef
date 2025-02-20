@@ -51,7 +51,7 @@ if len(recettes_hebdo) != 0:
 
     with col4:
         st.write("""**Top 3 des ingrédients** """)
-        df.rename(columns = {'Quantité': 'Quantité (g)'})
+        df = df.rename(columns = {'Quantité': 'Quantité (g)'})
         top_3 = df.sort_values(by = 'Quantité', ascending = False).head(3).reset_index(drop = True)
         top_3.index = top_3.index + 1
         st.write(top_3)
