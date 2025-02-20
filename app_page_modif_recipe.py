@@ -86,11 +86,11 @@ if 'current_receipe' in st.session_state and st.session_state.current_receipe is
                     st.session_state.current_receipe['ingredients'].pop(ind)
                     st.rerun()
             with col1 :
-                st.text_input(label = '',value = ing['quantity'],key = f'qty_{ind}',on_change=change_ing,args=(ind,))
+                st.text_input(label = '',value = ing['quantity'], placeholder= "Quantité",key = f'qty_{ind}',on_change=change_ing,args=(ind,))
             with col2 :
-                st.text_input(label = '',value = ing['unit'],key = f'unit_{ind}',on_change=change_ing,args=(ind,))
+                st.text_input(label = '',value = ing['unit'],placeholder= "Unité",key = f'unit_{ind}',on_change=change_ing,args=(ind,))
             with col3 :
-                st.text_input(label = '',value = ing['name'],key = f'name_{ind}',on_change=change_ing,args=(ind,))
+                st.text_input(label = '',value = ing['name'],placeholder= "Nom de l'ingrédient",key = f'name_{ind}',on_change=change_ing,args=(ind,))
         with col0 :
                 if st.button('➕',key = f'ing_b_{ind+1}') :
                     st.session_state.current_receipe['ingredients'].append({'name':'','unit': '', 'quantity':0, 'id': 0})
