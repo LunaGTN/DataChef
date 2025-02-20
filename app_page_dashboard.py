@@ -20,7 +20,11 @@ with col_2:
     if st.button('Fin de présentation', icon='🎁'):
         rain(emoji='♥️', font_size=50, falling_speed=50, animation_length='infinite')
         sleep(2)
-        rain(emoji='♠️', font_size=50, falling_speed=20, animation_length='infinite')
+        rain(emoji='♠️', font_size=50, falling_speed=150, animation_length='infinite')
+        sleep(2)
+        rain(emoji='♦️', font_size=35, falling_speed=300, animation_length='infinite')
+        sleep(2)
+        rain(emoji='♣️', font_size=65, falling_speed=100, animation_length='infinite')
 st.write('---')
 
 if len(recettes_hebdo) != 0:
