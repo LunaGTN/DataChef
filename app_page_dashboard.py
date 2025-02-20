@@ -17,7 +17,8 @@ with col_1:
     st.markdown("<h2 style='color: #DE684D;'> Votre Dashboard hebdomadaire 🧐</h2>", unsafe_allow_html=True)
 with col_2:
     if st.button('Fin de présentation', icon='🎁'):
-        rain(emoji='♥️', font_size=100, falling_speed=10, animation_length='infinite')
+        rain(emoji='♥️', font_size=75, falling_speed=20, animation_length='infinite')
+        rain(emoji='♠️', font_size=75, falling_speed=20, animation_length='infinite')
 st.write('---')
 
 if len(recettes_hebdo) != 0:
