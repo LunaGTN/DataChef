@@ -34,7 +34,14 @@ planned_recipes = sql_manager.request_planner(user_id=user_id)
 planned_recipes.reset_index(drop=True, inplace=True)
 
 # Header / Title
-st.markdown("<h2 style='color: #DE684D;'> Mon menu de la semaine</h2>", unsafe_allow_html=True)
+col_1, col_2 = st.columns([8,2], vertical_alignment='bottom')
+with col_1:
+    st.markdown("<h2 style='color: #DE684D;'> Mon menu de la semaine</h2>", unsafe_allow_html=True)
+with col_2:
+    if st.button('Réinitialiser'):
+        if sql_manager.reset_week_planner(user_id=user_id):
+            st.rerun()
+            
 st.write('---')
 st.markdown("<h4 '> Etape n°1 - Sélectionnez parmi vos recettes, celles que vous voulez plannifier pour la semaine </h4>", unsafe_allow_html=True)
 st.write('---')

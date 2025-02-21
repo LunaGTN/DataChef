@@ -1,5 +1,0 @@
-nohup: ignoring input
-Usage: streamlit run [OPTIONS] TARGET [ARGS]...
-Try 'streamlit run --help' for help.
-
-Error: No such option: --server (Possible options: --server.address, --server.headless, --server.port)

@@ -1195,7 +1195,7 @@ class SQL_recipe_manager():
                 result[2] = result[2].split(',') if result[2] != None else result[2]
                 result[5] = list(map(int, result[5].split(','))) if result[5] != None else None
                 result[6] = list(map(int, result[6].split(','))) if result[6] != None else None
-                
+
                 return result
 
             except psycopg2.OperationalError as err:
@@ -1666,3 +1666,68 @@ class SQL_recipe_manager():
             finally:
                 c.close()
                 self.logger.info(f"Meal sizes updated for user {user_id}")
+
+
+    def reset_meal_sizes(self, user_id:str)->bool:
+        """
+        Reset meal sizes of the planner of the user
+        """
+
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request="""
+                    UPDATE users
+                    SET lunch_sizes = NULL,
+                    dinner_sizes = NULL
+                    WHERE id = %s
+                """
+                data = [user_id]
+
+                c.execute(request, data)
+                db_connexion.commit()
+                return True
+        
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+                return False
+
+            finally:
+                c.close()
+                self.logger.info(f"Meal sizes updated for user {user_id}")
+
+    
+    def reset_meal_choice(self, user_id:str)->bool:
+        """
+        Take off recipes of the user's planner
+        """
+        
+        with DatabaseConnection() as db_connexion:
+            try : 
+                c = db_connexion.cursor()
+                request="""
+                    UPDATE user_recipe
+                    SET planner = false
+                    WHERE id_user = %s
+                """
+                data = [user_id]
+
+                c.execute(request, data)
+                db_connexion.commit()
+                return True
+        
+            except psycopg2.OperationalError as err:
+                self.logger.error(f"Select error: {err}")
+                return False
+
+            finally:
+                c.close()
+                self.logger.info(f"Meal sizes updated for user {user_id}")
+
+
+    def reset_week_planner(self, user_id:str)->bool:
+        """
+        Reset week planner of the user
+        """
+
+        return self.reset_meal_choice(user_id) and self.reset_meal_sizes(user_id)
