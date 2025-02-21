@@ -4,7 +4,6 @@ import plotly.express as px
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 from fonctions.dashboard_func import get_weekly_recipe, get_weekly_ingredient, metric_system, conversion, card, nb_conso_per_recipe,get_nb_repas
-from streamlit_extras.let_it_rain import rain
 from time import sleep
 
 st.markdown("""
@@ -19,25 +18,8 @@ user_id = st.session_state['user_info']['id']
 color_palet = px.colors.sequential.RdBu
 recettes_hebdo = pd.DataFrame(get_weekly_recipe(str(user_id)))
 
-@st.dialog(" ", width='small', )
-def vote():
-    st.markdown("# Merci de votre attention")
-    st.markdown("## Merci Léo")
-
 # Header / Title / Bonus 
-col_1, col_2 = st.columns([8,2], vertical_alignment='bottom')
-with col_1:
-    st.markdown("<h2 style='color: #DE684D;'> Votre Dashboard hebdomadaire 🧐</h2>", unsafe_allow_html=True)
-with col_2:
-    if st.button('Fin de présentation', icon='🎁'):
-        vote()
-        rain(emoji='♥️', font_size=50, falling_speed=5, animation_length='infinite')
-        sleep(0.5)
-        rain(emoji='♠️', font_size=50, falling_speed=3, animation_length='infinite')
-        sleep(0.5)
-        rain(emoji='♦️', font_size=50, falling_speed=4, animation_length='infinite')
-        sleep(0.5)
-        rain(emoji='♣️', font_size=50, falling_speed=4, animation_length='infinite')
+st.markdown("<h2 style='color: #DE684D;'> Votre Dashboard hebdomadaire 🧐</h2>", unsafe_allow_html=True)
 st.write('---')
 
 if len(recettes_hebdo) != 0:
