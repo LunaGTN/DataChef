@@ -10,3 +10,4 @@ fake_recipe.py
 *.ipynb
 notebook_manage_sql.ipynb
 venv
+backup

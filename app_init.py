@@ -22,14 +22,14 @@ cookie_name = os.getenv("COOKIE_NAME")
 flow = Flow.from_client_secrets_file(
     "google_credentials.json",
     scopes=["https://www.googleapis.com/auth/userinfo.email", "openid"],
-    redirect_uri="https://datachef.atelierpixel42.com/"
+    redirect_uri= os.getenv("REDIRECT_URI")
 )
 
 authenticator = Authenticate(
     secret_credentials_path= "google_credentials.json",
     cookie_name=cookie_name,
     cookie_key= cookie_key,
-    redirect_uri='https://datachef.atelierpixel42.com/'
+    redirect_uri=os.getenv("REDIRECT_URI")
 )
 
 authenticator.check_authentification()

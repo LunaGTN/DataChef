@@ -2,9 +2,9 @@ from dotenv import load_dotenv
 from fonctions.gemini import categorize_ingredient, map_recipe, sweet_salt, weight_per_unit
 import json
 import logging
+import mysql.connector
 import os
 import pandas as pd
-import psycopg2
 from typing import List, Literal
 from random import randint
 import re
@@ -32,16 +32,15 @@ class DatabaseConnection():
     def __init__(self):
         self.username=os.getenv('UTILISATEUR')
         self.password=os.getenv('PASSWORD')
-        self.engine=os.getenv('ENGINE')
+        self.database=os.getenv('ENGINE')
         self.host=os.getenv('HOST')
-        self.port=os.getenv('PORT')
 
     def __enter__(self):
-        self.db_connector = psycopg2.connect(
+        self.db_connector = mysql.connector.connect(
             host=self.host,
-            database=self.engine,
             user=self.username,
-            password=self.password
+            password=self.password,
+            database=self.engine          
         )
         return self.db_connector
 
